@@ -3,5 +3,5 @@
 ## Course shared drive
 https://drive.google.com/drive/folders/1ZQBnZrh3N_iSSJGdsSyIsb3CcL2ioSaP?usp=sharing
 
-### shortened
+### shortenedy
 https://bit.ly/45PyOvA
