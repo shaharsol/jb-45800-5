@@ -9,7 +9,7 @@
 
 <body>
     <h3>contact us</h3>
-    <form method="POST" action="signup.html">
+    <form method="GET" action="signup.html" >
         <p>
             <label for="firstName">Enter you name</label>
             <input name="firstName" id="firstName" placeholder="enter your name..." />
@@ -17,12 +17,12 @@
 
         <p>
             <label for="age">Enter your age</label>
-            <input id="age" type="number" min="0" name="age"/>
+            <input id="age" type="number" min="0" name="age" />
         </p>
 
         <p>
             <label for="email">Enter you email</label>
-            <input id="email" />
+            <input id="email" name="email" />
 
         </p>
 
@@ -43,15 +43,32 @@
 
         <p>
             <label for="password">choose password</label>
-            <input id="password" type="password" name="password"/>
+            <input id="password" type="password" name="password" />
         </p>
 
         <p>
-            <input id="senior" type="checkbox"/>
+            <input id="senior" type="checkbox" />
             <label for="senior">are you senior citizen</label>
         </p>
 
-        <input type="submit" value="sign in"/>
+        <p>
+            <label for="country">country</label>
+            <select name="country" >
+                <option value="" disabled selected>please select a country</option>
+                <option value="IL">israel</option>
+                <option value="US" >usa</option>
+                <option value="IR">iran, islamic republic of</option>
+            </select>
+        </p>
+
+        <p>
+            <label for="more">tell about yourself</label>
+            <textarea id="more"></textarea>
+
+        </p>
+
+
+        <input type="submit" value="sign in" />
     </form>
 </body>
 
