@@ -1,0 +1,65 @@
+/* name selector - selectors that are known tag names in html*/
+body {
+    background-color: lightcoral;
+    border: 1px dashed green;   
+}
+
+p {
+    color: blue;
+}
+
+h2 {
+    text-decoration: underline;
+}
+
+/* class selector */
+.pink-panther {
+    color: pink;
+    background-color: grey;
+}
+
+.deleted-text {
+    color: purple;
+    text-decoration: line-through;
+}
+
+/* id selector */
+#firstName {
+    background-color: blueviolet;
+}
+
+/* attribute selector */
+input[type=number] {
+    border: 4px dashed yellow; 
+    background-color: rgb(0, 207, 255);   
+}
+
+/* pseudo selector */
+a {
+    color: red;
+}
+
+a:visited {
+    color: yellow;
+}
+
+a:hover {
+    color: green;
+}
+
+p::first-letter {
+    font-size: xx-large;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* combination of selectors */
+#container p:nth-child(1) {
+    background-color: yellow;
+}
+
+body form > p {
+    color: wheat;
+}
+
+
+
