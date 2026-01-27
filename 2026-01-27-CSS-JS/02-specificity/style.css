@@ -1,0 +1,43 @@
+/* basic hierarchy */
+/* 
+h2 {
+    color: blue;
+}
+
+h2 {
+    color: red;
+} 
+*/
+
+/* intro to specificity */
+
+/* li h2 {
+    color: blue;
+}
+
+h2 {
+    color: red;
+}  */
+
+/* id selector is more specific than name selectors */
+#myDiv h2 {
+    color: red;
+}
+
+#myDiv h2 p li .myClass {
+    color: red;
+}
+
+div > div > div > ul > li > h2 {
+    color: blue;
+} 
+
+#myDiv h2 {
+    color: red;
+}
+
+.myClass h2 {
+    color: blue;
+}
+
+

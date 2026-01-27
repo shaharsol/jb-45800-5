@@ -1,0 +1,22 @@
+/* the width and the height are for the content area
+padding, border, and margin are added on top */
+/* div {
+    width: 300px;
+    height: 150px;
+    border: 20px solid lightcoral;
+    overflow: hidden;
+    padding: 20px;
+    margin: 30px;
+    box-sizing: content-box;
+} */
+
+/* the width and the height are for the border + padding + content */
+div {
+    box-sizing: border-box;
+    width: 300px;
+    height: 150px;
+    border: 20px solid lightcoral;
+    overflow: hidden;
+    padding: 20px;
+    margin: 30px;
+}
