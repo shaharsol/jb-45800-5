@@ -61,5 +61,11 @@ body form > p {
     color: wheat;
 }
 
+p, h1, #container p:nth-child(1) {
+    color: red;
+}
+
+ 
+
 
 

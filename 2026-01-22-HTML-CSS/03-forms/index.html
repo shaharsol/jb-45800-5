@@ -22,7 +22,7 @@
 
         <p>
             <label for="email">Enter you email</label>
-            <input id="email" name="email" />
+            <input type="email" id="email" name="email" />
 
         </p>
 
@@ -53,7 +53,7 @@
 
         <p>
             <label for="country">country</label>
-            <select name="country" >
+            <select name="country" id="country">
                 <option value="" disabled selected>please select a country</option>
                 <option value="IL">israel</option>
                 <option value="US" >usa</option>
@@ -63,12 +63,15 @@
 
         <p>
             <label for="more">tell about yourself</label>
-            <textarea id="more"></textarea>
+            <textarea style="width:300px;height:100px;" id="more"></textarea>
 
         </p>
 
 
         <input type="submit" value="sign in" />
+        <input type="reset" />
+
+        <button>label</button>
     </form>
 </body>
 
