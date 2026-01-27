@@ -60,3 +60,33 @@ main {
     grid-column: 3  ;
 }
 
+@media (max-width: 600px) {
+    #container {
+        grid-template-rows: 2fr 1fr 9fr 3fr 3fr;
+        grid-template-columns: 1fr;
+    }   
+    
+    header {
+        grid-column: 1;
+    }
+
+    nav {
+        grid-column: 1;
+        flex-direction: column;
+    }
+
+    main {
+        grid-column: 1;
+    }
+
+    #leftSide {
+        grid-row: 4;
+        grid-column: 1;
+    }
+
+    #rightSide {
+        grid-row: 5;
+        grid-column: 1;
+    }
+
+}
