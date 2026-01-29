@@ -1,6 +1,6 @@
 number = +prompt('enter number')
 
-alert(number)
+alert(number + 0)
 alert(number + 1)
 alert(number + 2)
 alert(number + 3)
