@@ -1,0 +1,7 @@
+num = +prompt('enter a number')
+
+if(num > 0) {
+    if(num < 101) {
+        console.log(num)
+    }
+}
