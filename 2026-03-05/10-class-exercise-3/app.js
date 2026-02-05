@@ -11,12 +11,10 @@ students = [
     }
 ]
 
-sum = 0;
-count = 0;
-for (student of students ) {
-    for (grade of student.grades) {
+for (student of students) {
+    sum = 0
+    for(grade of student.grades) {
         sum = sum + grade
-        count = count + 1
     }
+    console.log(`average of ${student.name} is ${sum/student.grades.length}`)
 }
-console.log(`avergae is ${sum/count}`)
