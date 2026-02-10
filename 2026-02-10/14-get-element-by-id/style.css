@@ -1,0 +1,17 @@
+div {
+    border: 2px purple solid;
+    padding: 20px;
+}
+
+span {
+    font-weight: 900;
+}
+
+
+.red {
+    color: red;
+}
+
+p > span {
+    color: green;
+}
