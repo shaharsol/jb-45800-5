@@ -50,3 +50,16 @@ for(const grade of grades) {
 console.log(age)
 console.log(btl)
 console.log(kupatHolim)
+
+const obj = {
+    someProp: 'someValue'
+}
+// this is not allowed, cannot RE-ASSIGN to const
+obj = 2
+// However, I can still modify proeprty values
+obj.someProp = 'someOtherValue'
+delete obj.someProp
+// and i can still add and remove properties
+obj.id = 'someId'
+
+
