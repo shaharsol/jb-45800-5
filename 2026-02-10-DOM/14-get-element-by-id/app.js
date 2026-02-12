@@ -12,6 +12,7 @@ function colorAmet() {
     // use it if you dont have access to add id's to the HTML
     const otherSpan = document.querySelector('p > span')
     otherSpan.className = 'red'
+    otherSpan.classList.add('oz')
     
     const allTheParagraphs = document.querySelectorAll('p')
     console.log(allTheParagraphs)
