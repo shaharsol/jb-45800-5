@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script defer src="app.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form id="productForm" onsubmit="addProduct(event)">
+
+        <input id="catalogNumber" placeholder="catalog number" type="number" required min="0" max="999"/>
+
+        <input id="title" placeholder="title" required maxlength="30"/>
+
+        <textarea id="description" placeholder="description" required></textarea>
+
+        <input id="price" placeholder="price" required type="number" min="0" />
+
+        <select id="category" required>
+            <option disabled selected value="">please select category</option>
+            <option value="lipsticks">lipsticks</option>
+            <option value="makeup">makeup</option>
+            <option value="botox">botox</option>
+        </select>
+
+        <input id="color" placeholder="color" type="color"/>
+
+        <input id="imageURL" placeholder="image url" required/>
+
+        <button>submit</button>
+        <button type="reset">reset</button>
+
+    </form>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>catalog number</th>
+                <th>title</th>
+                <th>description</th>
+                <th>price</th>
+                <th>category</th>
+                <th>color</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="data">
+
+        </tbody>
+    </table>
+
+    <table>
+        <tr>
+            <td>total</td>
+            <td id="total"></td>
+        </tr>
+        <tr>
+            <td>average price</td>
+            <td id="averagePrice"></td>
+        </tr>
+
+    </table>
+</body>
+</html>
