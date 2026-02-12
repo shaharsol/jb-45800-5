@@ -1,0 +1,108 @@
+const data = []
+
+function getPriceAverage() {
+    let sum = 0
+    for(const product of data) {
+        // sum = sum + data.price
+        // a shorter version to the line above with +=:
+        sum += product.price
+    }
+    return sum / data.length
+}
+
+function syncDataToDOM() {
+    let htmlString = ''
+    for(const product of data) {
+        htmlString += `
+            <tr>
+                <td>${product.catalogNumber}</td>
+                <td>${product.title}</td>
+                <td>${product.description}</td>
+                <td>${product.price}</td>
+                <td>${product.category}</td>
+                <td style="background-color: ${product.color};">${product.color}</td>
+                <td><img src="${product.imageURL}" /></td>
+            </tr>
+        `
+    }
+    document.getElementById('data').innerHTML = htmlString
+
+    // set total
+    document.getElementById('total').innerHTML = data.length
+
+    // set average
+    document.getElementById('averagePrice').innerHTML = getPriceAverage()
+
+
+}
+
+function isValidURL(url) {
+    if(!url.startsWith('http')) {
+        return false
+    }
+
+    if(url.includes(' ')) {
+        return false
+    }
+
+    if(!url.includes('://')) {
+        return false
+    }
+
+    return true    
+}
+
+function addProduct(event) {
+
+    // tell the browser: you are old and now is 2026 and not 1994
+    // and i want to take control, so dont submit to any server...
+    event.preventDefault()
+
+    // input
+    const catalogNumber = document.getElementById('catalogNumber').value
+    const title = document.getElementById('title').value
+    const description = document.getElementById('description').value
+    const price = document.getElementById('price').value
+    const category = document.getElementById('category').value
+    const color = document.getElementById('color').value
+    const imageURL = document.getElementById('imageURL').value
+
+    // validation
+    if(!isValidURL(imageURL)) {
+        alert('please enter a valid url for image')
+        // this return exits the function,
+        // essentially prevents the DHTML stage to occur
+        return
+    }
+
+    // process
+    // data.push({
+    //     catalogNumber: catalogNumber,
+    //     title: title,
+    //     description: description,
+    //     price: price,
+    //     category: category,
+    //     color: color,
+    //     imageURL: imageURL
+    // })
+
+    // if we have key-value pairs where the key name is identical
+    // to a variable name, then we can omit the variable name 
+    data.push({
+        catalogNumber,
+        title,
+        description,
+        price: +price,
+        category,
+        color,
+        imageURL
+    })
+
+    // output
+    syncDataToDOM()
+
+    // reset the form for next product
+    document.getElementById('productForm').reset()
+
+
+}
