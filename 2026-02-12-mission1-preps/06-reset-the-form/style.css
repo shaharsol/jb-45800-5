@@ -1,0 +1,12 @@
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+td {
+    padding: 20px;
+}
+
+table, tr, td {
+    border: 1px solid black;
+}

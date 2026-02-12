@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form id="productForm" onsubmit="addProduct(event)">
+
+        <input id="catalogNumber" placeholder="catalog number" />
+
+        <input id="title" placeholder="title" />
+
+        <textarea id="description" placeholder="description"></textarea>
+
+        <input id="price" placeholder="price" />
+
+        <select id="category">
+            <option disabled selected>please select category</option>
+            <option>lipsticks</option>
+            <option>makeup</option>
+            <option>botox</option>
+        </select>
+
+        <input id="color" placeholder="color" />
+
+        <button>submit</button>
+        <button type="reset">reset</button>
+
+    </form>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>catalog number</th>
+                <th>title</th>
+                <th>description</th>
+                <th>price</th>
+                <th>category</th>
+                <th>color</th>
+            </tr>
+        </thead>
+        <tbody id="data">
+
+        </tbody>
+    </table>
+</body>
+</html>
