@@ -149,4 +149,15 @@ function addProduct(event) {
 
 }
 
+function drawMenu() {
+    document.getElementById('menu').innerHTML = `
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="careers.html">Careers</a>
+    `
+}
+
+drawMenu()
 syncDataToDOM()
