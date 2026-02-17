@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script defer src="app.js"></script>
+        <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
     <h1>products</h1>
     <nav id="menu">
     </nav>
-    <form onsubmit="filter()">
-        <input placeholder="min price" id="minPrice" />
-        <input placeholder="max price" id="maxPrice" />
+    <form id="filterForm" onsubmit="filter(event)">
+        <input type="number" placeholder="min price" id="minPrice" />
+        <input type="number" placeholder="max price" id="maxPrice" />
         <button>Filter</button>
     </form>
 </body>
