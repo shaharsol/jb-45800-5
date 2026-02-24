@@ -13,13 +13,8 @@ const loadList = async () => {
             </tr>`)
             .join('')
 
-        const men = users.filter(({gender}) => gender === 'male')
-        document.getElementById('averageMaleHeight').innerHTML = 
-            men.reduce((sumHeight, { height }) => sumHeight + height, 0) / men.length
-
-        const women = users.filter(({gender}) => gender === 'female')
-        document.getElementById('averageFemaleHeight').innerHTML = 
-            women.reduce((sumHeight, { height }) => sumHeight + height, 0) / women.length
+        document.getElementById('averageHeight').innerHTML = 
+            users.reduce((sumHeight, { height }) => sumHeight + height, 0) / users.length
 
     } catch (e) {
         console.log(e)
