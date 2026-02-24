@@ -22,3 +22,16 @@ doSomething(doAnotherSomething())
 
 doSomething(doAnotherSomething)
 
+function doSomethingElse() {
+    return () => {
+        console.log('i am a returned function')
+        return 'Lidor'
+    }
+}
+
+const ret = doSomethingElse()
+
+console.log(ret())
+
+
+
