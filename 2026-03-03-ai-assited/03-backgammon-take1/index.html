@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backgammon</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="game-container">
+    <header class="game-header">
+      <h1>Backgammon</h1>
+      <div class="game-status" id="status">Roll to start</div>
+      <div class="dice-area" id="diceArea">
+        <div class="dice" id="dice1" data-value="0"></div>
+        <div class="dice" id="dice2" data-value="0"></div>
+        <button type="button" class="btn-roll" id="rollBtn">Roll dice</button>
+      </div>
+    </header>
+
+    <div class="board-wrapper">
+      <!-- Bar in the middle (for hit checkers) -->
+      <div class="bar" id="bar">
+        <div class="bar-section bar-top" id="barWhite">
+          <div class="bar-label">Bar</div>
+        </div>
+        <div class="bar-section bar-bottom" id="barBlack">
+          <div class="bar-label">Bar</div>
+        </div>
+      </div>
+
+      <!-- Points: 24-13 (top), 12-1 (bottom). Each point holds checkers. -->
+      <div class="board" id="board">
+        <!-- Top row: points 13-24 (left to right = 13,14..24) -->
+        <div class="row row-top">
+          <div class="point" data-point="13" id="pt13"></div>
+          <div class="point" data-point="14" id="pt14"></div>
+          <div class="point" data-point="15" id="pt15"></div>
+          <div class="point" data-point="16" id="pt16"></div>
+          <div class="point" data-point="17" id="pt17"></div>
+          <div class="point" data-point="18" id="pt18"></div>
+          <div class="point" data-point="19" id="pt19"></div>
+          <div class="point" data-point="20" id="pt20"></div>
+          <div class="point" data-point="21" id="pt21"></div>
+          <div class="point" data-point="22" id="pt22"></div>
+          <div class="point" data-point="23" id="pt23"></div>
+          <div class="point" data-point="24" id="pt24"></div>
+        </div>
+        <!-- Bottom row: points 12-1 (left to right = 12,11..1) -->
+        <div class="row row-bottom">
+          <div class="point" data-point="12" id="pt12"></div>
+          <div class="point" data-point="11" id="pt11"></div>
+          <div class="point" data-point="10" id="pt10"></div>
+          <div class="point" data-point="9" id="pt9"></div>
+          <div class="point" data-point="8" id="pt8"></div>
+          <div class="point" data-point="7" id="pt7"></div>
+          <div class="point" data-point="6" id="pt6"></div>
+          <div class="point" data-point="5" id="pt5"></div>
+          <div class="point" data-point="4" id="pt4"></div>
+          <div class="point" data-point="3" id="pt3"></div>
+          <div class="point" data-point="2" id="pt2"></div>
+          <div class="point" data-point="1" id="pt1"></div>
+        </div>
+      </div>
+
+      <!-- Bear-off trays -->
+      <div class="bear-off white-off" id="bearOffWhite">
+        <span class="bear-off-label">White off</span>
+      </div>
+      <div class="bear-off black-off" id="bearOffBlack">
+        <span class="bear-off-label">Black off</span>
+      </div>
+    </div>
+
+    <div class="used-dice" id="usedDice"></div>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>
