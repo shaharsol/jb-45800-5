@@ -11,5 +11,5 @@ while(num > 0) {
     if(num % 2 == 1) {
         console.log(num)
     }
-    num = num - 1
+    num = num - 2
 }
