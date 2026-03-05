@@ -1,5 +1,5 @@
 const message: string = 'hello world'
-const anotherMessage: string = ['true']
+// const anotherMessage: string = ['true']
 
 // which types do we have?
 
@@ -55,9 +55,14 @@ let anotherSomeStudent: Student = {
 
 const students: Student[] = [someStudent, anotherSomeStudent, {
     id: 0,
+    // age: 22,
     name: "",
     address: {
         street: "",
         streetNumber: 0
     }
 }]
+
+// Function
+const someFunc: Function = () => { return 2}
+
