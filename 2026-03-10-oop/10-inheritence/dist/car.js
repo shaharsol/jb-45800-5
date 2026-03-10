@@ -6,7 +6,7 @@ export default class Car extends Vehicle {
         console.log('steering wheel...');
     }
     constructor(make, engineVolume, horsePower, color, model, priceBeforeTax, numberOfDoors) {
-        super(make, engineVolume, horsePower, color, model, priceBeforeTax);
+        super(make, engineVolume, horsePower, color, model, priceBeforeTax); // super is a special way to invoke the ancestor constructor
         this.numberOfDoors = numberOfDoors;
     }
 }
