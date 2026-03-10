@@ -6,6 +6,8 @@
 //     data = []
 // }
 
+const studentName = 'Maor'
+
 type Product = {
     catalogNumber: string,
     title: string,

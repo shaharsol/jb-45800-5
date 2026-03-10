@@ -5,6 +5,7 @@
 // if(!data) {
 //     data = []
 // }
+const studentName = 'Maor';
 const LOCAL_STORAGE_KEY = 'products';
 function saveProducts(data) {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
