@@ -16,10 +16,12 @@ export default class Car {
         console.log(`${this.make} heheheheyyyyywwww`);
     }
     ignite() {
+        // i can modify the readonly member ONLY inside the constructor
+        // this.make = 'fvdfgdfs' 
         console.log(`${this.make} phphphphphph`);
     }
     constructor(make, engineVolume, horsePower, color, model) {
-        this.make = make;
+        this.make = make; // this is the only place where i can assign a value to a readonly member
         this.engineVolume = engineVolume;
         this.horsePower = horsePower;
         this.color = color;
