@@ -25,6 +25,7 @@ export default class Car {
     }
 
     constructor (make: string, engineVolume: number, horsePower: number, color: string, model: number) {
+    // constructor (make: string, engineVolume: number) {
         this.make = make
         this.engineVolume = engineVolume
         this.horsePower = horsePower
