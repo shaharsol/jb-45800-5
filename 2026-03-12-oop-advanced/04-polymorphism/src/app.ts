@@ -45,6 +45,27 @@ myKTM.peridocialMaintain(20000)
 
 // console.log(`vehicle make is ${myVehicle.make}`)
 
+//
+// Vehicle
+// Car is a Vehicle
+// Bike is a Vehicle
+// Vehicle is a Car? no!
+// Vehicle is a Bike? no!
+//
+
+function getAvailableVehicle(): Vehicle {
+    if(todayIsTuesday()) {
+        return myKTM
+    } else if(todayIsWednesday()) {
+        return mySkoda
+    } else {
+        return myAudi80
+    }
+}
+
+// i want to get to work, and i dont care how. i just need an available vehicle
+
+
 
 
 
