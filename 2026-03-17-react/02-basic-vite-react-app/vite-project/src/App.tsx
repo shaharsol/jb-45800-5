@@ -3,12 +3,22 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
+import Dog from './Dog'
+import Cat from './Cat'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
+    <h1>hello world</h1>
+    <Dog />
+    <Cat />
+    <Cat />
+    <Cat />
+    <Cat />
+    <Cat />
+    <Cat />
       <section id="center">
         <div className="hero">
           <img src={heroImg} className="base" width="170" height="179" alt="" />
