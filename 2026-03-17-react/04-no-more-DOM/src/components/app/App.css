@@ -1,0 +1,4 @@
+/* 1. you must scope the css inside a class name */
+.App p {
+  color: red;
+}
