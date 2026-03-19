@@ -18,6 +18,7 @@ export default function Demo() {
 
     return (
         <div className="Demo">
+        {/* <> */}
             {/* using the {} chars to embed TS/JS values inside the markup is called embedding */}
             <h1>hello {name}</h1>
             <h2>you are {age} years old</h2>
@@ -34,7 +35,7 @@ export default function Demo() {
             {/* condintional rendering */}
             
             {/* this is left for next class */}
-
+        {/* </> */}
         </div>
     )
 }
