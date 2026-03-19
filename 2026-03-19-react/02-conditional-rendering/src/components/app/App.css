@@ -1,0 +1,7 @@
+.App p {
+  color: red;
+}
+
+.App > h2 {
+  color: purple;
+}
