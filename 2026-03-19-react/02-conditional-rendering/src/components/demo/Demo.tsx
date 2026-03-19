@@ -9,7 +9,7 @@ export default function Demo() {
     const grades = [92, 96, 100]
 
     function getIsMale(isMale: boolean): string {
-        return isMale? 'yes is male' : 'no, is not male'
+        return isMale ? 'yes is male' : 'no, is not male'
     }
 
     function sayHello() {
@@ -18,7 +18,7 @@ export default function Demo() {
 
     return (
         <div className="Demo">
-        {/* <> */}
+            {/* <> */}
             {/* using the {} chars to embed TS/JS values inside the markup is called embedding */}
             <h1>hello {name}</h1>
             <h2>you are {age} years old</h2>
@@ -33,9 +33,31 @@ export default function Demo() {
             <button onClick={sayHello}>say hello</button>
 
             {/* condintional rendering */}
-            
+            {isMale
+                ?
+                <div>
+                    <p>male</p>
+                </div>
+                :
+                <div>
+                    <p>not male</p>
+                </div>
+            }
+
+            {isMale && 
+                <div>
+                    <p>male</p>
+                </div>
+            }
+
+            {!isMale && 
+                <div>
+                    <p>not male</p>
+                </div>
+            }
+
             {/* this is left for next class */}
-        {/* </> */}
+            {/* </> */}
         </div>
     )
 }
