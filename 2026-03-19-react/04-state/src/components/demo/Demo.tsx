@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './Demo.css'
 
 export default function Demo() {
 
     // const startTime = (new Date()).toLocaleTimeString()
-    // const startTime = useRef<string>((new Date()).toLocaleTimeString())
+    const startTime = useRef<string>((new Date()).toLocaleTimeString())
     //                                             the type of the state
     //                                                     the initial value of the state 
     const [currentTime, setCurrentTime] = useState<string>((new Date()).toLocaleTimeString())
@@ -41,7 +41,7 @@ export default function Demo() {
 
     return (
         <div className="Demo">
-            {/* <h1>start time: {startTime.current}</h1> */}
+            <h1>start time: {startTime.current}</h1>
             <h1>current time: {currentTime}</h1>
         </div>
     )

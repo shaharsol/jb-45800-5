@@ -32,7 +32,7 @@ export default function Demo() {
                 <option value="cats">Cats</option>
             </select>
             <ul>
-                {animals.map(animal => <li>{animal}</li>)}
+                {animals.map(animal => <li key={animal}>{animal}</li>)}
             </ul>
         </div>
     )
