@@ -24,7 +24,7 @@ export default function Profile() {
 
     return (
         <div className='Profile'>
-            {profile.map(post => <div key={post.id}>{post.title}</div>)}
+            {profile.map(({id, title}) => <div key={id}>{title}</div>)}
         </div>
     )
 }
