@@ -12,11 +12,11 @@ export default function Layout() {
                 <Header />
             </header>
 
-            <aside>
+            <aside id="following">
                 <Following />
             </aside>
 
-            <aside>
+            <aside id="followers">
                 <Followers />
             </aside>
 
