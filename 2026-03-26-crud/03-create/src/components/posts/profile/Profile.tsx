@@ -4,6 +4,7 @@ import type PostModel from '../../../models/Post'
 import profileService from '../../../services/profile'
 import Post from '../post/Post'
 import NewPost from '../new/NewPost'
+import type PostComment from '../../../models/PostComment'
 
 export default function Profile() {
 
@@ -16,6 +17,12 @@ export default function Profile() {
 
     function addPost(post: PostModel) {
         setProfile([post, ...profile])
+    }
+
+    function addComment(comment: PostComment) {
+        const newProfile = [...profile]
+        newProfile.find(post => post.id === comment.postId)?.comments.push(comment)
+        setProfile(newProfile)
     }
 
     useEffect(() => {
@@ -41,6 +48,7 @@ export default function Profile() {
                 post={post} 
                 isReadOnly={false} 
                 deletePost={deletePost}
+                addComment={addComment}
             />)}
         </div>
     )
