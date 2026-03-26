@@ -1,13 +1,20 @@
+import type Post from '../../../models/Post'
 import type PostDraft from '../../../models/PostDraft'
 import profileService from '../../../services/profile'
 import './NewPost.css'
 import { useForm } from 'react-hook-form'
 
-export default function NewPost() {
+interface NewPostProps {
+    addPost(post: Post): void
+}
+export default function NewPost(props: NewPostProps) {
+
+    const { addPost } = props
 
     async function createPost(draft: PostDraft) {
         const newPost = await profileService.createPost(draft)
         // change state, show the new post in the profile...
+        addPost(newPost)
     }
 
     const { handleSubmit, register } = useForm<PostDraft>()

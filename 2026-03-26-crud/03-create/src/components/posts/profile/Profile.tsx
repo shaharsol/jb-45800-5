@@ -14,9 +14,13 @@ export default function Profile() {
         setProfile(newProfile)
     }
 
+    function addPost(post: PostModel) {
+        setProfile([post, ...profile])
+    }
+
     useEffect(() => {
         profileService.getProfile()
-            .then(setProfile)
+            .then(profile => setProfile(profile.sort((a: PostModel, b: PostModel) => a.createdAt < b.createdAt ? 1 : -1)))
             .catch(e => alert(e.message))
 
         // (async() => {
@@ -31,7 +35,7 @@ export default function Profile() {
 
     return (
         <div className='Profile'>
-            <NewPost />
+            <NewPost addPost={addPost}/>
             {profile.map(post => <Post 
                 key={post.id} 
                 post={post} 
