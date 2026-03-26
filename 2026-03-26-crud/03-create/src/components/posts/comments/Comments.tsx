@@ -10,7 +10,11 @@ export default function Comments(props: CommentsProps) {
     const { comments } = props
     return (
         <div className='Comments'>
-            {comments.map(comment => <PostComment key={comment.id} comment={comment}/> )}
+            <NewComment />
+            {comments.map(comment => <PostComment 
+                key={comment.id} 
+                comment={comment}
+            /> )}
         </div>
     )
 }

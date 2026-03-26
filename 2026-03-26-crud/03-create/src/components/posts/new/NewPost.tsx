@@ -42,7 +42,6 @@ export default function NewPost(props: NewPostProps) {
                         value: 10,
                         message: 'title must be at least 10 characters'
                     }
-
                 })} />
                 <div className='error'>{formState.errors.title?.message}</div>
                 <textarea placeholder='body' {...register('body', {
