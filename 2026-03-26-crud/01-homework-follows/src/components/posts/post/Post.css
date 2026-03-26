@@ -7,3 +7,8 @@
     font-size: small;
     margin-bottom: 6px;
 }
+
+.Post .delete-button {
+    background-color: red;
+    color: white;
+}

@@ -15,7 +15,7 @@ export default function Header() {
         <NavLink to="/profile">Profile</NavLink> | <NavLink to="/feed">Feed</NavLink>
       </div>
       <div>
-        Welcome Alice | Logout
+        Welcome Bob | Logout
       </div>
     </div>
   )

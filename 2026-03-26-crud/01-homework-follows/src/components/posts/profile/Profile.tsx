@@ -25,7 +25,7 @@ export default function Profile() {
 
     return (
         <div className='Profile'>
-            {profile.map(post => <Post key={post.id} post={post}/>)}
+            {profile.map(post => <Post key={post.id} post={post} isReadOnly={false}/>)}
         </div>
     )
 }
