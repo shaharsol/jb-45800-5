@@ -14,10 +14,11 @@ export default function NewPost(props: NewPostProps) {
     async function createPost(draft: PostDraft) {
         const newPost = await profileService.createPost(draft)
         // change state, show the new post in the profile...
+        reset()
         addPost(newPost)
     }
 
-    const { handleSubmit, register } = useForm<PostDraft>()
+    const { handleSubmit, register, reset } = useForm<PostDraft>()
 
     return (
         <div className='NewPost'>
