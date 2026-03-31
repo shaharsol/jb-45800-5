@@ -1,7 +1,10 @@
 import { NavLink } from 'react-router-dom'
 import './Header.css'
-
+import useUsername from '../../../hooks/use-username'
 export default function Header() {
+  
+  const name = useUsername()
+
   return (
     <div className='Header'>
       <div>
@@ -15,7 +18,7 @@ export default function Header() {
         <NavLink to="/profile">Profile</NavLink> | <NavLink to="/feed">Feed</NavLink>
       </div>
       <div>
-        Welcome Bob | Logout
+        Welcome {name} | Logout
       </div>
     </div>
   )
