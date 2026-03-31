@@ -1,9 +1,10 @@
 import { useNavigate, useParams } from 'react-router-dom'
-import profileService from '../../../services/profile'
 import './UpdatePost.css'
 import type PostDraft from '../../../models/PostDraft'
 import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
+import useService from '../../../hooks/use-service'
+import ProfileService from '../../../services/auth-aware/ProfileService'
 
 
 export default function UpdatePost() {
@@ -11,6 +12,7 @@ export default function UpdatePost() {
     const { postId } = useParams<'postId'>() // {postId: 'dfkgjdfklgjkldfjglkdf'}
     const navigate = useNavigate()
 
+    const profileService = useService(ProfileService)
     async function updatePost(draft: PostDraft) {
         try {
             await profileService.updatePost(postId!, draft)

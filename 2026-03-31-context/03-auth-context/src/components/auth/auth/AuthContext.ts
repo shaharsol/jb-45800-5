@@ -2,7 +2,8 @@ import { createContext } from "react"
 
 interface AuthContextInterface {
     jwt: string
-    setJwt: React.Dispatch<React.SetStateAction<string>>
+    saveJwt(jwt: string): void
+    logout(): void
 }
 
 const AuthContext = createContext<AuthContextInterface | null>(null)

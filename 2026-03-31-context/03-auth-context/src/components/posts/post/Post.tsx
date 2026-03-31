@@ -2,9 +2,11 @@ import './Post.css'
 import type PostModel from '../../../models/Post'
 import Comments from '../comments/Comments'
 import { displayDate } from '../../../utils/dates'
-import profileService from '../../../services/profile'
+// import profileService from '../../../services/profile'
 import type PostCommentModel from '../../../models/PostComment'
 import { useNavigate } from 'react-router-dom'
+import useService from '../../../hooks/use-service'
+import ProfileService from '../../../services/auth-aware/ProfileService'
 
 interface PostProps {
     post: PostModel,
@@ -17,6 +19,7 @@ export default function Post(props: PostProps) {
     const { id, title, createdAt, body, user: {name}, comments } = props.post
     const { isReadOnly, deletePost, addComment } = props
 
+    const profileService = useService(ProfileService)
     async function deleteMe() {
         if(confirm('are you sure you want to delete this post?')) {
             try {

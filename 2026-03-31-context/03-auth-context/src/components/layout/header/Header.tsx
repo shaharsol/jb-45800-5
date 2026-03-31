@@ -1,9 +1,15 @@
 import { NavLink } from 'react-router-dom'
 import './Header.css'
 import useUsername from '../../../hooks/use-username'
+import { useContext } from 'react'
+import AuthContext from '../../auth/auth/AuthContext'
 export default function Header() {
   
   const name = useUsername()
+  const {logout} = useContext(AuthContext)!
+  function logMeOut() {
+    logout()
+  }
 
   return (
     <div className='Header'>
@@ -18,7 +24,7 @@ export default function Header() {
         <NavLink to="/profile">Profile</NavLink> | <NavLink to="/feed">Feed</NavLink>
       </div>
       <div>
-        Welcome {name} | Logout
+        Welcome {name} | <button onClick={logMeOut}>logout</button>
       </div>
     </div>
   )

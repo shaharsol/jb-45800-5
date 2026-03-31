@@ -1,6 +1,7 @@
+import useService from '../../../hooks/use-service'
 import type Post from '../../../models/Post'
 import type PostDraft from '../../../models/PostDraft'
-import profileService from '../../../services/profile'
+import ProfileService from '../../../services/auth-aware/ProfileService'
 import './NewPost.css'
 import { useForm } from 'react-hook-form'
 
@@ -10,6 +11,8 @@ interface NewPostProps {
 export default function NewPost(props: NewPostProps) {
 
     const { addPost } = props
+
+    const profileService = useService(ProfileService)
 
     async function createPost(draft: PostDraft) {
         try {

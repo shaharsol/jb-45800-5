@@ -7,12 +7,12 @@ import AuthContext from '../auth/AuthContext'
 
 export default function Login() {
 
-    const { setJwt } = useContext(AuthContext)!
+    const { saveJwt } = useContext(AuthContext)!
 
     async function login(login: LoginModel) {
         try {
             const { jwt } = await authService.login(login)
-            setJwt(jwt)
+            saveJwt(jwt)
         } catch (e) {
             alert(e)
         }

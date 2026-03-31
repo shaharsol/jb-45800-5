@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import './Profile.css'
 import type PostModel from '../../../models/Post'
-import profileService from '../../../services/profile'
+// import profileService from '../../../services/profile'
 import Post from '../post/Post'
 import NewPost from '../new/NewPost'
 import type PostComment from '../../../models/PostComment'
 import Spinner from '../../common/spinner/Spinner'
+import useService from '../../../hooks/use-service'
+import ProfileService from '../../../services/auth-aware/ProfileService'
 
 export default function Profile() {
 
@@ -27,6 +29,8 @@ export default function Profile() {
         newProfile.find(post => post.id === comment.postId)?.comments.push(comment)
         setProfile(newProfile)
     }
+
+    const profileService = useService(ProfileService)
 
     useEffect(() => {
 
