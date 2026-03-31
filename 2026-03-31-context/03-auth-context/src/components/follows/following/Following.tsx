@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react'
 import './Following.css'
 import type User from '../../../models/User'
-import followingService from '../../../services/following'
 import Follow from '../follow/Follow'
 import Spinner from '../../common/spinner/Spinner'
+import useService from '../../../hooks/use-service'
+import FollowingService from '../../../services/auth-aware/FollowingService'
 
 export default function Following() {
 
   const [following, setFollowing] = useState<User[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
+
+  const followingService = useService(FollowingService)
   
   useEffect(() => {
 

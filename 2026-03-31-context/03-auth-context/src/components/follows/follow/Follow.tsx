@@ -1,7 +1,8 @@
 import type User from '../../../models/User'
 import './Follow.css'
 import profilePic from '../../../assets/profile-pic.jpg'
-import followingService from '../../../services/following'
+import useService from '../../../hooks/use-service'
+import FollowingService from '../../../services/auth-aware/FollowingService'
 
 interface FollowProps {
     user: User
@@ -12,6 +13,8 @@ export default function Follow(props: FollowProps) {
 
     const { unfollow, isFollowing, user: { id, name, username }} = props
     
+    const followingService = useService(FollowingService)
+
     async function unfollowMe() {
         try {
             await followingService.unfollow(id)
