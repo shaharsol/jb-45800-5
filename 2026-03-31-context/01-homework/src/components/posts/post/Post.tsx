@@ -4,6 +4,7 @@ import Comments from '../comments/Comments'
 import { displayDate } from '../../../utils/dates'
 import profileService from '../../../services/profile'
 import type PostCommentModel from '../../../models/PostComment'
+import { useNavigate } from 'react-router-dom'
 
 interface PostProps {
     post: PostModel,
@@ -14,7 +15,7 @@ interface PostProps {
 export default function Post(props: PostProps) {
 
     const { id, title, createdAt, body, user: {name}, comments } = props.post
-    const { deletePost, addComment } = props
+    const { isReadOnly, deletePost, addComment } = props
 
     async function deleteMe() {
         if(confirm('are you sure you want to delete this post?')) {
@@ -28,6 +29,14 @@ export default function Post(props: PostProps) {
         }
     }
 
+    // this hook provides a function that allows me to proactively navigate to 
+    // some url within the app
+    const navigate = useNavigate()
+
+    function updateMe() {
+        navigate(`/update-post/${id}`)
+    }
+
     return (
         <div className='Post'>
             <h4>{title}</h4>
@@ -38,7 +47,12 @@ export default function Post(props: PostProps) {
                 comments={comments}
                 addComment={addComment}
             /></div>
-            {deletePost && <div><button onClick={deleteMe} className="delete-button">Delete</button></div>}
+            {!isReadOnly && 
+                <div>
+                    <button onClick={deleteMe} className="delete-button">Delete</button>
+                    <button onClick={updateMe} className="update-button">Update</button>
+                </div>
+            }
         </div>
     )
 }

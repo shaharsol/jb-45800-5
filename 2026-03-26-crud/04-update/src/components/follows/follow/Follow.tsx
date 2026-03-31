@@ -14,6 +14,7 @@ export default function Follow(props: FollowProps) {
             <div><img src={profilePic} /></div>
             <div>{name}</div>
             <div>{username}</div>
+            <div><button>Unfollow</button></div>
         </div>
     )
 }
