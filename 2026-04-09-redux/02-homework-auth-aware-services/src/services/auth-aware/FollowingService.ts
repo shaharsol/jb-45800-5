@@ -3,11 +3,11 @@ import AuthAwareService from "./AuthAware";
 
 export default class FollowingService extends AuthAwareService {
     async getFollowing(): Promise<User[]> {
-        const { data } = await this.axiosInstance<User[]>(`${import.meta.env.VITE_REST_SERVER_URL}/follows/following`)
+        const { data } = await this.axiosInstance<User[]>(`/follows/following`)
         return data
     }
 
     async unfollow(userId: string): Promise<void> {
-        await this.axiosInstance.post(`${import.meta.env.VITE_REST_SERVER_URL}/follows/unfollow/${userId}`)
+        await this.axiosInstance.post(`/follows/unfollow/${userId}`)
     }
 }

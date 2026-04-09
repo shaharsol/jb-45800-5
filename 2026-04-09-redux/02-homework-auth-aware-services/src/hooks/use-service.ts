@@ -9,7 +9,8 @@ export default function useService<T extends AuthAwareService>(Service: {new(axi
     const axiosInstance = axios.create({
         headers: {
             Authorization: `Bearer ${jwt}`
-        }
+        },
+        baseURL: import.meta.env.VITE_REST_SERVER_URL
     })
 
     return new Service(axiosInstance)
