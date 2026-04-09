@@ -1,34 +1,21 @@
 import { useEffect, useState } from 'react'
 import './Profile.css'
-import type PostModel from '../../../models/Post'
 // import profileService from '../../../services/profile'
 import Post from '../post/Post'
 import NewPost from '../new/NewPost'
-import type PostComment from '../../../models/PostComment'
 import Spinner from '../../common/spinner/Spinner'
 import useService from '../../../hooks/use-service'
 import ProfileService from '../../../services/auth-aware/ProfileService'
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
+import { populate } from '../../../redux/profile-slice'
 
 export default function Profile() {
 
-    const [profile, setProfile] = useState<PostModel[]>([])
+    const profile = useAppSelector(state => state.profileSlice.posts)
+    const dispatch = useAppDispatch()
+
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
-
-    function deletePost(id: string) {
-        const newProfile = profile.filter(post => post.id !== id)
-        setProfile(newProfile)
-    }
-
-    function addPost(post: PostModel) {
-        setProfile([post, ...profile])
-    }
-
-    function addComment(comment: PostComment) {
-        const newProfile = [...profile]
-        newProfile.find(post => post.id === comment.postId)?.comments.push(comment)
-        setProfile(newProfile)
-    }
 
     const profileService = useService(ProfileService)
 
@@ -40,10 +27,14 @@ export default function Profile() {
 
         (async() => {
             try {
-                setIsLoading(true)
-                const profile = await profileService.getProfile()
-                setIsLoaded(true)
-                setProfile(profile.sort((a: PostModel, b: PostModel) => a.createdAt < b.createdAt ? 1 : -1))
+                if(profile.length > 0) {
+                    setIsLoaded(true)
+                } else {
+                    setIsLoading(true)
+                    const profile = await profileService.getProfile()
+                    setIsLoaded(true)
+                    dispatch(populate(profile))
+                }
             } catch (e) {
                 setIsLoaded(false)
                 alert(e)
@@ -59,13 +50,11 @@ export default function Profile() {
             {isLoading && <Spinner />}
 
             {!isLoading && isLoaded && <>
-                <NewPost addPost={addPost}/>
+                <NewPost />
                 {profile.map(post => <Post 
                     key={post.id} 
                     post={post} 
                     isReadOnly={false} 
-                    deletePost={deletePost}
-                    addComment={addComment}
                 />)}
             </>}
 

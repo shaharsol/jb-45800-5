@@ -1,17 +1,16 @@
 import useService from '../../../hooks/use-service'
-import type Post from '../../../models/Post'
 import type PostDraft from '../../../models/PostDraft'
 import ProfileService from '../../../services/auth-aware/ProfileService'
 import './NewPost.css'
 import { useForm } from 'react-hook-form'
 import SpinnerButton from '../../common/spinner-button/SpinnerButton'
+import { useAppDispatch } from '../../../redux/hooks'
+import { add } from '../../../redux/profile-slice'
 
-interface NewPostProps {
-    addPost(post: Post): void
-}
-export default function NewPost(props: NewPostProps) {
 
-    const { addPost } = props
+export default function NewPost() {
+
+    const dispatch = useAppDispatch()
 
     const profileService = useService(ProfileService)
 
@@ -20,7 +19,7 @@ export default function NewPost(props: NewPostProps) {
             const newPost = await profileService.createPost(draft)
             // change state, show the new post in the profile...
             reset()
-            addPost(newPost)
+            dispatch(add(newPost))
         } catch (e) {
             alert (e)
         }

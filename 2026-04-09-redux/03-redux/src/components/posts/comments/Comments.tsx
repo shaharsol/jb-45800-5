@@ -6,17 +6,15 @@ import './Comments.css'
 interface CommentsProps {
     postId: string,
     comments: PostCommentModel[],
-    addComment(comment: PostCommentModel): void
 }
 export default function Comments(props: CommentsProps) {
 
-    const { postId, comments, addComment } = props
+    const { postId, comments } = props
 
     return (
         <div className='Comments'>
             <NewComment 
                 postId={postId}
-                addComment={addComment}
             />
             {comments.map(comment => <PostComment 
                 key={comment.id} 

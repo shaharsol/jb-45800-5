@@ -1,9 +1,11 @@
 import followingSlice from './following-slice';
+import profileSlice from './profile-slice'
 import { configureStore } from "@reduxjs/toolkit";
 
 const store = configureStore({
     reducer: {
-        followingSlice
+        followingSlice,
+        profileSlice
     }
 })
 

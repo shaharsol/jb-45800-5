@@ -3,23 +3,24 @@ import type PostModel from '../../../models/Post'
 import Comments from '../comments/Comments'
 import { displayDate } from '../../../utils/dates'
 // import profileService from '../../../services/profile'
-import type PostCommentModel from '../../../models/PostComment'
 import { useNavigate } from 'react-router-dom'
 import useService from '../../../hooks/use-service'
 import ProfileService from '../../../services/auth-aware/ProfileService'
 import SpinnerButton from '../../common/spinner-button/SpinnerButton'
 import { useState } from 'react'
+import { useAppDispatch } from '../../../redux/hooks'
+import { remove } from '../../../redux/profile-slice'
 
 interface PostProps {
     post: PostModel,
     isReadOnly: boolean
-    deletePost?(id: string): void
-    addComment(comment: PostCommentModel): void
 }
 export default function Post(props: PostProps) {
 
+    const dispatch = useAppDispatch()
+
     const { id, title, createdAt, body, user: {name}, comments } = props.post
-    const { isReadOnly, deletePost, addComment } = props
+    const { isReadOnly } = props
 
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false)
 
@@ -30,7 +31,7 @@ export default function Post(props: PostProps) {
                 setIsDeleting(true)
                 await profileService.deletePost(id)
                 // change state of parent component
-                deletePost!(id)
+                dispatch(remove({id}))
             } catch (e) {
                 alert(e)
             } finally {
@@ -55,7 +56,6 @@ export default function Post(props: PostProps) {
             <div><Comments 
                 postId={id}
                 comments={comments}
-                addComment={addComment}
             /></div>
             {!isReadOnly && 
                 <div>
