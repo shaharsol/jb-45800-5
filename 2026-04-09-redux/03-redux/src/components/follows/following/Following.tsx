@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react'
 import './Following.css'
-import type User from '../../../models/User'
 import Follow from '../follow/Follow'
 import Spinner from '../../common/spinner/Spinner'
 import useService from '../../../hooks/use-service'
 import FollowingService from '../../../services/auth-aware/FollowingService'
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
+import { populate } from '../../../redux/following-slice'
 
 export default function Following() {
 
-  const [following, setFollowing] = useState<User[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
   const followingService = useService(FollowingService)
   
+  const dispatch = useAppDispatch()
+  const following = useAppSelector(state => state.followingSlice.following)
+
   useEffect(() => {
 
     (async() => {
@@ -21,7 +24,7 @@ export default function Following() {
         setIsLoading(true)
         const following = await followingService.getFollowing()
         setIsLoaded(true)
-        setFollowing(following)
+        dispatch(populate(following))
       } catch (e) {
         setIsLoaded(false)
         alert(e)
@@ -31,12 +34,6 @@ export default function Following() {
       }
     })()
   }, [])
-
-  function unfollow(id: string) {
-    const newFollowingList = following.filter(user => user.id !== id)
-    setFollowing(newFollowingList)
-  }
-
 
   return (
     <div className='Following'>
@@ -49,8 +46,6 @@ export default function Following() {
         {following.map(follow => <Follow 
           key={follow.id} 
           user={follow}
-          isFollowing={true}
-          unfollow={unfollow}
         />)}
       </>}
     </div>
