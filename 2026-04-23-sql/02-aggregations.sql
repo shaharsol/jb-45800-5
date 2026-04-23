@@ -16,6 +16,7 @@ order by supplierId asc, avg_price desc;
 -- the average price per supplier, where the average price is more than 20
 -- "having" is like a "where" that runs on the aggregated result set
 -- not on the initial result set
+-- (this is a classical job interview exercise)
 SELECT avg(price) as avg_price, supplierId
 FROM `products`
 group by supplierId
