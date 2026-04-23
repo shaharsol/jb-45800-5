@@ -112,7 +112,8 @@ const main = async () => {
 }
 
 // to sum up: whenever we use "await" we must have a try/catch block
-
+const simpleFunc = async () => 'message'
+console.log(simpleFunc())
 
 main()
 

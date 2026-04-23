@@ -24,8 +24,8 @@ const howManyCandlesPerDayPromise = (day) => {
 // Promise.all accepts an array of promises as argument, it invokes the then with an array of results
 // each item in the result, is the result of the ordinal promise according to the original promises array order
 const promises = [
-    howManyCandlesPerDayPromise(1),
-    howManyCandlesPerDayPromise(2),
+    howManyCandles    howManyCandlesPerDayPromise(1),
+PerDayPromise(2),
     howManyCandlesPerDayPromise(3),
     howManyCandlesPerDayPromise(4),
     howManyCandlesPerDayPromise(5),
