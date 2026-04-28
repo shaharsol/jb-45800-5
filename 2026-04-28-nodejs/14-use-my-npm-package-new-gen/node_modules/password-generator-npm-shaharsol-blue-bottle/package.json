@@ -1,0 +1,10 @@
+{
+  "name": "password-generator-npm-shaharsol-blue-bottle",
+  "version": "1.1.0",
+  "description": "this is a very cool password generator",
+  "main": "password-generator.js",
+  "keywords": ["password", "generating"],
+  "author": "Shahar Solomianik",
+  "license": "ISC",
+  "type": "commonjs"
+}
