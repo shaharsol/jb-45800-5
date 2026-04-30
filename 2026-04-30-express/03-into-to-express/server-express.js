@@ -42,6 +42,7 @@ const getUsers = (request, response) => {
 }
 
 const addUser = (request, response) => {
+    console.log(request)
     response.end('added user...')
 }
 
