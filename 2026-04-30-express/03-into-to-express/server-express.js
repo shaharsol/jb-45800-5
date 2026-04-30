@@ -1,6 +1,4 @@
-// import createServer function from the built in http package
-const { disconnect } = require('cluster')
-const { createServer } = require('http')
+const express = require('express')
 
 // realize port
 const port = process.env.PORT || 3000
@@ -36,102 +34,138 @@ const products = [
     }
 ]
 
-const getUsers = (request, response) => {
+const getUsers = (request, response, next) => {
     response.setHeader('Content-Type', 'application/json')
     response.end(JSON.stringify(users))
 }
 
-const addUser = (request, response) => {
-    console.log(request)
+const addUser = (request, response, next) => {
+    // do something in mysql
+    // which means, i need the mysql connection
+    console.log(`i have this mysql connection`,request.mysqlConnection)
     response.end('added user...')
+    next()
 }
 
-const unknownUserAction = (request, response) => {
+const unknownUserAction = (request, response, next) => {
     response.writeHead(405)
     response.end('method not supported!!!!')
 }
 
-const getProducts = (request, response) => {
+const getProducts = (request, response, next) => {
     response.setHeader('Content-Type', 'application/json')
     response.end(JSON.stringify(products))
 }
 
-const addProduct = (request, response) => {
+const addProduct = (request, response, next) => {
     response.end('adding product....')
 }
 
-const notFound = (request, response) => {
-    response.writeHead(404)
-    response.end('page not found 404')
+const notFound = (request, response, next) => {
+    next({
+        status: 404,
+        message: 'not found'
+    })
 }
 
-connectToMysql = (request, response) => {
+connectToMysql = (request: , response, next) => {
     console.log('connecting to mysql...')
+    const mysqlConnection = { version: 5.1 }
+    // express error handling
+    // a call to next() from a middleware reports to express
+    // that this middleware has finished processing and it's now
+    // the turn of the next middleware
+    // in order to pass information from middleware to middleware
+    // i load the request object with data
+    request.mysqlConnection = mysqlConnection
+    next()
+    // next({ 
+    //     status: 500,
+    //     message: 'database is offline'
+    // })
+
+    // however, if there was an error during this middleware
+    // i can report it to express using:
+    // next(anyObject)
+    // in other words, if i pass anything to the next function
+    // then this anything must be an error
+    // next({
+    //      error: 'database is offline'     
+    // })
+    // when i invoke next with a parameter, express looks to invoke
+    // the 1st error middelware it finds
+    // an error middleware is a middleware with 4 arguments in the function signature
 }
 
-disconnectFromMysql = (request, response) => {
+disconnectFromMysql = (request, response, next) => {
     console.log('disconnecting from mysql...')
 }
 
-connectToMongo = (request, response) => {
+connectToMongo = (request, response, next) => {
     console.log('connecting to mongo...')
 }
 
-disconnectFromMongo = (request, response) => {
+disconnectFromMongo = (request, response, next) => {
     console.log('disconnecting from mongo...')
 }
 
-logRequest = (request, response) => {
+logRequest = (request, response, next) => {
     console.log(`request is... ${request.url}`)
+    next()
 }
 
-// create a request handler
-const requestHandler = (request, response) => {
-    logRequest(request, response)
-    switch(request.url) {
-        case '/users':
-            connectToMysql(request, response)
-            switch(request.method) {
-                case 'GET':
-                    getUsers(request, response)
-                    break;
-                case 'POST':
-                    addUser(request, response)
-                    break;
-                default:
-                    unknownUserAction(request, response)
-                    break;
-            }
-            disconnectFromMysql(request, response)
-            break;
-        case '/products':
-            connectToMongo(request, response)
-            switch(request.method) {
-                case 'GET':
-                    getProducts(request, response)
-                    break;
-                case 'POST':
-                    addProduct(request, response)
-                    break;
-                default:
-                    unknownUserAction(request, response)
-                    break;
-            }
-            disconnectFromMongo(request, response)
-            break;
-        default:
-            notFound(request, response)
-            break;
+logErrorMiddleware = (err, request, response, next) => {
+    console.log(err)
+    next(err)
+}
+
+sendAlertToAdmin = (err, request, response, next) => {
+    if(err.status === 500) {
+        console.log('sending alert to sys admin...')
+    } else {
+        console.log('the sendAlertToAdmin middleware has nothing to do...')
     }
+    next(err)
 }
 
-// create a server object
-const server = createServer(requestHandler)
+respondToUserWithError = (err, request, response, next) => {
+    response.writeHead(err.status || 500)
+    response.end(err.message || 'there was an error...')
+}
 
-// start the server by listening on a
-server.listen(port);
 
-// notice: 
-// when i program a server in Node.js
-// all i do is to actually implement
-// a single function: the request handler
+const app = express()
+
+// i am going to load functions on routes
+// a route can be generic: /users
+// which means "any path that starts with /users: /users, /users/123, /users/new"
+// and it can be specific
+// which means /users/123
+// to use generic routes we use the 'use' function
+// to use specific routes we use a specific html command function
+
+
+
+app.use('/', logRequest)
+app.use('/users', connectToMysql)
+app.get('/users', getUsers)
+app.post('/users', addUser)
+app.delete('/users', unknownUserAction)
+app.patch('/users', unknownUserAction)
+app.use('/users', disconnectFromMysql)
+app.use('/products', connectToMongo)
+app.get('/products', getProducts)
+app.post('/products', addProduct)
+app.delete('/products', unknownUserAction)
+app.patch('/products', unknownUserAction)
+app.use('/products', disconnectFromMongo)
+app.use('/', notFound)
+
+// error middlewares
+app.use('/', logErrorMiddleware)
+app.use('/', sendAlertToAdmin)
+app.use('/', respondToUserWithError)
+
+app.listen(port, () => {
+    console.log(`server started on port ${port}...`)
+})

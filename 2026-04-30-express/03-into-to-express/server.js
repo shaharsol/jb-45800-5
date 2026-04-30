@@ -1,5 +1,4 @@
 // import createServer function from the built in http package
-const { disconnect } = require('cluster')
 const { createServer } = require('http')
 
 // realize port
