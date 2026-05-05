@@ -29,8 +29,4 @@ export default class User extends Model {
     @Column(DataType.STRING)    
     profilePic: string
 
-    @AllowNull(true)
-    @Column(DataType.STRING(40))    
-    lastName: string
-
 }

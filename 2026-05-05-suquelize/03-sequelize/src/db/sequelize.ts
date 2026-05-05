@@ -1,10 +1,11 @@
 import { Sequelize } from "sequelize-typescript";
 import User from "../models/User";
 import config from 'config'
+import Post from "../models/Post";
 
 const sequelize = new Sequelize({
     dialect: 'mysql',
-    models: [User],
+    models: [User, Post],
     logging: console.log,
     ...config.get('db')
 })
