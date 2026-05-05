@@ -8,7 +8,7 @@ const { connectToMysql, disconnectFromMysql, getUsers, addUser, unknownUserActio
 
 const router = express.Router()
 
-router.use('/', express.json())
+router.use('/users', express.json())
 router.use('/', connectToMysql)
 router.get('/', getUsers)
 router.post('/', addUser)
