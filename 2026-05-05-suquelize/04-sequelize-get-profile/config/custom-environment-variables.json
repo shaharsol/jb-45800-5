@@ -1,0 +1,8 @@
+{
+    "app": {
+        "port": "BETTERX_PORT"
+    },
+    "db": {
+        "password": "BETTERX_DB_PASSWORD"
+    }
+}

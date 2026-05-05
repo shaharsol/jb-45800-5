@@ -29,7 +29,7 @@ app.use('/', respondError)
 // and create all missing tables
 // using {force: true} is SUPER SUPER SUPER dangerous!!!
 // especially in production
-sequelize.sync({force: true})
+sequelize.sync()
 
 // starting the server
 app.listen(port, () => console.log(`app ${name} started on port ${port}....`))
