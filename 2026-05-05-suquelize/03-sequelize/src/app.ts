@@ -21,5 +21,5 @@ app.use('/', notFound)
 app.use('/', logError)
 app.use('/', respondError)
 
-
+// starting the server
 app.listen(port, () => console.log(`app ${name} started on port ${port}....`))
