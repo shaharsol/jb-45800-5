@@ -1,4 +1,5 @@
-import { AllowNull, Column, DataType, Default, Index, Length, Min, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { AllowNull, Column, DataType, Default, ForeignKey, Index, Length, Min, Model, PrimaryKey, Table } from "sequelize-typescript";
+import User from "./User";
 
 @Table({
     underscored: true
@@ -6,10 +7,12 @@ import { AllowNull, Column, DataType, Default, Index, Length, Min, Model, Primar
 export default class Follow extends Model {
 
     @PrimaryKey 
+    @ForeignKey(() => User)
     @Column(DataType.UUID)   
     followerId: string
 
     @PrimaryKey 
+    @ForeignKey(() => User)
     @Column(DataType.UUID)   
     followeeId: string
 
