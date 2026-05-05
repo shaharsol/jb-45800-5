@@ -1,4 +1,6 @@
-import { AllowNull, Column, DataType, Default, Index, Length, Min, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { AllowNull, Column, DataType, Default, HasMany, Index, Length, Min, Model, PrimaryKey, Table } from "sequelize-typescript";
+import Post from "./Post";
+import Comment from "./Comment";
 
 // underscored: true means that if i declare a field name firstName in TS
 // the SQL equivalent will be first_name
@@ -29,4 +31,15 @@ export default class User extends Model {
     @Column(DataType.STRING)    
     profilePic: string
 
+    @HasMany(() => Post, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    })
+    posts: Post[]
+
+    @HasMany(() => Comment,{
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    })
+    comments: Comment[]
 }

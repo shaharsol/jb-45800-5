@@ -1,4 +1,6 @@
-import { AllowNull, Column, DataType, Default, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { AllowNull, BelongsTo, Column, DataType, Default, ForeignKey, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
+import User from "./User";
+import Comment from "./Comment";
 
 @Table({
     underscored: true
@@ -10,6 +12,7 @@ export default class Post extends Model {
     @Column(DataType.UUID)   
     id: string
 
+    @ForeignKey(() => User)
     @AllowNull(false)
     @Column(DataType.UUID)   
     userId: string
@@ -25,6 +28,15 @@ export default class Post extends Model {
     @AllowNull(false)
     @Column(DataType.STRING)    
     imageUrl: string
+
+    @BelongsTo(() => User)
+    user: User
     
+    @HasMany(() => Comment, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    })
+    comments: Comment[]
     
+
 }
