@@ -7,6 +7,7 @@ import profileRouter from './routers/profile'
 import feedRouter from './routers/feed'
 import sequelize from './db/sequelize'
 import followsRouter from './routers/follows'
+import authRouter from './routers/auth'
 
 const port = config.get<number>('app.port')
 const name = config.get<string>('app.name')
@@ -18,6 +19,7 @@ const app = express()
 app.use('/profile', profileRouter)
 app.use('/feed', feedRouter)
 app.use('/follows', followsRouter)
+app.use('/auth', authRouter)
 app.use('/', notFound)
 
 // error middlewares

@@ -4,7 +4,8 @@
         "name": "Betterx Dev",
         "sync": {
             "force": false
-        }
+        },
+        "encryptionKey": "MySecretKey"
     },
     "db": {
         "host": "localhost",
