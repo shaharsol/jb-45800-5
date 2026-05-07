@@ -44,7 +44,7 @@ export default class User extends Model {
     })
     comments: Comment[]
 
-    //              tabla A,   assoc table   the current primary key
+    //              tabel A,   assoc table   the current primary key
     @BelongsToMany(() => User, () => Follow, 'followeeId', 'followerId')
     followers: User[]
 
