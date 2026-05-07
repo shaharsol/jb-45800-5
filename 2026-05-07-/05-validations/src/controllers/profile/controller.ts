@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import Post from "../../models/Post";
 import User from "../../models/User";
 import Comment from "../../models/Comment";
+import { newPostValidator } from "./validator";
 
 const userId = '1230ae30-dc4f-4752-bd84-092956f5c633'
 
@@ -102,6 +103,7 @@ export async function createPost(request: Request<{}, {}, {title: string, body: 
         response.json(newPost)
 
     } catch (e) {
+        console.log('there was an ERROR', e)
         next(e)
     }
 }
