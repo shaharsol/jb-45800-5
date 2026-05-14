@@ -72,7 +72,7 @@ export async function deletePost(request: Request<{postId: string}>, response: R
 }
 
 export async function createPost(request: Request<{}, {}, {title: string, body: string}>, response: Response, next: NextFunction) {
-    const { userId } = request
+    const { userId, imageUrl } = request
     
     console.log(request.files)
 
@@ -81,7 +81,7 @@ export async function createPost(request: Request<{}, {}, {title: string, body: 
         const newPost = await Post.create({ 
             ...request.body,
             userId,
-            imageUrl: ''
+            imageUrl
         })
         await newPost.reload({
             include: postIncludes

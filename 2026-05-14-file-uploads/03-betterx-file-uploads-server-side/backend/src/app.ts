@@ -12,6 +12,7 @@ import authEnforce from './middlewares/auth-enforce'
 import commentsRouter from './routers/comments'
 import cors from 'cors'
 import fileUpload from 'express-fileupload'
+import { createAppBucketIfNotExist } from './aws/aws'
 
 
 (async () => {
@@ -45,6 +46,10 @@ import fileUpload from 'express-fileupload'
     // using {force: true} is SUPER SUPER SUPER dangerous!!!
     // especially in production
     await sequelize.sync({force: !!config.get('app.sync.force')})
+
+    // make sure i have s3 bucket
+    // that is, create the s3 bucket if it does not exist already
+    await createAppBucketIfNotExist()
 
     // starting the server
     app.listen(port, () => console.log(`app ${name} started on port ${port}....`))
