@@ -19,11 +19,13 @@ export default function Io(props: PropsWithChildren) {
             console.log(eventName)
             console.log(SocketMessages.NEW_POST)
             switch (eventName) {
-                case "NEW_FOLLOW": 
+                case SocketMessages.NEW_FOLLOW: 
                     break;
-                case "NEW_POST":
-                    console.log('dispatching the NEW_POST')
-                    dispatch(add(payload as Post)) 
+                case SocketMessages.NEW_POST:
+                    if(clientId !== payload.clientId) {
+                        console.log('dispatching the NEW_POST')
+                        dispatch(add(payload as Post)) 
+                    }
                     break;
             }
         })

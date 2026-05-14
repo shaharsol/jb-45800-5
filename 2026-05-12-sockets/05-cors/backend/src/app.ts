@@ -20,6 +20,7 @@ import cors from 'cors'
     const app = express()
 
     // middlewares
+    // app.use('/', cors({origin: ['https://betterx.net', 'https://betterx.com']}))
     app.use('/', cors())
     app.use('/auth', authRouter)
     app.use('/', authEnforce)
