@@ -21,6 +21,9 @@ COPY ./ ./
 # software once the container is started
 CMD [ "node",  "/app/app.js" ]
 
+# docker build . -t shaharsol/env-example:1.0
+# docker run -e USER_NAME=shahar shaharsol/env-example:1.0
+
 
 
 
