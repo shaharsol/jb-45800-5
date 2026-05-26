@@ -12,6 +12,8 @@ services:
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
       - MYSQL_DATABASE=college
       - MYSQL_TCP_PORT=3306
+    # expose:
+    #   - 3306
     ports:
       - 3306:3306
     # i can either use an existing image
