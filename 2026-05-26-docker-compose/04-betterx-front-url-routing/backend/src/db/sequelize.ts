@@ -12,4 +12,6 @@ const sequelize = new Sequelize({
     ...config.get('db')
 })
 
+console.log(`connected to database on `, config.get('db'))
+
 export default sequelize
