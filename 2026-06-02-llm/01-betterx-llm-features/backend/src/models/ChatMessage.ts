@@ -1,4 +1,4 @@
-import { AllowNull, Column, DataType, Default, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { AllowNull, Column, DataType, Default, Model, PrimaryKey, Table } from "sequelize-typescript";
 
 @Table({
     underscored: true
@@ -20,6 +20,6 @@ export default class ChatMessage extends Model {
 
     @AllowNull(false)
     @Column(DataType.TEXT)
-    content: string
+    message: string
 }
 

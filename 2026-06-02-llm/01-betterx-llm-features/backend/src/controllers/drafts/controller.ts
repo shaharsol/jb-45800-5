@@ -1,5 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import openai from "../../openai/openai";
+import ChatMessage from "../../models/ChatMessage";
+import type { EasyInputMessage } from "openai/resources/responses/responses";
 
 export async function improve(
     request: Request<{}, {}, { body: string }>,
@@ -48,12 +50,12 @@ Return ONLY the improved article text.
 }
 
 export async function userImprove(
-    request: Request<{}, {}, { body: string, prompt: string }>,
+    request: Request<{}, {}, { body: string, prompt: string, chatId: string }>,
     response: Response,
     next: NextFunction
 ) {
     try {
-        const { body, prompt } = request.body
+        const { body, prompt, chatId } = request.body
 
         const systemPrompt = `
 You are an expert editor.
@@ -69,12 +71,23 @@ ${prompt}
 Article draft:
 ${body}`
 
+        const history = await ChatMessage.findAll({
+            where: { chatId },
+            order: [['createdAt', 'ASC']]
+        })
+
+        const input: EasyInputMessage[] = [
+            { role: "system", content: systemPrompt },
+            ...history.map((m) => {
+                const role: 'user' | 'assistant' = m.role === 'assistant' ? 'assistant' : 'user'
+                return { role, content: m.message }
+            }),
+            { role: "user", content: userContent }
+        ]
+
         const llmResponse = await openai.responses.create({
             model: "gpt-4.1-mini",
-            input: [
-                { role: "system", content: systemPrompt },
-                { role: "user", content: userContent }
-            ]
+            input
         })
 
         const improved = llmResponse.output_text?.trim()
@@ -85,6 +98,11 @@ ${body}`
                 message: 'could not extract improved draft'
             })
         }
+
+        await ChatMessage.bulkCreate([
+            { chatId, role: 'user', message: userContent },
+            { chatId, role: 'assistant', message: improved },
+        ])
 
         response.json({
             original: body,

@@ -8,8 +8,8 @@ export default class DraftsService extends AuthAwareService {
         return data
     }
 
-    async userImprove(body: string, prompt: string): Promise<DraftImproveResponse> {
-        const { data } = await this.axiosInstance.post<DraftImproveResponse>(`/drafts/user-improve`, { body, prompt })
+    async userImprove(body: string, prompt: string, chatId: string): Promise<DraftImproveResponse> {
+        const { data } = await this.axiosInstance.post<DraftImproveResponse>(`/drafts/user-improve`, { body, prompt, chatId })
         return data
     }
 

@@ -7,10 +7,13 @@ import { useForm } from 'react-hook-form'
 import SpinnerButton from '../../common/spinner-button/SpinnerButton'
 import { useAppDispatch } from '../../../redux/hooks'
 import { add } from '../../../redux/profile-slice'
-import { useState, type ChangeEvent, type MouseEvent } from 'react'
+import { useRef, useState, type ChangeEvent, type MouseEvent } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 
 
 export default function NewPost() {
+
+    const chatIdRef = useRef<string>(uuidv4())
 
     const [previewImage, setPreviewImage] = useState<string>('')
     const [aiImageFile, setAiImageFile] = useState<File | null>(null)
@@ -98,7 +101,7 @@ export default function NewPost() {
         try {
             setIsUserImproving(true)
             const body = getValues('body')
-            const { improved } = await draftsService.userImprove(body, values.prompt)
+            const { improved } = await draftsService.userImprove(body, values.prompt, chatIdRef.current)
             setValue('body', improved)
             resetUserImprove()
         } finally {
