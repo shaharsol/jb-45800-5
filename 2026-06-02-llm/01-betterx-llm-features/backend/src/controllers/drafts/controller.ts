@@ -47,6 +47,54 @@ Return ONLY the improved article text.
     }
 }
 
+export async function userImprove(
+    request: Request<{}, {}, { body: string, prompt: string }>,
+    response: Response,
+    next: NextFunction
+) {
+    try {
+        const { body, prompt } = request.body
+
+        const systemPrompt = `
+You are an expert editor.
+You will receive an article draft and a user prompt that describes how to improve it.
+Apply the user's instructions to improve the draft.
+
+Return ONLY the improved article text.
+`.trim()
+
+        const userContent = `Improvement instructions:
+${prompt}
+
+Article draft:
+${body}`
+
+        const llmResponse = await openai.responses.create({
+            model: "gpt-4.1-mini",
+            input: [
+                { role: "system", content: systemPrompt },
+                { role: "user", content: userContent }
+            ]
+        })
+
+        const improved = llmResponse.output_text?.trim()
+
+        if (!improved) {
+            return next({
+                status: 500,
+                message: 'could not extract improved draft'
+            })
+        }
+
+        response.json({
+            original: body,
+            improved
+        })
+    } catch (e) {
+        next(e)
+    }
+}
+
 export async function generatePic(
     request: Request<{}, {}, { title: string, body: string }>,
     response: Response,
