@@ -29,7 +29,7 @@ Return ONLY the improved article text.
             ]
         })
 
-        const improved = (llmResponse as any).output_text?.trim()
+        const improved = llmResponse.output_text?.trim()
 
         if (!improved) {
             return next({
