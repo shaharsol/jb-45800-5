@@ -53,8 +53,52 @@ export async function generatePic(
     next: NextFunction
 ) {
     try {
-        response.status(501).json({
-            message: "not implemented"
+        const { title, body } = request.body
+
+        const systemPrompt = `
+You are generating an image for a social media post.
+You will get a post title and post body (article draft).
+Generate ONE image that is highly relevant to the post.
+
+Constraints:
+- No text, captions, or watermarks in the image
+- Professional, high quality, modern look
+- Avoid sensitive content
+`.trim()
+
+        const prompt = `${systemPrompt}
+
+Title:
+${title}
+
+Body:
+${body}
+`
+
+        const imagesResponse = await openai.images.generate({
+            model: "gpt-image-1",
+            prompt,
+            size: "1024x1024"
+        })
+
+        const image = imagesResponse.data?.[0]
+
+        if (!image) {
+            return next({
+                status: 500,
+                message: 'could not extract generated image'
+            })
+        }
+
+        if (!image.b64_json) {
+            return next({
+                status: 500,
+                message: 'could not extract generated image base64'
+            })
+        }
+
+        response.json({
+            base64: image.b64_json
         })
     } catch (e) {
         next(e)
