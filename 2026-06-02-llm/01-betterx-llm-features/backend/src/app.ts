@@ -13,6 +13,7 @@ import commentsRouter from './routers/comments'
 import cors from 'cors'
 import fileUpload from 'express-fileupload'
 import { createAppBucketIfNotExist } from './aws/aws'
+import draftsRouter from './routers/drafts'
 
 
 (async () => {
@@ -32,6 +33,7 @@ import { createAppBucketIfNotExist } from './aws/aws'
     app.use('/', fileUpload()) // middelware to handle posts with content type n
     app.use('/profile', profileRouter)
     app.use('/comments', commentsRouter)
+    app.use('/drafts', draftsRouter)
     app.use('/', notFound)
 
     // error middlewares
