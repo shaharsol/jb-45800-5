@@ -48,3 +48,17 @@ export async function deleteProduct(request: Request<{productId: string}, {}, {}
         next(e)
     }
 }
+
+export async function getAll(request: Request, response: Response, next: NextFunction) {
+    try {
+
+        const products = await Product.findAll({
+            include: Category
+        })
+
+        response.json(products)
+    } catch (e) {
+        next(e)
+    }
+}
+
