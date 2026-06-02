@@ -13,6 +13,7 @@ import { useState, type ChangeEvent, type MouseEvent } from 'react'
 export default function NewPost() {
 
     const [previewImage, setPreviewImage] = useState<string>('')
+    const [aiImageFile, setAiImageFile] = useState<File | null>(null)
     const [isImproving, setIsImproving] = useState<boolean>(false)
     const [isGeneratingPic, setIsGeneratingPic] = useState<boolean>(false)
 
@@ -23,10 +24,19 @@ export default function NewPost() {
 
     async function createPost(draft: PostDraft) {
         try {
-            draft.image = (draft.image as unknown as FileList)[0]
+            const selectedImage = aiImageFile || (draft.image as unknown as FileList)?.[0]
+
+            if (!selectedImage) {
+                alert('missing image')
+                return
+            }
+
+            draft.image = selectedImage
             const newPost = await profileService.createPost(draft)
             // change state, show the new post in the profile...
             reset()
+            setAiImageFile(null)
+            setPreviewImage('')
             dispatch(add(newPost))
         } catch (e) {
             alert (e)
@@ -41,6 +51,7 @@ export default function NewPost() {
 
     function imageChanged(event: ChangeEvent<HTMLInputElement>) {
         const file = event.currentTarget.files && event.currentTarget.files[0]
+        setAiImageFile(null)
         setPreviewImage(URL.createObjectURL(file!))
     }
 
@@ -65,7 +76,11 @@ export default function NewPost() {
             const title = getValues('title')
             const body = getValues('body')
             const { base64 } = await draftsService.generatePic(title, body)
-            setPreviewImage(`data:image/png;base64,${base64}`)
+            const dataUrl = `data:image/png;base64,${base64}`
+            const blob = await (await fetch(dataUrl)).blob()
+            const file = new File([blob], 'ai.png', { type: 'image/png' })
+            setAiImageFile(file)
+            setPreviewImage(dataUrl)
         } finally {
             setIsGeneratingPic(false)
         }
