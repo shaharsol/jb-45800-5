@@ -47,3 +47,17 @@ Return ONLY the improved article text.
     }
 }
 
+export async function generatePic(
+    request: Request<{}, {}, { title: string, body: string }>,
+    response: Response,
+    next: NextFunction
+) {
+    try {
+        response.status(501).json({
+            message: "not implemented"
+        })
+    } catch (e) {
+        next(e)
+    }
+}
+
