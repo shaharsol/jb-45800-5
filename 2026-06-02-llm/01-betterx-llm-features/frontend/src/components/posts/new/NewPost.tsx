@@ -14,6 +14,7 @@ export default function NewPost() {
 
     const [previewImage, setPreviewImage] = useState<string>('')
     const [isImproving, setIsImproving] = useState<boolean>(false)
+    const [isGeneratingPic, setIsGeneratingPic] = useState<boolean>(false)
 
     const dispatch = useAppDispatch()
 
@@ -54,6 +55,19 @@ export default function NewPost() {
             setValue('body', improved)
         } finally {
             setIsImproving(false)
+        }
+    }
+
+    async function generatePic(event: MouseEvent<HTMLButtonElement>) {
+        event.preventDefault()
+        try {
+            setIsGeneratingPic(true)
+            const title = getValues('title')
+            const body = getValues('body')
+            const { base64 } = await draftsService.generatePic(title, body)
+            setPreviewImage(`data:image/png;base64,${base64}`)
+        } finally {
+            setIsGeneratingPic(false)
         }
     }
 
@@ -102,6 +116,12 @@ export default function NewPost() {
                         spinningText='improving your draft using AI'
                         isSpinning={isImproving}
                         onClick={improve}
+                    />
+                    <SpinnerButton 
+                        buttonText='Generate Pic'
+                        spinningText='generating a pic using AI'
+                        isSpinning={isGeneratingPic}
+                        onClick={generatePic}
                     />
                 </div>
             </form>
