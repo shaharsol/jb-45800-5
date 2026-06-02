@@ -16,6 +16,7 @@ export default function NewPost() {
     const [aiImageFile, setAiImageFile] = useState<File | null>(null)
     const [isImproving, setIsImproving] = useState<boolean>(false)
     const [isGeneratingPic, setIsGeneratingPic] = useState<boolean>(false)
+    const [isUserImproving, setIsUserImproving] = useState<boolean>(false)
 
     const dispatch = useAppDispatch()
 
@@ -57,6 +58,13 @@ export default function NewPost() {
 
     const { handleSubmit, register, reset, formState, getValues, setValue } = useForm<PostDraft>()
 
+    const {
+        handleSubmit: handleUserImproveSubmit,
+        register: registerUserImprove,
+        reset: resetUserImprove,
+        formState: userImproveFormState,
+    } = useForm<{ prompt: string }>()
+
     async function improve(event: MouseEvent<HTMLButtonElement>) {
         event.preventDefault()
         try {
@@ -83,6 +91,18 @@ export default function NewPost() {
             setPreviewImage(dataUrl)
         } finally {
             setIsGeneratingPic(false)
+        }
+    }
+
+    async function userImprove(values: { prompt: string }) {
+        try {
+            setIsUserImproving(true)
+            const body = getValues('body')
+            const { improved } = await draftsService.userImprove(body, values.prompt)
+            setValue('body', improved)
+            resetUserImprove()
+        } finally {
+            setIsUserImproving(false)
         }
     }
 
@@ -139,6 +159,22 @@ export default function NewPost() {
                         onClick={generatePic}
                     />
                 </div>
+            </form>
+
+            <form className='UserImprove' onSubmit={handleUserImproveSubmit(userImprove)}>
+                <textarea placeholder='how should we improve it?' {...registerUserImprove('prompt', {
+                    required: {
+                        value: true,
+                        message: 'prompt is a required field'
+                    }
+                })}></textarea>
+                <div className='error'>{userImproveFormState.errors.prompt?.message}</div>
+
+                <SpinnerButton
+                    buttonText='User Improve'
+                    spinningText='improving your draft using your instructions'
+                    isSpinning={isUserImproving}
+                />
             </form>
         </div>
     )
