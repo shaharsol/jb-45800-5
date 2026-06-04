@@ -1,7 +1,10 @@
 import { AllowNull, Column, DataType, Default, Model, PrimaryKey, Table } from "sequelize-typescript";
 
 @Table({
-    underscored: true
+    underscored: true,
+    indexes: [
+        { fields: ['chat_id'] }
+    ]
 })
 export default class ChatMessage extends Model {
 
