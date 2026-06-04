@@ -1,0 +1,49 @@
+.Layout {
+    min-height: 100vh;
+    background: #000;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 100px 1fr 80px;
+    grid-template-areas:
+        "header"
+        "main"
+        "footer";
+    gap: 20px;
+    padding: 20px;
+}
+
+.Layout header {
+    grid-area: header;
+}
+
+.Layout main {
+    grid-area: main;
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.Layout footer {
+    grid-area: footer;
+}
+
+@media (max-width: 1000px) {
+    .Layout {
+        padding: 12px;
+    }
+
+    .Layout main {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 700px) {
+    .Layout {
+        padding: 8px;
+        gap: 12px;
+    }
+
+    .Layout header {
+        padding: 0;
+    }
+}

@@ -1,0 +1,230 @@
+.Profile {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.ProfileHeader {
+    background: linear-gradient(135deg, #16181c 0%, #1e1f24 100%);
+    border: 1px solid #2f3336;
+    border-radius: 32px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.ProfileCover {
+    height: 240px;
+    background: linear-gradient(135deg, #1d9bf0 0%, #6d28d9 50%, #ec4899 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.ProfileCover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(29, 155, 240, 0.1) 0%, transparent 50%);
+}
+
+.ProfileInfo {
+    padding: 28px 32px;
+    position: relative;
+}
+
+.AvatarWrapper {
+    position: relative;
+    width: fit-content;
+    margin-top: -100px;
+    margin-bottom: 20px;
+}
+
+.ProfileAvatar {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 6px solid #000;
+    background: #16181c;
+    box-shadow: 0 8px 24px rgba(29, 155, 240, 0.3);
+    transition: all 0.3s ease;
+}
+
+.ProfileAvatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 32px rgba(29, 155, 240, 0.5);
+}
+
+.ChangeAvatar {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1d9bf0 0%, #2563eb 100%);
+    color: white;
+    border: 3px solid #000;
+    font-size: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(29, 155, 240, 0.4);
+    font-weight: bold;
+}
+
+.ChangeAvatar:hover {
+    transform: scale(1.1) rotate(90deg);
+    background: linear-gradient(135deg, #2563eb 0%, #1d9bf0 100%);
+    box-shadow: 0 6px 16px rgba(29, 155, 240, 0.6);
+}
+
+.ChangeAvatar:active {
+    transform: scale(0.95);
+}
+
+.ProfileName {
+    font-size: 32px;
+    font-weight: 800;
+    color: #f7f9f9;
+    margin: 16px 0 8px 0;
+}
+
+.ProfileBio {
+    color: #71767b;
+    font-size: 15px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.ProfileStats {
+    display: flex;
+    gap: 32px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.StatItem {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 0;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.StatItem:hover {
+    opacity: 1;
+    transform: translateX(4px);
+}
+
+.StatItem:active {
+    transform: translateX(2px);
+}
+
+.StatItem strong {
+    font-size: 24px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #1d9bf0 0%, #2563eb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.StatItem span {
+    color: #71767b;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    /* No change needed */
+}
+
+@media (max-width: 800px) {
+    .Profile {
+        gap: 20px;
+    }
+
+    .ProfileHeader {
+        border-radius: 24px;
+    }
+
+    .ProfileCover {
+        height: 180px;
+    }
+
+    .AvatarWrapper {
+        margin-top: -70px;
+    }
+
+    .ProfileAvatar {
+        width: 120px;
+        height: 120px;
+    }
+
+    .ChangeAvatar {
+        width: 40px;
+        height: 40px;
+        font-size: 24px;
+        border-width: 2px;
+    }
+
+    .ProfileName {
+        font-size: 24px;
+    }
+
+    .ProfileStats {
+        gap: 24px;
+    }
+
+    .StatItem strong {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .Profile {
+        gap: 16px;
+    }
+
+    .ProfileCover {
+        height: 140px;
+    }
+
+    .AvatarWrapper {
+        margin-top: -50px;
+    }
+
+    .ProfileAvatar {
+        width: 100px;
+        height: 100px;
+    }
+
+    .ProfileInfo {
+        padding: 16px;
+    }
+
+    .ProfileName {
+        font-size: 20px;
+    }
+
+    .ProfileBio {
+        font-size: 13px;
+    }
+
+    .ProfileStats {
+        gap: 20px;
+        font-size: 14px;
+    }
+
+    .StatItem strong {
+        font-size: 18px;
+    }
+}

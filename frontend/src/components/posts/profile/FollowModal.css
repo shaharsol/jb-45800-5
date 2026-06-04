@@ -1,0 +1,196 @@
+.FollowModal-Overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.FollowModal {
+    background: linear-gradient(135deg, rgba(15, 20, 40, 0.95), rgba(26, 0, 51, 0.85));
+    border: 2px solid rgba(29, 155, 240, 0.3);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 70vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 
+        0 20px 60px rgba(29, 155, 240, 0.2),
+        0 0 60px rgba(109, 40, 217, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.FollowModal-Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(29, 155, 240, 0.2);
+}
+
+.FollowModal-Header h2 {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.FollowModal-Close {
+    background: none;
+    border: none;
+    color: #e7e9ea;
+    font-size: 28px;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.FollowModal-Close:hover {
+    background: rgba(29, 155, 240, 0.2);
+    color: #1d9bf0;
+}
+
+.FollowModal-SearchWrap {
+    padding: 12px 20px 4px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.FollowModal-Search {
+    background: rgba(15, 20, 40, 0.5);
+    color: #e7e9ea;
+    border: 1.5px solid rgba(29, 155, 240, 0.3);
+    border-radius: 12px;
+    padding: 10px 16px;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: all 0.2s;
+    display: block;
+}
+
+.FollowModal-Search:focus {
+    outline: none;
+    background: rgba(15, 20, 40, 0.8);
+    border-color: rgba(29, 155, 240, 0.6);
+    box-shadow: 0 0 15px rgba(29, 155, 240, 0.2);
+}
+
+.FollowModal-Search::placeholder {
+    color: rgba(231, 233, 234, 0.5);
+}
+
+.FollowModal-List {
+    overflow-y: auto;
+    flex: 1;
+    padding: 8px 16px;
+}
+
+.FollowModal-List::-webkit-scrollbar {
+    width: 6px;
+}
+
+.FollowModal-List::-webkit-scrollbar-track {
+    background: rgba(29, 155, 240, 0.1);
+}
+
+.FollowModal-List::-webkit-scrollbar-thumb {
+    background: rgba(29, 155, 240, 0.3);
+    border-radius: 3px;
+}
+
+.FollowModal-List::-webkit-scrollbar-thumb:hover {
+    background: rgba(29, 155, 240, 0.5);
+}
+
+.FollowModal-Item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 8px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.FollowModal-Item:hover {
+    background: rgba(29, 155, 240, 0.1);
+    border-color: rgba(29, 155, 240, 0.2);
+    transform: translateX(4px);
+}
+
+.FollowModal-Avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #1d9bf0;
+}
+
+.FollowModal-Username {
+    color: #e7e9ea;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.FollowModal-Empty {
+    text-align: center;
+    color: rgba(231, 233, 234, 0.5);
+    padding: 40px 20px;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .FollowModal {
+        width: 95%;
+        max-height: 80vh;
+    }
+
+    .FollowModal-Header {
+        padding: 16px 20px;
+    }
+
+    .FollowModal-Header h2 {
+        font-size: 16px;
+    }
+}
