@@ -1,0 +1,4 @@
+.Cats {
+    display: flex;
+    flex-wrap: wrap;
+}

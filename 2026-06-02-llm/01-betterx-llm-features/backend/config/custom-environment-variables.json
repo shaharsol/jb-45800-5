@@ -1,0 +1,15 @@
+{
+    "app": {
+        "port": "BETTERX_PORT",
+        "sync": {
+            "force": "BETTERX_SYNC_FORCE"
+        }
+
+    },
+    "db": {
+        "password": "BETTERX_DB_PASSWORD"
+    },
+    "openai": {
+        "apiKey": "BETTERX_OPENAI_API_KEY"
+    }
+}

@@ -1,0 +1,4 @@
+.Dogs {
+    display: flex;
+    flex-wrap: wrap;
+}

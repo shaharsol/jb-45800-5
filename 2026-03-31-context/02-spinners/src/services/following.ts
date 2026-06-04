@@ -1,0 +1,16 @@
+import axios from "axios"
+import type User from "../models/User"
+
+class FollowingService {
+    async getFollowing(): Promise<User[]> {
+        const { data } = await axios<User[]>(`${import.meta.env.VITE_REST_SERVER_URL}/follows/following`)
+        return data
+    }
+
+    async unfollow(userId: string): Promise<void> {
+        await axios.post(`${import.meta.env.VITE_REST_SERVER_URL}/follows/unfollow/${userId}`)
+    }
+}
+
+const followingService = new FollowingService()
+export default followingService

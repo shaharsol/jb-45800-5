@@ -1,0 +1,10 @@
+{
+    "app": {
+        "port": 3000,
+        "name": "Betterx Dev"        
+    },
+    "db": {
+        "host": "localhost",
+        "password": ""
+    }
+}

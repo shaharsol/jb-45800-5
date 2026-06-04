@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h3>contact us</h3>
+    <form method="GET" action="signup.html" >
+        <p>
+            <label for="firstName">Enter you name</label>
+            <input name="firstName" id="firstName" placeholder="enter your name..." />
+        </p>
+
+        <p>
+            <label for="age">Enter your age</label>
+            <input id="age" type="number" min="0" name="age" />
+        </p>
+
+        <p>
+            <label for="email">Enter you email</label>
+            <input type="email" id="email" name="email" />
+
+        </p>
+
+        <p>
+            <label for="eyeColor">Enter you eye color</label>
+            <input id="eyeColor" type="color" />
+        </p>
+
+        <p>
+            <label for="birthdate">Enter you birth date</label>
+            <input id="birthdate" type="date" />
+        </p>
+
+        <p>
+            <label for="birthtime">Enter you birth time</label>
+            <input id="birthtime" type="datetime-local" />
+        </p>
+
+        <p>
+            <label for="password">choose password</label>
+            <input id="password" type="password" name="password" />
+        </p>
+
+        <p>
+            <input id="senior" type="checkbox" />
+            <label for="senior">are you senior citizen</label>
+        </p>
+
+        <p>
+            <label for="country">country</label>
+            <select name="country" id="country">
+                <option value="" disabled selected>please select a country</option>
+                <option value="IL">israel</option>
+                <option value="US" >usa</option>
+                <option value="IR">iran, islamic republic of</option>
+            </select>
+        </p>
+
+        <p>
+            <label for="more">tell about yourself</label>
+            <textarea style="width:300px;height:100px;" id="more"></textarea>
+
+        </p>
+
+
+        <input type="submit" value="sign in" />
+        <input type="reset" />
+
+        <button>label</button>
+    </form>
+</body>
+
+</html>

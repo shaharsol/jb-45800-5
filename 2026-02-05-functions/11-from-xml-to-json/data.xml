@@ -1,0 +1,12 @@
+<persons>
+    <person>
+        <months-of-work>12</months-of-work>
+        <points-of-zikui>134</points-of-zikui>
+        <yearly-salary>56987</yearly-salary>
+    </person>
+    <person>
+        <months-of-work>9</months-of-work>
+        <points-of-zikui>224</points-of-zikui>
+        <yearly-salary>14758</yearly-salary>
+    </person>
+</persons>

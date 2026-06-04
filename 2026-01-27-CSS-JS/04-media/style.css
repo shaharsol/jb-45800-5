@@ -1,0 +1,19 @@
+h1 {
+    color: red;
+    font-size:small;
+}
+
+p {
+    color: blue;
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: xx-large;
+        color: green;
+    }    
+    p {
+        text-decoration: line-through;
+    }
+}
