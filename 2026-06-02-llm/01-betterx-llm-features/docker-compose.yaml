@@ -55,6 +55,8 @@ services:
     container_name: betterx-backend-compose
     ports:
       - 3000:3000
+    environment:
+      - BETTERX_OPENAI_API_KEY=dummy
     build:
       context: ./backend
       dockerfile: Dockerfile.compose

@@ -1,46 +1,100 @@
-*, *::before, *::after {
+:root {
+    --background: #000000;
+    --surface: #16181c;
+    --surface-hover: #1d1f23;
+    --border: #2f3336;
+    --text: #f7f9f9;
+    --muted: #71767b;
+    --primary: #1d9bf0;
+    --success: #00ba7c;
+    --danger: #f4212e;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+html,
+body,
+#root {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    background: var(--background);
+    color: var(--text);
+    font-family:
+        Inter,
+        Segoe UI,
+        Roboto,
+        sans-serif;
+}
+
+* {
     box-sizing: border-box;
 }
 
-body {
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #f0f2f5;
-    color: #1a1a2e;
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+img {
+    max-width: 100%;
+    display: block;
 }
 
 button {
-    cursor: pointer;
-    padding: 8px 16px;
     border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    background-color: #1d9bf0;
-    color: white;
-    font-weight: 600;
-    transition: background-color 0.2s;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+}
+
+button:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
 }
 
 button:hover {
-    background-color: #1a8cd8;
+    transform: translateY(-2px);
 }
 
-input, textarea {
-    padding: 10px 12px;
-    border: 1px solid #cfd9de;
-    border-radius: 6px;
-    font-size: 14px;
-    font-family: inherit;
+input,
+textarea,
+select {
+    width: 100%;
     outline: none;
-    transition: border-color 0.2s;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-input:focus, textarea:focus {
-    border-color: #1d9bf0;
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(29,155,240,.15);
 }
 
-textarea {
-    resize: vertical;
-    min-height: 80px;
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: none;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2f3336;
+    border-radius: 999px;
+    border: 2px solid #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3d4348;
 }

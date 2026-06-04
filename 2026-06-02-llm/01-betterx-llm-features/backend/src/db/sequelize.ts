@@ -4,11 +4,10 @@ import config from 'config'
 import Post from "../models/Post";
 import Comment from "../models/Comment";
 import Follow from "../models/Follow";
-import ChatMessage from "../models/ChatMessage";
 
 const sequelize = new Sequelize({
     dialect: 'mysql',
-    models: [User, Post, Comment, Follow, ChatMessage],
+    models: [User, Post, Comment, Follow],
     logging: console.log,
     ...config.get('db')
 })

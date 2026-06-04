@@ -1,6 +1,7 @@
 import type User from '../../../models/User'
 import './Follow.css'
-import profilePic from '../../../assets/profile-pic.jpg'
+
+import { getUserAvatar } from '../../../utils/userAvatar'
 import useService from '../../../hooks/use-service'
 import FollowingService from '../../../services/auth-aware/FollowingService'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
@@ -9,11 +10,16 @@ import { follow, unfollow } from '../../../redux/following-slice'
 interface FollowProps {
     user: User
 }
+
 export default function Follow(props: FollowProps) {
 
-    const { user, user: { id, name, username }} = props
-    
-    const isFollowing = useAppSelector(state => state.followingSlice.following.findIndex(follow => follow.id === id) > -1 )
+    const { user, user: { id, name, username } } = props
+
+    const isFollowing = useAppSelector(
+        state => state.followingSlice.following.findIndex(
+            follow => follow.id === id
+        ) > -1
+    )
 
     const followingService = useService(FollowingService)
 
@@ -22,9 +28,9 @@ export default function Follow(props: FollowProps) {
     async function unfollowMe() {
         try {
             await followingService.unfollow(id)
-            dispatch(unfollow({id}))
-
-        } catch (e) {
+            dispatch(unfollow({ id }))
+        }
+        catch (e) {
             alert(e)
         }
     }
@@ -33,20 +39,46 @@ export default function Follow(props: FollowProps) {
         try {
             await followingService.follow(id)
             dispatch(follow(user))
-
-        } catch (e) {
+        }
+        catch (e) {
             alert(e)
         }
     }
 
     return (
-        <div className='Follow'>
-            <div><img src={profilePic} /></div>
-            <div>{name}</div>
-            <div>{username}</div>
-            {isFollowing && <div><button onClick={unfollowMe}>Unfollow</button></div>}
-            {!isFollowing && <div><button onClick={followMe}>follow</button></div>}
-            
+        <div className="Follow">
+
+            <div>
+                <img
+                    src={getUserAvatar(name || username)}
+                    alt={name}
+                />
+            </div>
+
+            <div className="user-name">
+                {name}
+            </div>
+
+            <div className="user-username">
+                @{username}
+            </div>
+
+            {isFollowing && (
+                <div>
+                    <button onClick={unfollowMe}>
+                        Unfollow
+                    </button>
+                </div>
+            )}
+
+            {!isFollowing && (
+                <div>
+                    <button onClick={followMe}>
+                        Follow
+                    </button>
+                </div>
+            )}
+
         </div>
     )
 }

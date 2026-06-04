@@ -59,13 +59,13 @@ export default function Post(props: PostProps) {
                 comments={comments}
             /></div>
             {!isReadOnly && 
-                <div>
-                    {/* <button onClick={deleteMe} className="delete-button">Delete</button> */}
+                <div className='PostActions'>
                     <SpinnerButton 
                         buttonText='Delete'
                         spinningText='deleting post...'
                         isSpinning={isDeleting}
                         onClick={deleteMe}
+                        className='delete-button'
                     />
                     <button onClick={updateMe} className="update-button">Update</button>
                 </div>

@@ -1,8 +1,10 @@
 .Comments {
-    border-top: 1px solid #e1e8ed;
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    padding-top: 10px;
-    gap: 6px;
+    margin-top: 20px;
+    border-top: 1px solid #2f3336;
+    padding-top: 20px;
+}
+
+.Comments h4 {
+    color: #f7f9f9;
+    margin-bottom: 16px;
 }

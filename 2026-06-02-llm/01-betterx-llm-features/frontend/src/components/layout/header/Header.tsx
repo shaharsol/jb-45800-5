@@ -3,29 +3,47 @@ import './Header.css'
 import useUsername from '../../../hooks/use-username'
 import { useContext } from 'react'
 import AuthContext from '../../auth/auth/AuthContext'
+import Betterx from '../../../assets/Betterx.png'
+import { getUserAvatar } from '../../../utils/userAvatar'
+
 export default function Header() {
-  
+
   const name = useUsername()
-  const {logout} = useContext(AuthContext)!
+  const { logout } = useContext(AuthContext)!
+  const userImage = getUserAvatar(name)
+
   function logMeOut() {
     logout()
   }
 
   return (
-    <div className='Header'>
-      <div>
-        Logo
-      </div>
-      <div>
-        {/* NEVER use <a> tags to navigate inside an SPA app */}
-        {/* <a href="/profile">Profile</a> | <a href="/feed">Feed</a> */}
+    <div className="Header">
 
-        {/* <Link to="/profile">Profile</Link> | <Link to="/feed">Feed</Link> */}
-        <NavLink to="/profile">Profile</NavLink> | <NavLink to="/feed">Feed</NavLink>
+      <div className="HeaderLogo">
+        <img
+          src={Betterx}
+          alt="BetterX"
+          className="logo"
+        />
       </div>
-      <div>
-        Welcome {name} | <button onClick={logMeOut}>logout</button>
+
+      <nav className="HeaderNav">
+        <NavLink to="/profile">Profile</NavLink>
+        <NavLink to="/feed">Feed</NavLink>
+      </nav>
+
+      <div className="HeaderUser">
+        <div className="UserProfile">
+          <img 
+            src={userImage}
+            alt={name}
+            className="UserAvatar"
+          />
+          <span className="UserGreeting">Welcome <strong>{name}</strong></span>
+        </div>
+        <button className="LogoutBtn" onClick={logMeOut}>Logout</button>
       </div>
+
     </div>
   )
 }

@@ -6,15 +6,16 @@ interface SpinnerButtonProps {
     buttonText: string
     spinningText: string
     onClick?: React.MouseEventHandler<HTMLButtonElement>
+    className?: string
 }
 export default function SpinnerButton(props: SpinnerButtonProps) {
 
-    const { isSpinning, buttonText, spinningText, onClick} = props
+    const { isSpinning, buttonText, spinningText, onClick, className} = props
 
     return (
-        <div className='SpinnerButtton'>
+        <div className={`SpinnerButtton ${className || ''}`}>
             {isSpinning && <span>{spinningText} <i><img src={spinnerSrc} /></i></span>}
-            {!isSpinning && <button onClick={onClick}>{buttonText}</button>}
+            {!isSpinning && <button onClick={onClick} className={className}>{buttonText}</button>}
         </div>
     )
 }
