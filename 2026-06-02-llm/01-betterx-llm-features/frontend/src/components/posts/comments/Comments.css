@@ -1,6 +1,16 @@
 .Comments {
-    border: 1px dashed pink;
-    display: flex;
-    flex-direction: column;
-    margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-border);
+}
+
+.Comments::before {
+  content: 'Comments';
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
 }

@@ -1,3 +1,14 @@
-.NewComment .error {
-    color: red;
+.NewComment form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.NewComment textarea {
+  min-height: 80px;
+  font-size: var(--font-size-sm);
+}
+
+.NewComment .SpinnerButtton button {
+  align-self: flex-start;
 }

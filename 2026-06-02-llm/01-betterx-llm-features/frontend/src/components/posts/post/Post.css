@@ -1,19 +1,59 @@
 .Post {
-    padding: 6px;
-    border: 1px dashed lightsalmon;
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-base), border-color var(--transition-base);
+}
+
+.Post:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-strong);
+}
+
+.Post > h4 {
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
 }
 
 .Post > .by-line {
-    font-size: small;
-    margin-bottom: 6px;
+  margin-bottom: var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
 }
 
-.Post .delete-button {
-    background-color: red;
-    color: white;
+.Post img {
+  display: block;
+  margin: var(--space-4) 0;
+  box-shadow: var(--shadow-xs);
+}
+
+.Post > div:has(.update-button) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.Post .delete-button,
+.Post > div > .SpinnerButtton:first-child button {
+  background: var(--color-danger);
+}
+
+.Post .delete-button:hover,
+.Post > div > .SpinnerButtton:first-child button:hover {
+  background: var(--color-danger-hover);
 }
 
 .Post .update-button {
-    background-color: green;
-    color: white;
+  background: var(--color-success);
+}
+
+.Post .update-button:hover {
+  background: var(--color-success-hover);
 }

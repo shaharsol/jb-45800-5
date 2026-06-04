@@ -1,12 +1,27 @@
 .UpdatePost {
-    border: 1px dashed green;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
 }
 
 .UpdatePost > form {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
-.UpdatePost .error {
-    color: red;
+.UpdatePost > form::before {
+  content: 'Edit post';
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-1);
+}
+
+.UpdatePost > form > button {
+  align-self: flex-start;
+  margin-top: var(--space-2);
 }
