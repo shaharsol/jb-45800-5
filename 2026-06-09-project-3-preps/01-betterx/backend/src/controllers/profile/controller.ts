@@ -19,7 +19,10 @@ export async function getProfile(request: Request, response: Response, next: Nex
     const { userId } = request
     try {
         const user = await User.findByPk(userId, {
-            include: userPostsIncludes
+            include: userPostsIncludes,
+            order: [['createdAt', 'DESC']],
+            // limit: 2,
+            // offset: 4,
         })
         response.json(user.posts)
 

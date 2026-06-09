@@ -67,11 +67,13 @@ services:
       - 3004:3004
     build: ./io
 
-  # docker run --name betterx-backend-p 3000:3000 -d shaharsol/betterx-backend:3.0
+  # docker run --name betterx-backend-p 3000:3000 -e BETTERX_OPENAI_API_KEY=sk-proj-1234567890 -d shaharsol/betterx-backend:3.0
   backend:
     container_name: betterx-backend-compose
     ports:
       - 3000:3000
+    environment:
+      - BETTERX_OPENAI_API_KEY=${BETTERX_OPENAI_API_KEY}
     build:
       context: ./backend
       dockerfile: Dockerfile.compose
