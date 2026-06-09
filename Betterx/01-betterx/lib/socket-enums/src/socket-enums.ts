@@ -1,7 +1,0 @@
-export enum SocketMessages {
-    NEW_FOLLOW = 'NEW_FOLLOW',
-    NEW_POST = 'NEW_POST',
-    UNFOLLOW = 'UNFOLLOW',
-    NEW_COMMENT = 'NEW_COMMENT'
-}
-

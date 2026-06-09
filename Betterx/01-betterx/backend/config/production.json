@@ -1,9 +1,0 @@
-{
-    "app": {
-        "port": 4000,
-        "name": "Betterx Prod"
-    },
-    "db": {
-        "host": "production.db.betterx.com"
-    }
-}
