@@ -6,6 +6,7 @@ import useService from '../../../hooks/use-service'
 import FollowingService from '../../../services/auth-aware/FollowingService'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 import { populate } from '../../../redux/following-slice'
+import { showErrorToast } from '../../common/show-error-toast'
 
 export default function Following() {
 
@@ -27,7 +28,7 @@ export default function Following() {
         dispatch(populate(following))
       } catch (e) {
         setIsLoaded(false)
-        alert(e)
+        showErrorToast(e)
       } finally {
         setIsLoading(false)
 

@@ -10,6 +10,7 @@ import { useAppDispatch } from '../../../redux/hooks'
 import { add } from '../../../redux/profile-slice'
 import { useRef, useState, type ChangeEvent, type MouseEvent } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import { showErrorToast } from '../../common/show-error-toast'
 
 
 export default function NewPost() {
@@ -45,7 +46,7 @@ export default function NewPost() {
             setPreviewImage('')
             dispatch(add(newPost))
         } catch (e) {
-            alert (e)
+            showErrorToast(e)
         }
     }
 

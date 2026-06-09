@@ -10,6 +10,7 @@ import SpinnerButton from '../../common/spinner-button/SpinnerButton'
 import { useState } from 'react'
 import { useAppDispatch } from '../../../redux/hooks'
 import { remove } from '../../../redux/profile-slice'
+import { showErrorToast } from '../../common/show-error-toast'
 
 interface PostProps {
     post: PostModel,
@@ -33,7 +34,7 @@ export default function Post(props: PostProps) {
                 // change state of parent component
                 dispatch(remove({id}))
             } catch (e) {
-                alert(e)
+                showErrorToast(e)
             } finally {
                 setIsDeleting(false)
             }

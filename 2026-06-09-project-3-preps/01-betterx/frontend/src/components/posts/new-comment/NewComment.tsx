@@ -6,6 +6,7 @@ import useService from '../../../hooks/use-service'
 import CommentsService from '../../../services/auth-aware/CommentsService'
 import { useAppDispatch } from '../../../redux/hooks'
 import { addComment } from '../../../redux/profile-slice'
+import { showErrorToast } from '../../common/show-error-toast'
 
 interface NewCommentProps {
     postId: string,
@@ -26,7 +27,7 @@ export default function NewComment(props: NewCommentProps) {
             reset()
             dispatch(addComment(newComment))
         } catch (e) {
-            alert(e)
+            showErrorToast(e)
         }
     }
 

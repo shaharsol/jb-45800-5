@@ -6,6 +6,7 @@ import FollowersService from '../../../services/auth-aware/FollowersService'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 import { populate } from '../../../redux/followers-slice'
 import Spinner from '../../common/spinner/Spinner'
+import { showErrorToast } from '../../common/show-error-toast'
 
 export default function Followers() {
 
@@ -26,7 +27,7 @@ export default function Followers() {
             dispatch(populate(following))
           } catch (e) {
             setIsLoaded(false)
-            alert(e)
+            showErrorToast(e)
           } finally {
             setIsLoading(false)
     

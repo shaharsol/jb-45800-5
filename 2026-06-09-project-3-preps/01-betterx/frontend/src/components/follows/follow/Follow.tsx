@@ -5,6 +5,7 @@ import useService from '../../../hooks/use-service'
 import FollowingService from '../../../services/auth-aware/FollowingService'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 import { follow, unfollow } from '../../../redux/following-slice'
+import { showErrorToast } from '../../common/show-error-toast'
 
 interface FollowProps {
     user: User
@@ -25,7 +26,7 @@ export default function Follow(props: FollowProps) {
             dispatch(unfollow({id}))
 
         } catch (e) {
-            alert(e)
+            showErrorToast(e)
         }
     }
 
@@ -35,7 +36,7 @@ export default function Follow(props: FollowProps) {
             dispatch(follow(user))
 
         } catch (e) {
-            alert(e)
+            showErrorToast(e)
         }
     }
 

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
 import useService from '../../../hooks/use-service'
 import ProfileService from '../../../services/auth-aware/ProfileService'
+import { showErrorToast } from '../../common/show-error-toast'
 
 
 export default function UpdatePost() {
@@ -22,7 +23,7 @@ export default function UpdatePost() {
             // so instead of setting state i want to navigate back to profile
             navigate('/profile')
         } catch (e) {
-            alert(e)
+            showErrorToast(e)
         }
     }
 
@@ -34,7 +35,7 @@ export default function UpdatePost() {
                 const { title, body } = await profileService.getSinglePost(postId!)
                 reset({ title, body })
             } catch (e) {
-                alert(e)
+                showErrorToast(e)
             }
         })()
     }, [postId, reset])

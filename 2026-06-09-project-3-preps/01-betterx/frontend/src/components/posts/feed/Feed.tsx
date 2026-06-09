@@ -5,6 +5,7 @@ import Post from '../post/Post'
 import Spinner from '../../common/spinner/Spinner'
 import useService from '../../../hooks/use-service'
 import FeedService from '../../../services/auth-aware/FeedService'
+import { showErrorToast } from '../../common/show-error-toast'
 
 export default function Feed() {
 
@@ -27,7 +28,7 @@ export default function Feed() {
                 setFeed(posts)
             } catch (e) {
                 setIsLoaded(false)
-                alert(e)
+                showErrorToast(e)
             } finally {
                 setIsLoading(false)
             }

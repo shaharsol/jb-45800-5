@@ -4,6 +4,7 @@ import authService from '../../../services/auth'
 import { useForm } from 'react-hook-form'
 import { useContext } from 'react'
 import AuthContext from '../auth/AuthContext'
+import { showErrorToast } from '../../common/show-error-toast'
 
 export default function Login() {
 
@@ -14,7 +15,7 @@ export default function Login() {
             const { jwt } = await authService.login(login)
             saveJwt(jwt)
         } catch (e) {
-            alert(e)
+            showErrorToast(e)
         }
     }
 

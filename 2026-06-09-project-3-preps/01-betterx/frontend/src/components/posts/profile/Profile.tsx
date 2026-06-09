@@ -8,6 +8,7 @@ import useService from '../../../hooks/use-service'
 import ProfileService from '../../../services/auth-aware/ProfileService'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 import { populate } from '../../../redux/profile-slice'
+import { showErrorToast } from '../../common/show-error-toast'
 
 export default function Profile() {
 
@@ -37,7 +38,7 @@ export default function Profile() {
                 }
             } catch (e) {
                 setIsLoaded(false)
-                alert(e)
+                showErrorToast(e)
             } finally {
                 setIsLoading(false)
             }
