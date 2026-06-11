@@ -1,0 +1,73 @@
+{
+  "info": {
+    "name": "BetterX MCP",
+    "description": "Test the BetterX MCP server (Streamable HTTP on POST /mcp).\n\nImport: Postman → Import → select this file.\n\nSet `baseUrl` (default http://localhost:3005) if needed.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3005"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/health"
+      }
+    },
+    {
+      "name": "MCP - GET /mcp (expect 405)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/mcp"
+      }
+    },
+    {
+      "name": "MCP - Initialize",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json, text/event-stream"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 1,\n  \"method\": \"initialize\",\n  \"params\": {\n    \"protocolVersion\": \"2024-11-05\",\n    \"capabilities\": {},\n    \"clientInfo\": {\n      \"name\": \"postman\",\n      \"version\": \"1.0.0\"\n    }\n  }\n}"
+        },
+        "url": "{{baseUrl}}/mcp"
+      }
+    },
+    {
+      "name": "MCP - Ping tool",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json, text/event-stream"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 2,\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"ping\",\n    \"arguments\": {}\n  }\n}"
+        },
+        "url": "{{baseUrl}}/mcp"
+      }
+    }
+  ]
+}
