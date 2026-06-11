@@ -1,0 +1,20 @@
+{
+    "app": {
+        "name": "betterx compose"
+    },
+    "db": {
+        "host": "database"
+    },
+    "pgvector": {
+        "host": "pgvector"
+    },
+    "io": {
+        "url": "http://io:3004"
+    },
+    "aws": {
+        "bucket": "com.betterx.compose",
+        "connection": {
+            "endpoint": "http://localstack:4566"
+        }
+    }
+}
