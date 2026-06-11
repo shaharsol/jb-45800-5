@@ -3,6 +3,7 @@ import { NodeStreamableHTTPServerTransport } from '@modelcontextprotocol/node'
 import config from 'config'
 import type { Request, Response } from 'express'
 import { createMcpServer } from './server.js'
+import extractAuth from './middleware/extract-auth.js'
 
 const port = config.get<number>('app.port')
 const name = config.get<string>('app.name')
@@ -13,7 +14,7 @@ app.get('/health', (request, response) => {
     response.json({ status: 'ok' })
 })
 
-app.post('/mcp', async (request: Request, response: Response) => {
+app.post('/mcp', extractAuth, async (request: Request, response: Response) => {
     const server = createMcpServer()
 
     try {

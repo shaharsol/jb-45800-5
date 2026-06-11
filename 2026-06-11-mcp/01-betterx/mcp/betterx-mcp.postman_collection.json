@@ -1,13 +1,17 @@
 {
   "info": {
     "name": "BetterX MCP",
-    "description": "Test the BetterX MCP server (Streamable HTTP on POST /mcp).\n\nImport: Postman → Import → select this file.\n\nSet `baseUrl` (default http://localhost:3005) if needed.",
+    "description": "Test the BetterX MCP server (Streamable HTTP on POST /mcp).\n\nImport: Postman → Import → select this file.\n\nSet `baseUrl` (default http://localhost:3005) and `jwt` (from POST /auth/login) before MCP requests.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     {
       "key": "baseUrl",
       "value": "http://localhost:3005"
+    },
+    {
+      "key": "jwt",
+      "value": ""
     }
   ],
   "item": [
@@ -39,6 +43,10 @@
           {
             "key": "Accept",
             "value": "application/json, text/event-stream"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
           }
         ],
         "body": {
@@ -60,6 +68,10 @@
           {
             "key": "Accept",
             "value": "application/json, text/event-stream"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
           }
         ],
         "body": {
