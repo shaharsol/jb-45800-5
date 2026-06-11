@@ -1,0 +1,7 @@
+.Profile {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    height: 100%;
+    gap: 12px;
+}

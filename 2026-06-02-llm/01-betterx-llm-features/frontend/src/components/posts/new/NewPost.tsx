@@ -5,6 +5,7 @@ import DraftsService from '../../../services/auth-aware/DraftsService'
 import './NewPost.css'
 import { useForm } from 'react-hook-form'
 import SpinnerButton from '../../common/spinner-button/SpinnerButton'
+import ContentGuidelinesModal from './ContentGuidelinesModal'
 import { useAppDispatch } from '../../../redux/hooks'
 import { add } from '../../../redux/profile-slice'
 import { useState, type ChangeEvent, type MouseEvent } from 'react'
@@ -16,6 +17,8 @@ export default function NewPost() {
     const [aiImageFile, setAiImageFile] = useState<File | null>(null)
     const [isImproving, setIsImproving] = useState<boolean>(false)
     const [isGeneratingPic, setIsGeneratingPic] = useState<boolean>(false)
+    const [isUserImproving, setIsUserImproving] = useState<boolean>(false)
+    const [guidelinesOpen, setGuidelinesOpen] = useState<boolean>(false)
 
     const dispatch = useAppDispatch()
 
@@ -33,21 +36,14 @@ export default function NewPost() {
 
             draft.image = selectedImage
             const newPost = await profileService.createPost(draft)
-            // change state, show the new post in the profile...
             reset()
             setAiImageFile(null)
             setPreviewImage('')
             dispatch(add(newPost))
         } catch (e) {
-            alert (e)
+            alert(e)
         }
     }
-
-    // an example of an attempt to use hook *not inside* the root of the component function
-    // rather in a {} block. this will be blocked by eslint
-    // if(true) {
-    //     const {formState} = useForm<PostDraft>()
-    // }
 
     function imageChanged(event: ChangeEvent<HTMLInputElement>) {
         const file = event.currentTarget.files && event.currentTarget.files[0]
@@ -88,60 +84,110 @@ export default function NewPost() {
 
     return (
         <div className='NewPost'>
-            <form onSubmit={handleSubmit(createPost)}>
-                <input placeholder='title' {...register('title', {
-                    required: {
-                        value: true,
-                        message: 'title is a required field'
-                    },
-                    minLength: {
-                        value: 10,
-                        message: 'title must be at least 10 characters'
-                    }
-                })} />
-                <div className='error'>{formState.errors.title?.message}</div>
-                <textarea placeholder='body' {...register('body', {
-                    required: {
-                        value: true,
-                        message: 'body is a required field'
-                    },
-                    minLength: {
-                        value: 20,
-                        message: 'body must be at least 20 characters'
-                    }
-                })}></textarea>
-                <div className='error'>{formState.errors.body?.message}</div>
+            <h3 className='NewPost-heading'>Create a Post</h3>
 
-                <input type="file" accept="image/jpeg, image/png" {...register('image')} onChange={imageChanged}/>
+            <form className='NewPost-form' onSubmit={handleSubmit(createPost)}>
+                <div className='form-group'>
+                    <label className='form-label' htmlFor="post-title">Title</label>
+                    <input
+                        id="post-title"
+                        placeholder='Give your post a compelling title'
+                        {...register('title', {
+                            required: { value: true, message: 'title is a required field' },
+                            minLength: { value: 10, message: 'title must be at least 10 characters' }
+                        })}
+                    />
+                    <div className='form-error'>{formState.errors.title?.message}</div>
+                </div>
 
-                <img src={previewImage}/>
-                {/* this: */}
-                {/* {formState.isSubmitting && <p>posting new post... <Spinner /></p>}
-                {!formState.isSubmitting && <button>Add Post</button>} */}
+                <div className='form-group'>
+                    <label className='form-label' htmlFor="post-body">Body</label>
+                    <textarea
+                        id="post-body"
+                        placeholder='Write your article here...'
+                        {...register('body', {
+                            required: { value: true, message: 'body is a required field' },
+                            minLength: { value: 20, message: 'body must be at least 20 characters' }
+                        })}
+                    />
+                    <div className='form-error'>{formState.errors.body?.message}</div>
+                </div>
 
-                {/* becomes this (much more elegant and useful!): */}
-                <div className='buttons'>
-                    <SpinnerButton 
-                        buttonText='Add Post'
+                <div className='form-group'>
+                    <label className='form-label' htmlFor="post-image">Image</label>
+                    <input
+                        id="post-image"
+                        type="file"
+                        accept="image/jpeg, image/png"
+                        {...register('image')}
+                        onChange={imageChanged}
+                    />
+                </div>
+
+                {previewImage && (
+                    <div className='NewPost-preview'>
+                        <img src={previewImage} alt="Post preview" />
+                    </div>
+                )}
+
+                <div className='NewPost-actions'>
+                    <SpinnerButton
+                        buttonText='Publish Post'
                         spinningText='posting new post...'
                         isSpinning={formState.isSubmitting}
                     />
-                    <SpinnerButton 
-                        buttonText='Improve'
-                        spinningText='improving your draft using AI'
+                    <SpinnerButton
+                        buttonText='✦ Improve'
+                        spinningText='improving your draft...'
                         isSpinning={isImproving}
                         onClick={improve}
-                        className='improve-button'
+                        type="button"
+                        className="btn-ai"
                     />
-                    <SpinnerButton 
-                        buttonText='Generate Pic'
-                        spinningText='generating a pic using AI'
+                    <SpinnerButton
+                        buttonText='✦ Generate Pic'
+                        spinningText='generating image...'
                         isSpinning={isGeneratingPic}
                         onClick={generatePic}
-                        className='generate-button'
+                        type="button"
+                        className="btn-ai"
                     />
                 </div>
             </form>
+
+            <div className='NewPost-assistant'>
+                <h4 className='NewPost-assistant-title'>AI Assistant</h4>
+                <p className='NewPost-assistant-desc'>Tell the AI how to refine your draft</p>
+
+                <form className='UserImprove' onSubmit={handleUserImproveSubmit(userImprove)}>
+                    <div className='form-group'>
+                        <textarea
+                            placeholder='e.g. Make it more concise and professional'
+                            {...registerUserImprove('prompt', {
+                                required: { value: true, message: 'prompt is a required field' }
+                            })}
+                        />
+                        <div className='form-error'>{userImproveFormState.errors.prompt?.message}</div>
+                    </div>
+
+                    <SpinnerButton
+                        buttonText='✦ User Improve'
+                        spinningText='applying your instructions...'
+                        isSpinning={isUserImproving}
+                        className="btn-ai"
+                    />
+                </form>
+            </div>
+
+            <button
+                type="button"
+                className='NewPost-guidelines btn-ghost'
+                onClick={() => setGuidelinesOpen(true)}
+            >
+                View content guidelines
+            </button>
+
+            {guidelinesOpen && <ContentGuidelinesModal onClose={() => setGuidelinesOpen(false)} />}
         </div>
     )
 }

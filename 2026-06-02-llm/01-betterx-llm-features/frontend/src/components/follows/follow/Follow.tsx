@@ -15,11 +15,7 @@ export default function Follow(props: FollowProps) {
 
     const { user, user: { id, name, username } } = props
 
-    const isFollowing = useAppSelector(
-        state => state.followingSlice.following.findIndex(
-            follow => follow.id === id
-        ) > -1
-    )
+    const isFollowing = useAppSelector(state => state.followingSlice.following.findIndex(follow => follow.id === id) > -1)
 
     const followingService = useService(FollowingService)
 
@@ -29,8 +25,7 @@ export default function Follow(props: FollowProps) {
         try {
             await followingService.unfollow(id)
             dispatch(unfollow({ id }))
-        }
-        catch (e) {
+        } catch (e) {
             alert(e)
         }
     }
@@ -39,46 +34,28 @@ export default function Follow(props: FollowProps) {
         try {
             await followingService.follow(id)
             dispatch(follow(user))
-        }
-        catch (e) {
+        } catch (e) {
             alert(e)
         }
     }
 
     return (
-        <div className="Follow">
-
-            <div>
-                <img
-                    src={getUserAvatar(name || username)}
-                    alt={name}
-                />
+        <div className='Follow'>
+            <div className='Follow-avatar'>
+                <img src={profilePic} alt={name} />
             </div>
-
-            <div className="user-name">
-                {name}
+            <div className='Follow-info'>
+                <span className='Follow-name'>{name}</span>
+                <span className='Follow-username'>@{username}</span>
             </div>
-
-            <div className="user-username">
-                @{username}
+            <div className='Follow-action'>
+                {isFollowing && (
+                    <button type="button" className="btn-secondary" onClick={unfollowMe}>Unfollow</button>
+                )}
+                {!isFollowing && (
+                    <button type="button" onClick={followMe}>Follow</button>
+                )}
             </div>
-
-            {isFollowing && (
-                <div>
-                    <button onClick={unfollowMe}>
-                        Unfollow
-                    </button>
-                </div>
-            )}
-
-            {!isFollowing && (
-                <div>
-                    <button onClick={followMe}>
-                        Follow
-                    </button>
-                </div>
-            )}
-
         </div>
     )
 }

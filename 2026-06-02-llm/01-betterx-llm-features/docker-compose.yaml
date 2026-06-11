@@ -41,7 +41,24 @@ services:
       - 4510-4559:4510-4559
     image: localstack/localstack:4.4.0
 
-
+  # docker run -d --name pgvector --platform linux/amd64 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 pgvector/pgvector:pg16
+  pgvector:
+    container_name: pgvector-compose
+    platform: linux/amd64
+    image: pgvector/pgvector:pg16
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - pgvector-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   # docker run --name betterx-io -p 3004:3004 -d shaharsol/betterx-io:2.2
   io:
@@ -56,12 +73,14 @@ services:
     ports:
       - 3000:3000
     environment:
-      - BETTERX_OPENAI_API_KEY=dummy
+      - BETTERX_OPENAI_API_KEY=${BETTERX_OPENAI_API_KEY}
     build:
       context: ./backend
       dockerfile: Dockerfile.compose
     depends_on:
       database:
+        condition: service_healthy
+      pgvector:
         condition: service_healthy
   
   # docker run --name betterx-front -p 6123:80 -d shaharsol/betterx-front:2.0
@@ -70,3 +89,6 @@ services:
     ports:
       - 6123:80
     build: ./frontend
+
+volumes:
+  pgvector-data:

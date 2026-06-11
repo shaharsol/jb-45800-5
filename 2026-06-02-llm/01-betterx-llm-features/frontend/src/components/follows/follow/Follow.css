@@ -1,72 +1,91 @@
 .Follow {
-    background: linear-gradient(
-        145deg,
-        #16181c,
-        #1d2127
-    );
-
-    border: 1px solid #2f3336;
-    border-radius: 24px;
-
-    padding: 20px;
-
-    text-align: center;
-
-    transition: .3s;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-subtle);
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .Follow:hover {
-    transform: translateY(-4px);
-
-    border-color: #1d9bf0;
-
-    box-shadow:
-        0 10px 30px rgba(29,155,240,.2);
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-xs);
 }
 
-.Follow img {
-    width: 95px;
-    height: 95px;
-
-    border-radius: 50%;
-
-    object-fit: cover;
-
-    border: 4px solid #1d9bf0;
-
-    margin-bottom: 14px;
+.Follow-avatar {
+  flex-shrink: 0;
+  position: relative;
 }
 
-.user-name {
-    color: #f7f9f9;
-    font-weight: 700;
-    font-size: 18px;
+.Follow-avatar::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background: var(--color-success);
+  border: 2px solid var(--color-surface);
+  border-radius: var(--radius-full);
 }
 
-.user-username {
-    color: #71767b;
-    margin-top: 4px;
-    margin-bottom: 14px;
+.Follow-avatar img {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 2px solid var(--color-border);
 }
 
-.Follow button {
+.Follow-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.Follow-name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Follow-username {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Follow-action button {
+  font-size: var(--font-size-xs);
+  padding: var(--space-2) var(--space-3);
+  min-height: 32px;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .Follow {
+    flex-wrap: wrap;
+  }
+
+  .Follow-action {
     width: 100%;
+    padding-left: calc(42px + var(--space-3));
+  }
 
-    border: none;
-
-    border-radius: 999px;
-
-    padding: 12px;
-
-    background: linear-gradient(
-        90deg,
-        #1d9bf0,
-        #2563eb
-    );
-
-    color: white;
-
-    font-weight: 700;
-
-    cursor: pointer;
+  .Follow-action button {
+    width: 100%;
+  }
 }
