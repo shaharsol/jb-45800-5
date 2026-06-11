@@ -1,0 +1,9 @@
+{
+    "app": {
+        "port": 3005,
+        "name": "Betterx MCP"
+    },
+    "backend": {
+        "url": "http://localhost:3000"
+    }
+}
