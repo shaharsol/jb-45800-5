@@ -20,6 +20,16 @@ export async function getFollowers(request: Request, response: Response, next: N
 
 }
 
+export async function suggest(request: Request, response: Response, next: NextFunction) {
+    try {
+        const { userId } = request
+
+        response.json([])
+    } catch (e) {
+        next(e)
+    }
+}
+
 export async function getFollowing(request: Request, response: Response, next: NextFunction) {
     try {
         const { userId } = request
