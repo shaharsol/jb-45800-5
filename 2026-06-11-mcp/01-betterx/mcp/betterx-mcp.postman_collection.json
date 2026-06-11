@@ -57,6 +57,81 @@
       }
     },
     {
+      "name": "MCP - getFollowing tool",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json, text/event-stream"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"getFollowing\",\n    \"arguments\": {}\n  }\n}"
+        },
+        "url": "{{baseUrl}}/mcp"
+      }
+    },
+    {
+      "name": "MCP - getFollowers tool",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json, text/event-stream"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 4,\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"getFollowers\",\n    \"arguments\": {}\n  }\n}"
+        },
+        "url": "{{baseUrl}}/mcp"
+      }
+    },
+    {
+      "name": "MCP - follow tool",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json, text/event-stream"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 5,\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"follow\",\n    \"arguments\": {\n      \"followeeId\": \"PASTE_USER_ID_HERE\"\n    }\n  }\n}"
+        },
+        "url": "{{baseUrl}}/mcp"
+      }
+    },
+    {
       "name": "MCP - Ping tool",
       "request": {
         "method": "POST",

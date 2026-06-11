@@ -1,5 +1,8 @@
 import { McpServer } from '@modelcontextprotocol/server'
 import * as z from 'zod/v4'
+import { registerFollowTool } from './tools/follow.js'
+import { registerGetFollowersTool } from './tools/get-followers.js'
+import { registerGetFollowingTool } from './tools/get-following.js'
 
 export function createMcpServer() {
     const server = new McpServer(
@@ -29,6 +32,10 @@ export function createMcpServer() {
             }
         }
     )
+
+    registerGetFollowersTool(server)
+    registerGetFollowingTool(server)
+    registerFollowTool(server)
 
     return server
 }

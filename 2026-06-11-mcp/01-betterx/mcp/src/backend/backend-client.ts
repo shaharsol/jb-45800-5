@@ -13,8 +13,20 @@ export function createBackendClient(jwt?: string): AxiosInstance {
     })
 }
 
+export async function getFollowers(jwt?: string) {
+    const client = createBackendClient(jwt)
+    const { data } = await client.get('/follows/followers')
+    return data
+}
+
 export async function getFollowing(jwt?: string) {
     const client = createBackendClient(jwt)
     const { data } = await client.get('/follows/following')
+    return data
+}
+
+export async function follow(followeeId: string, jwt?: string) {
+    const client = createBackendClient(jwt)
+    const { data } = await client.post(`/follows/follow/${followeeId}`)
     return data
 }
