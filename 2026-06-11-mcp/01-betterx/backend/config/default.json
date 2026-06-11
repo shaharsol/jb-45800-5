@@ -24,6 +24,9 @@
     "io": {
         "url": "http://localhost:3004"
     },
+    "mcp": {
+        "server": "http://localhost:3005/mcp"
+    },
     "aws": {
         "bucket": "com.betterx.dev",
         "connection": {
