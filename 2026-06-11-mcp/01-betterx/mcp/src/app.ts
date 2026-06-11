@@ -8,7 +8,9 @@ import extractAuth from './middleware/extract-auth.js'
 const port = config.get<number>('app.port')
 const name = config.get<string>('app.name')
 
-const app = createMcpExpressApp()
+const app = config.has('app.host')
+    ? createMcpExpressApp({ host: config.get<string>('app.host') as '0.0.0.0' })
+    : createMcpExpressApp()
 
 app.get('/health', (request, response) => {
     response.json({ status: 'ok' })

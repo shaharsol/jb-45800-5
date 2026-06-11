@@ -67,6 +67,15 @@ services:
       - 3004:3004
     build: ./io
 
+  # docker run --name betterx-mcp -p 3005:3005 -d betterx-mcp
+  mcp:
+    container_name: betterx-mcp-compose
+    ports:
+      - 3005:3005
+    build: ./mcp
+    depends_on:
+      - backend
+
   # docker run --name betterx-backend-p 3000:3000 -e BETTERX_OPENAI_API_KEY=sk-proj-1234567890 -d shaharsol/betterx-backend:3.0
   backend:
     container_name: betterx-backend-compose
@@ -79,6 +88,8 @@ services:
       dockerfile: Dockerfile.compose
     depends_on:
       database:
+        condition: service_healthy
+      pgvector:
         condition: service_healthy
   
   # docker run --name betterx-front -p 6123:80 -d shaharsol/betterx-front:2.0
