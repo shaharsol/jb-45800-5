@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './Following.css'
 import Follow from '../follow/Follow'
 import Spinner from '../../common/spinner/Spinner'
@@ -9,6 +10,8 @@ import { populate } from '../../../redux/following-slice'
 import { showErrorToast } from '../../common/show-error-toast'
 
 export default function Following() {
+
+  const navigate = useNavigate()
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
@@ -38,6 +41,9 @@ export default function Following() {
 
   return (
     <div className='Following'>
+
+      <h3>Following</h3>
+      <button className='Following-suggest' onClick={() => navigate('/suggestions')}>suggest new people</button>
 
       {isLoading && <Spinner />}
 

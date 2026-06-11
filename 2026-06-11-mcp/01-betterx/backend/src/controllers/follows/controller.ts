@@ -133,11 +133,22 @@ Order by strongest recommendation first.
         }
 
         const allowedUserIds = new Set(suggestedUserIds)
-        const validatedRecommendations = recommendations.filter(recommendation => {
-            return typeof recommendation?.userId === 'string'
-                && typeof recommendation?.reasonToFollow === 'string'
-                && allowedUserIds.has(recommendation.userId)
-        })
+        const validatedRecommendations = recommendations
+            .filter(recommendation => {
+                return typeof recommendation?.userId === 'string'
+                    && typeof recommendation?.reasonToFollow === 'string'
+                    && allowedUserIds.has(recommendation.userId)
+            })
+            .map(recommendation => {
+                const user = usersById.get(recommendation.userId)!
+
+                return {
+                    userId: recommendation.userId,
+                    reasonToFollow: recommendation.reasonToFollow,
+                    name: user.name,
+                    username: user.username,
+                }
+            })
 
         response.json(validatedRecommendations)
     } catch (e) {
