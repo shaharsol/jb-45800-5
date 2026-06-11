@@ -25,7 +25,7 @@
         "url": "http://localhost:3004"
     },
     "mcp": {
-        "server": "http://localhost:3005/mcp"
+        "server": "https://52e4-31-154-18-65.ngrok-free.app/mcp"
     },
     "aws": {
         "bucket": "com.betterx.dev",

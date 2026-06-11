@@ -21,10 +21,12 @@
     "axios": "^1.17.0",
     "config": "^4.4.1",
     "express": "^5.2.1",
+    "morgan": "^1.11.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
+    "@types/morgan": "^1.9.10",
     "@types/node": "^20.11.0",
     "ts-node-dev": "^2.0.0",
     "tsx": "^4.22.4",
