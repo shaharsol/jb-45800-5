@@ -1,0 +1,8 @@
+{
+    "app": {
+        "port": "BETTERX_MCP_PORT"
+    },
+    "backend": {
+        "url": "BETTERX_BACKEND_URL"
+    }
+}
