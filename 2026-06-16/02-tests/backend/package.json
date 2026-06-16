@@ -9,7 +9,7 @@
     "build": "tsc -p tsconfig.build.json",
     "docker": "NODE_ENV=docker node dist/app.js",
     "compose": "NODE_ENV=compose node dist/app.js",
-    "test": "jest"
+    "test": "jest --verbose"
   },
   "keywords": [],
   "author": "",
