@@ -14,7 +14,7 @@ interface SuggestionProps {
 
 export default function Suggestion(props: SuggestionProps) {
 
-    const { suggestion, suggestion: { userId, name, username, reasonToFollow } } = props
+    const { suggestion: { userId, name, username, reasonToFollow } } = props
 
     const isFollowing = useAppSelector(state => state.followingSlice.following.findIndex(follow => follow.id === userId) > -1)
 

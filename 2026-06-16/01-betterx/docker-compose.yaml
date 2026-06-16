@@ -83,6 +83,7 @@ services:
       - 3000:3000
     environment:
       - BETTERX_OPENAI_API_KEY=${BETTERX_OPENAI_API_KEY}
+      - BETTERX_MCP_SERVER=${BETTERX_MCP_SERVER}
     build:
       context: ./backend
       dockerfile: Dockerfile.compose
