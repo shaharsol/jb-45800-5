@@ -2,6 +2,7 @@
 
 ## Overview
 
+
 Add a standalone **MCP server** service to the BetterX monorepo. The MCP server acts as a thin proxy: it exposes follow-related tools to MCP clients (e.g. Cursor), and each tool forwards the request to the existing BetterX REST backend using the caller's JWT.
 
 The MCP server does **not** talk to MySQL or pgvector directly. It only speaks MCP over HTTP on one side and HTTP to the backend on the other.
