@@ -9,6 +9,7 @@ export function createBackendClient(jwt?: string): AxiosInstance {
         baseURL: config.get<string>('backend.url'),
         headers: {
             Authorization: `Bearer ${token}`,
+            'x-client-id': 'mcp',
         },
     })
 }

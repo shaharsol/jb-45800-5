@@ -188,10 +188,11 @@ export async function follow(request: Request<{followeeId: string}>, response: R
         const clientId = request.header('x-client-id')
 
         const follower = await User.findByPk(userId)
+        const followee = await User.findByPk(followeeId)
 
         socket.emit(SocketMessages.NEW_FOLLOW, {
             clientId,
-            follow: {...newFollow, follower}
+            follow: { ...newFollow.toJSON(), follower, followee }
         })
 
         console.log('emitted a NEW_FOLLOW socket message')

@@ -21,7 +21,7 @@ export default function Header() {
         {/* <a href="/profile">Profile</a> | <a href="/feed">Feed</a> */}
 
         {/* <Link to="/profile">Profile</Link> | <Link to="/feed">Feed</Link> */}
-        <NavLink to="/profile">Profile</NavLink> | <NavLink to="/feed">Feed</NavLink>
+        <NavLink to="/profile">Profile</NavLink> | <NavLink to="/feed">Feed</NavLink> | <NavLink to="/chat">Chat</NavLink>
       </div>
       <div>
         Welcome {name} | <button onClick={logMeOut}>logout</button>

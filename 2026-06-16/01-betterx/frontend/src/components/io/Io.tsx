@@ -7,7 +7,31 @@ import type Post from "../../models/Post"
 import AuthContext from "../auth/auth/AuthContext"
 import useUserId from "../../hooks/use-userId"
 import { newFollower } from "../../redux/followers-slice"
+import { follow as followUser } from "../../redux/following-slice"
+import store from "../../redux/store"
 import type User from "../../models/User"
+
+function getFollowIds(follow: Record<string, unknown>) {
+    const dataValues = follow.dataValues as Record<string, string> | undefined
+
+    return {
+        followerId: (follow.followerId as string | undefined) ?? dataValues?.followerId,
+        followeeId: (follow.followeeId as string | undefined) ?? dataValues?.followeeId,
+    }
+}
+
+function resolveFollowee(follow: Record<string, unknown>, followeeId: string): User | undefined {
+    const followee = follow.followee as User | undefined
+
+    if (followee?.id) {
+        return followee
+    }
+
+    const state = store.getState()
+
+    return state.followersSlice.followers.find((user) => user.id === followeeId)
+        ?? state.followingSlice.following.find((user) => user.id === followeeId)
+}
 
 export default function Io(props: PropsWithChildren) {
 
@@ -28,14 +52,22 @@ export default function Io(props: PropsWithChildren) {
             switch (eventName) {
                 case SocketMessages.NEW_FOLLOW: 
                     if(clientId !== payload.clientId) {
-                        // if the new follow record contains a followeeId which is mine
-                        // it means i have a new follower
-                        // it means i need to dispatch the newFollower action
-                        // to the redux (followers slice)
-                        const follow = payload.follow 
-                        if(follow.followeeId === userId ) {
-                            // here i want to dispatch
+                        const follow = payload.follow as Record<string, unknown>
+                        const { followerId, followeeId } = getFollowIds(follow)
+
+                        if (followeeId === userId) {
                             dispatch(newFollower(follow.follower as User))
+                        } else if (followerId === userId && followeeId) {
+                            const alreadyFollowing = store.getState().followingSlice.following
+                                .some((user) => user.id === followeeId)
+
+                            if (!alreadyFollowing) {
+                                const followee = resolveFollowee(follow, followeeId)
+
+                                if (followee) {
+                                    dispatch(followUser(followee))
+                                }
+                            }
                         }
                     }
                     break;

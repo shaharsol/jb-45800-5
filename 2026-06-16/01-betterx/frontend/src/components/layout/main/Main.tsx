@@ -4,6 +4,7 @@ import Feed from '../../posts/feed/Feed'
 import NotFound from '../not-found/NotFound'
 import UpdatePost from '../../posts/update-post/UpdatePost'
 import Suggestions from '../../follows/suggestions/Suggestions'
+import Chat from '../../chat/Chat'
 
 export default function Main() {
   return (
@@ -11,6 +12,7 @@ export default function Main() {
       <Route path="/" element={<Navigate to="/profile" />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/feed" element={<Feed />} />
+      <Route path="/chat" element={<Chat />} />
       <Route path="/suggestions" element={<Suggestions />} />
       <Route path="/update-post/:postId" element={<UpdatePost />} />
       <Route path="*" element={<NotFound />} />

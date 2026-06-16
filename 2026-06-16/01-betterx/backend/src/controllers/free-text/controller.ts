@@ -1,6 +1,8 @@
 import type { NextFunction, Request, Response } from "express";
 import config from 'config'
 import openai from "../../openai/openai";
+import ChatMessage from "../../models/ChatMessage";
+import type { EasyInputMessage } from "openai/resources/responses/responses";
 
 const betterxMcpTools = ['getFollowers', 'getFollowing', 'getFeed', 'createPost', 'follow']
 
@@ -16,9 +18,9 @@ function extractJwt(request: Request): string | null {
     return jwt || null
 }
 
-export async function freeTextRequest(request: Request<{}, {}, { prompt: string }>, response: Response, next: NextFunction) {
+export async function freeTextRequest(request: Request<{}, {}, { prompt: string, chatId: string }>, response: Response, next: NextFunction) {
     try {
-        const { prompt } = request.body
+        const { prompt, chatId } = request.body
         const jwt = extractJwt(request)
 
         if (!jwt) {
@@ -35,14 +37,23 @@ Use the MCP tools when needed to answer the user accurately.
 `.trim()
 
 
-console.log(`mcp server runs on ${config.get<string>('mcp.server')}`)
+        const history = await ChatMessage.findAll({
+            where: { chatId },
+            order: [['createdAt', 'ASC'], ['role', 'DESC']]
+        })
+
+        const input: EasyInputMessage[] = [
+            { role: 'system', content: systemPrompt },
+            ...history.map((m) => {
+                const role: 'user' | 'assistant' = m.role === 'assistant' ? 'assistant' : 'user'
+                return { role, content: m.message }
+            }),
+            { role: 'user', content: prompt },
+        ]
 
         const llmResponse = await openai.responses.create({
             model: 'gpt-4.1-mini',
-            input: [
-                { role: 'system', content: systemPrompt },
-                { role: 'user', content: prompt },
-            ],
+            input,
             tools: [
                 {
                     type: 'mcp',
@@ -65,6 +76,9 @@ console.log(`mcp server runs on ${config.get<string>('mcp.server')}`)
                 message: 'could not extract response from llm'
             })
         }
+
+        await ChatMessage.create({ chatId, role: 'user', message: prompt })
+        await ChatMessage.create({ chatId, role: 'assistant', message: answer })
 
         response.json({
             prompt,
