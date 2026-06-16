@@ -1,5 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/server'
 import * as z from 'zod/v4'
+import { registerCreatePostTool } from './tools/create-post.js'
 import { registerFollowTool } from './tools/follow.js'
 import { registerGetFeedTool } from './tools/get-feed.js'
 import { registerGetFollowersTool } from './tools/get-followers.js'
@@ -12,7 +13,7 @@ export function createMcpServer() {
             version: '1.0.0',
         },
         {
-            instructions: 'Tools for BetterX follows and feed. Requires a valid JWT in the Authorization header.',
+            instructions: 'Tools for BetterX follows, feed, and posts. Requires a valid JWT in the Authorization header.',
         }
     )
 
@@ -37,6 +38,7 @@ export function createMcpServer() {
     registerGetFollowersTool(server)
     registerGetFollowingTool(server)
     registerGetFeedTool(server)
+    registerCreatePostTool(server)
     registerFollowTool(server)
 
     return server

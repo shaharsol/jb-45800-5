@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import config from 'config'
 import openai from "../../openai/openai";
 
-const betterxMcpTools = ['getFollowers', 'getFollowing', 'getFeed', 'follow']
+const betterxMcpTools = ['getFollowers', 'getFollowing', 'getFeed', 'createPost', 'follow']
 
 function extractJwt(request: Request): string | null {
     const authHeader = request.get('Authorization')

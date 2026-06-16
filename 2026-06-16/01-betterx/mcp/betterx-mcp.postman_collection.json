@@ -290,6 +290,35 @@
           }
         },
         {
+          "name": "MCP - createPost tool",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json, text/event-stream"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt}}"
+              },
+              {
+                "key": "Mcp-Session-Id",
+                "value": "{{mcpSessionId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 7,\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"createPost\",\n    \"arguments\": {\n      \"title\": \"My new post title\",\n      \"body\": \"This is the body of my new post with enough characters.\"\n    }\n  }\n}"
+            },
+            "url": "{{baseUrl}}/mcp"
+          }
+        },
+        {
           "name": "MCP - follow tool",
           "request": {
             "method": "POST",
@@ -313,7 +342,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 7,\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"follow\",\n    \"arguments\": {\n      \"followeeId\": \"PASTE_USER_ID_HERE\"\n    }\n  }\n}"
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 8,\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"follow\",\n    \"arguments\": {\n      \"followeeId\": \"PASTE_USER_ID_HERE\"\n    }\n  }\n}"
             },
             "url": "{{baseUrl}}/mcp"
           }

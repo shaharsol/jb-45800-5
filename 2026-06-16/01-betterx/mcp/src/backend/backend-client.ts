@@ -36,3 +36,9 @@ export async function follow(followeeId: string, jwt?: string) {
     const { data } = await client.post(`/follows/follow/${followeeId}`)
     return data
 }
+
+export async function createPost({ title, body }: { title: string; body: string }, jwt?: string) {
+    const client = createBackendClient(jwt)
+    const { data } = await client.post('/profile', { title, body })
+    return data
+}

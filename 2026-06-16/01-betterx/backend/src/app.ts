@@ -13,6 +13,7 @@ import authEnforce from './middlewares/auth-enforce'
 import commentsRouter from './routers/comments'
 import cors from 'cors'
 import fileUpload from 'express-fileupload'
+import morgan from 'morgan'
 import { createAppBucketIfNotExist } from './aws/aws'
 import draftsRouter from './routers/drafts'
 import freeTextRouter from './routers/free-text'
@@ -24,6 +25,8 @@ import freeTextRouter from './routers/free-text'
 
 
     const app = express()
+
+    app.use(morgan('dev'))
 
     // middlewares
     app.use('/', cors())
