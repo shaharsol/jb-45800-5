@@ -1,0 +1,22 @@
+.Suggestions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 600px;
+}
+
+.Suggestions h2 {
+    margin: 0;
+    color: #0f1419;
+}
+
+.Suggestions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.Suggestions-empty {
+    margin: 0;
+    color: #536471;
+}
