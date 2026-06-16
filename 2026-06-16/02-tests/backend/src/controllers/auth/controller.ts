@@ -4,9 +4,11 @@ import config from 'config'
 import { createHmac } from "crypto";
 import { sign } from "jsonwebtoken";
 
-function hashPassword(plainTextPassword: string): string {
+export function hashPassword(plainTextPassword: string): string {
+    if(!plainTextPassword) return;
     const key = config.get<string>('app.encryptionKey')
     return createHmac('sha256', key).update(plainTextPassword).digest('hex')
+    // return 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad'
 }
 
 
