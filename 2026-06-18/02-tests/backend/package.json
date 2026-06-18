@@ -10,7 +10,7 @@
     "docker": "NODE_ENV=docker node dist/server.js",
     "compose": "NODE_ENV=compose node dist/server.js",
     "test": "jest --verbose",
-    "test:integration": "jest --verbose --testPathPatterns=integration"
+    "test:integration": "jest --verbose --silent --testPathPatterns=integration"
   },
   "keywords": [],
   "author": "",
