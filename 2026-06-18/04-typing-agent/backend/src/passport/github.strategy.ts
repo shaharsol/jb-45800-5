@@ -20,7 +20,7 @@ passport.use(
     ) => {
       try {
         const user = await findOrCreateFromGitHub(profile);
-        done(null, user);
+        done(null, user as unknown as Express.User);
       } catch (error) {
         done(error as Error);
       }
