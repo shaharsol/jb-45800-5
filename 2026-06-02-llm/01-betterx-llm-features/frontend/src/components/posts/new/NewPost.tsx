@@ -8,13 +8,10 @@ import SpinnerButton from '../../common/spinner-button/SpinnerButton'
 import ContentGuidelinesModal from './ContentGuidelinesModal'
 import { useAppDispatch } from '../../../redux/hooks'
 import { add } from '../../../redux/profile-slice'
-import { useRef, useState, type ChangeEvent, type MouseEvent } from 'react'
-import { v4 as uuidv4 } from 'uuid'
+import { useState, type ChangeEvent, type MouseEvent } from 'react'
 
 
 export default function NewPost() {
-
-    const chatIdRef = useRef<string>(uuidv4())
 
     const [previewImage, setPreviewImage] = useState<string>('')
     const [aiImageFile, setAiImageFile] = useState<File | null>(null)
@@ -56,13 +53,6 @@ export default function NewPost() {
 
     const { handleSubmit, register, reset, formState, getValues, setValue } = useForm<PostDraft>()
 
-    const {
-        handleSubmit: handleUserImproveSubmit,
-        register: registerUserImprove,
-        reset: resetUserImprove,
-        formState: userImproveFormState,
-    } = useForm<{ prompt: string }>()
-
     async function improve(event: MouseEvent<HTMLButtonElement>) {
         event.preventDefault()
         try {
@@ -89,18 +79,6 @@ export default function NewPost() {
             setPreviewImage(dataUrl)
         } finally {
             setIsGeneratingPic(false)
-        }
-    }
-
-    async function userImprove(values: { prompt: string }) {
-        try {
-            setIsUserImproving(true)
-            const body = getValues('body')
-            const { improved } = await draftsService.userImprove(body, values.prompt, chatIdRef.current)
-            setValue('body', improved)
-            resetUserImprove()
-        } finally {
-            setIsUserImproving(false)
         }
     }
 
