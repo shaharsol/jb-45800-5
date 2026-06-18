@@ -7,4 +7,8 @@ module.exports = {
     moduleFileExtensions: ['ts', 'js', 'json', 'node'],
     clearMocks: true,
     passWithNoTests: true,
+    moduleNameMapper: {
+        '^pgvector/sequelize$': '<rootDir>/src/test/mocks/pgvector-sequelize.ts',
+        '^pgvector$': '<rootDir>/src/test/mocks/pgvector.ts',
+    },
 }
