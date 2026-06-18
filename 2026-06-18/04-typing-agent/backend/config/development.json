@@ -1,0 +1,3 @@
+{
+  "mongoUri": "mongodb://mongodb:27017/oauth-app"
+}
