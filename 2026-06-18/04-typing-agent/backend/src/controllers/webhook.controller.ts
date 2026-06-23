@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 
+const TYPING_AGENT_MARKER = '[TypingAgent]';
+
 interface IssueWebhookPayload {
   action: string;
   issue?: {
@@ -18,8 +20,12 @@ export function handleGithubWebhook(req: Request, res: Response): void {
   }
 
   if (event === 'issues' && payload.action === 'opened' && payload.issue) {
-    console.log('New issue title:', payload.issue.title);
-    console.log('New issue body:', payload.issue.body ?? '');
+    if (!payload.issue.title.includes(TYPING_AGENT_MARKER)) {
+      console.log('Ignoring irrelevant issue:', payload.issue.title);
+    } else {
+      console.log('New issue title:', payload.issue.title);
+      console.log('New issue body:', payload.issue.body ?? '');
+    }
   }
 
   res.status(200).send('OK');
