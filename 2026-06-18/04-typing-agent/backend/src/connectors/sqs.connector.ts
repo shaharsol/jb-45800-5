@@ -84,16 +84,18 @@ export async function ensureQueueExists(): Promise<string> {
   }
 }
 
-export async function sendQueueMessage(body: string): Promise<void> {
+export async function sendQueueMessage(body: string): Promise<string | undefined> {
   const url = await ensureQueueExists();
   const sqs = getSqsClient();
 
-  await sqs.send(
+  const response = await sqs.send(
     new SendMessageCommand({
       QueueUrl: url,
       MessageBody: body,
     })
   );
+
+  return response.MessageId;
 }
 
 export async function receiveQueueMessages(maxMessages = 1): Promise<Message[]> {

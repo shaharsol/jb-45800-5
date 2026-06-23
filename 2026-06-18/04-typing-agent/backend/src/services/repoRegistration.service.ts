@@ -8,7 +8,7 @@ export async function upsertRepoRegistration(
   await RepoRegistration.findOneAndUpdate(
     { repoOwner, repoName },
     { userId, repoOwner, repoName },
-    { upsert: true, new: true, setDefaultsOnInsert: true }
+    { upsert: true, setDefaultsOnInsert: true }
   );
 }
 
