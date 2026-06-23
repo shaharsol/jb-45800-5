@@ -1,9 +1,7 @@
 import { Request, Response } from 'express';
-import { enqueueTechLeadJob } from '../queues/techLead.queue';
+import { enqueueAgentJob } from '../queues/enqueueAgentJob';
+import { resolveTypingAgentRoute } from '../queues/typingAgent.routing';
 import { findUserIdByRepo } from '../services/repoRegistration.service';
-
-const TYPING_AGENT_MARKER = '[TypingAgent]';
-const TYPING_AGENT_SUB_ISSUE_PATTERN = /\[TypingAgent-(?:BackendDev|FrontendDev|DevOps)\]/;
 
 interface IssueWebhookPayload {
   action: string;
@@ -18,10 +16,6 @@ interface IssueWebhookPayload {
   };
 }
 
-function isTechLeadParentIssue(title: string): boolean {
-  return title.includes(TYPING_AGENT_MARKER) && !TYPING_AGENT_SUB_ISSUE_PATTERN.test(title);
-}
-
 export async function handleGithubWebhook(req: Request, res: Response): Promise<void> {
   const event = req.headers['x-github-event'];
   const payload = JSON.parse((req.body as Buffer).toString()) as IssueWebhookPayload;
@@ -33,15 +27,16 @@ export async function handleGithubWebhook(req: Request, res: Response): Promise<
 
   if (event === 'issues' && payload.action === 'opened' && payload.issue && payload.repository) {
     const { issue, repository } = payload;
+    const route = resolveTypingAgentRoute(issue.title);
 
-    if (!isTechLeadParentIssue(issue.title)) {
+    if (!route) {
       console.log('Ignoring irrelevant issue:', issue.title);
       res.status(200).send('OK');
       return;
     }
 
-    console.log('New issue title:', issue.title);
-    console.log('New issue body:', issue.body ?? '');
+    console.log(`[webhook] TypingAgent issue (${route}):`, issue.title);
+    console.log('[webhook] Issue body:', issue.body ?? '');
 
     const userId = await findUserIdByRepo(repository.owner.login, repository.name);
     if (!userId) {
@@ -53,7 +48,7 @@ export async function handleGithubWebhook(req: Request, res: Response): Promise<
     }
 
     try {
-      await enqueueTechLeadJob({
+      await enqueueAgentJob(route, {
         userId,
         repoOwner: repository.owner.login,
         repoName: repository.name,
@@ -62,7 +57,7 @@ export async function handleGithubWebhook(req: Request, res: Response): Promise<
         issueBody: issue.body ?? '',
       });
     } catch (error) {
-      console.error('Failed to enqueue TechLead job:', error);
+      console.error(`Failed to enqueue ${route} job:`, error);
       res.status(500).json({ message: 'Failed to enqueue job' });
       return;
     }

@@ -26,7 +26,12 @@
   "sqs": {
     "region": "us-east-1",
     "endpoint": "http://localhost:4566",
-    "queueName": "tech-lead-queue",
+    "queues": {
+      "techLead": "tech-lead-queue",
+      "backendDev": "backend-dev-queue",
+      "frontendDev": "frontend-dev-queue",
+      "devOps": "devops-queue"
+    },
     "visibilityTimeoutSeconds": 3600,
     "waitTimeSeconds": 20,
     "pollIntervalMs": 5000,

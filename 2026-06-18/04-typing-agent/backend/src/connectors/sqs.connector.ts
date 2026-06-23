@@ -10,7 +10,7 @@ import {
 import { appConfig } from '../config';
 
 let client: SQSClient | null = null;
-let queueUrl: string | null = null;
+const queueUrls = new Map<string, string>();
 
 function getSqsClient(): SQSClient {
   if (!client) {
@@ -35,19 +35,19 @@ function getSqsClient(): SQSClient {
   return client;
 }
 
-export async function ensureQueueExists(): Promise<string> {
-  if (queueUrl) {
-    return queueUrl;
+export async function ensureQueueExists(queueName: string): Promise<string> {
+  const cached = queueUrls.get(queueName);
+  if (cached) {
+    return cached;
   }
 
   const sqs = getSqsClient();
-  const queueName = appConfig.sqs.queueName;
 
   try {
     const response = await sqs.send(new GetQueueUrlCommand({ QueueName: queueName }));
     if (response.QueueUrl) {
-      queueUrl = response.QueueUrl;
-      return queueUrl;
+      queueUrls.set(queueName, response.QueueUrl);
+      return response.QueueUrl;
     }
   } catch {
     // Queue does not exist yet.
@@ -67,9 +67,9 @@ export async function ensureQueueExists(): Promise<string> {
       throw new Error(`Failed to create queue ${queueName}`);
     }
 
-    queueUrl = createResponse.QueueUrl;
+    queueUrls.set(queueName, createResponse.QueueUrl);
     console.log(`Created SQS queue: ${queueName}`);
-    return queueUrl;
+    return createResponse.QueueUrl;
   } catch (error) {
     const err = error as { name?: string };
     if (err.name === 'QueueNameExists' || err.name === 'QueueAlreadyExists') {
@@ -77,15 +77,23 @@ export async function ensureQueueExists(): Promise<string> {
       if (!response.QueueUrl) {
         throw new Error(`Queue URL missing for ${queueName}`);
       }
-      queueUrl = response.QueueUrl;
-      return queueUrl;
+      queueUrls.set(queueName, response.QueueUrl);
+      return response.QueueUrl;
     }
     throw error;
   }
 }
 
-export async function sendQueueMessage(body: string): Promise<string | undefined> {
-  const url = await ensureQueueExists();
+export async function ensureAllQueuesExist(): Promise<void> {
+  const queueNames = Object.values(appConfig.sqs.queues);
+  await Promise.all(queueNames.map((queueName) => ensureQueueExists(queueName)));
+}
+
+export async function sendQueueMessage(
+  queueName: string,
+  body: string
+): Promise<string | undefined> {
+  const url = await ensureQueueExists(queueName);
   const sqs = getSqsClient();
 
   const response = await sqs.send(
@@ -98,8 +106,11 @@ export async function sendQueueMessage(body: string): Promise<string | undefined
   return response.MessageId;
 }
 
-export async function receiveQueueMessages(maxMessages = 1): Promise<Message[]> {
-  const url = await ensureQueueExists();
+export async function receiveQueueMessages(
+  queueName: string,
+  maxMessages = 1
+): Promise<Message[]> {
+  const url = await ensureQueueExists(queueName);
   const sqs = getSqsClient();
 
   const response = await sqs.send(
@@ -114,8 +125,11 @@ export async function receiveQueueMessages(maxMessages = 1): Promise<Message[]> 
   return response.Messages ?? [];
 }
 
-export async function deleteQueueMessage(receiptHandle: string): Promise<void> {
-  const url = await ensureQueueExists();
+export async function deleteQueueMessage(
+  queueName: string,
+  receiptHandle: string
+): Promise<void> {
+  const url = await ensureQueueExists(queueName);
   const sqs = getSqsClient();
 
   await sqs.send(

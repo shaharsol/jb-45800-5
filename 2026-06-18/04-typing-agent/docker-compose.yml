@@ -1,3 +1,21 @@
+x-worker-environment: &worker-environment
+  NODE_ENV: development
+  MONGO_URI: mongodb://mongodb:27017/oauth-app
+  JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me}
+  GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+  GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+  OPENAI_API_KEY: ${OPENAI_API_KEY}
+  OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o}
+  SQS_ENDPOINT: http://localstack:4566
+  SQS_REGION: us-east-1
+  SQS_QUEUE_TECH_LEAD: tech-lead-queue
+  SQS_QUEUE_BACKEND_DEV: backend-dev-queue
+  SQS_QUEUE_FRONTEND_DEV: frontend-dev-queue
+  SQS_QUEUE_DEVOPS: devops-queue
+  SQS_VISIBILITY_TIMEOUT_SECONDS: 3600
+  AWS_ACCESS_KEY_ID: test
+  AWS_SECRET_ACCESS_KEY: test
+
 services:
   mongodb:
     image: mongo:7
@@ -33,12 +51,55 @@ services:
       OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o}
       SQS_ENDPOINT: http://localstack:4566
       SQS_REGION: us-east-1
-      SQS_QUEUE_NAME: tech-lead-queue
+      SQS_QUEUE_TECH_LEAD: tech-lead-queue
+      SQS_QUEUE_BACKEND_DEV: backend-dev-queue
+      SQS_QUEUE_FRONTEND_DEV: frontend-dev-queue
+      SQS_QUEUE_DEVOPS: devops-queue
       SQS_VISIBILITY_TIMEOUT_SECONDS: 3600
       AWS_ACCESS_KEY_ID: test
       AWS_SECRET_ACCESS_KEY: test
       FRONTEND_URL: http://localhost:5173
       CORS_ORIGIN: http://localhost:5173
+    depends_on:
+      - mongodb
+      - localstack
+
+  worker-tech-lead:
+    build: ./backend
+    command: ["node", "dist/worker.js"]
+    environment:
+      <<: *worker-environment
+      WORKER_TYPE: techLead
+    depends_on:
+      - mongodb
+      - localstack
+
+  worker-backend-dev:
+    build: ./backend
+    command: ["node", "dist/worker.js"]
+    environment:
+      <<: *worker-environment
+      WORKER_TYPE: backendDev
+    depends_on:
+      - mongodb
+      - localstack
+
+  worker-frontend-dev:
+    build: ./backend
+    command: ["node", "dist/worker.js"]
+    environment:
+      <<: *worker-environment
+      WORKER_TYPE: frontendDev
+    depends_on:
+      - mongodb
+      - localstack
+
+  worker-devops:
+    build: ./backend
+    command: ["node", "dist/worker.js"]
+    environment:
+      <<: *worker-environment
+      WORKER_TYPE: devOps
     depends_on:
       - mongodb
       - localstack

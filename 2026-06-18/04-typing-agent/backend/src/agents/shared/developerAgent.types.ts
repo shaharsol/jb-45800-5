@@ -1,5 +1,4 @@
-export interface TechLeadQueueMessage {
-  userId: string;
+export interface DeveloperAgentInput {
   repoOwner: string;
   repoName: string;
   issueNumber: number;

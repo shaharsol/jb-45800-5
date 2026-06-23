@@ -5,10 +5,18 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "node scripts/dev.js",
-    "worker:dev": "node scripts/worker-dev.js",
+    "worker:dev": "node scripts/worker-dev.js techLead",
+    "worker:tech-lead:dev": "node scripts/worker-dev.js techLead",
+    "worker:backend:dev": "node scripts/worker-dev.js backendDev",
+    "worker:frontend:dev": "node scripts/worker-dev.js frontendDev",
+    "worker:devops:dev": "node scripts/worker-dev.js devOps",
     "build": "tsc",
     "start": "node dist/server.js",
-    "worker": "node dist/worker.js"
+    "worker": "node scripts/run-worker-prod.js techLead",
+    "worker:tech-lead": "node scripts/run-worker-prod.js techLead",
+    "worker:backend": "node scripts/run-worker-prod.js backendDev",
+    "worker:frontend": "node scripts/run-worker-prod.js frontendDev",
+    "worker:devops": "node scripts/run-worker-prod.js devOps"
   },
   "keywords": [],
   "author": "",

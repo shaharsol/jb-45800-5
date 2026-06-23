@@ -26,7 +26,12 @@
   "sqs": {
     "region": "SQS_REGION",
     "endpoint": "SQS_ENDPOINT",
-    "queueName": "SQS_QUEUE_NAME",
+    "queues": {
+      "techLead": "SQS_QUEUE_TECH_LEAD",
+      "backendDev": "SQS_QUEUE_BACKEND_DEV",
+      "frontendDev": "SQS_QUEUE_FRONTEND_DEV",
+      "devOps": "SQS_QUEUE_DEVOPS"
+    },
     "visibilityTimeoutSeconds": "SQS_VISIBILITY_TIMEOUT_SECONDS",
     "waitTimeSeconds": "SQS_WAIT_TIME_SECONDS",
     "pollIntervalMs": "SQS_POLL_INTERVAL_MS",

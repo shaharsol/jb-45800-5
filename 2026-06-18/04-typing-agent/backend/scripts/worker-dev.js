@@ -3,6 +3,7 @@ require('./load-env');
 const { spawn } = require('child_process');
 const path = require('path');
 
+const workerType = process.argv[2] || 'techLead';
 const bin = require.resolve('ts-node-dev/lib/bin');
 const child = spawn(
   process.execPath,
@@ -10,7 +11,7 @@ const child = spawn(
   {
     stdio: 'inherit',
     cwd: path.join(__dirname, '..'),
-    env: process.env,
+    env: { ...process.env, WORKER_TYPE: workerType },
   }
 );
 
