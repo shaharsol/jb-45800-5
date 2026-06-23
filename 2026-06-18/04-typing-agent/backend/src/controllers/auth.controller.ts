@@ -10,7 +10,10 @@ export async function callback(req: Request, res: Response): Promise<void> {
   const userWithToken = await findByIdWithAccessToken(user._id.toString());
 
   if (userWithToken?.githubAccessToken) {
-    registerIssueWebhooksForUser(userWithToken.githubAccessToken).catch((error) => {
+    registerIssueWebhooksForUser(
+      userWithToken.githubAccessToken,
+      user._id.toString()
+    ).catch((error) => {
       console.error('Failed to register issue webhooks:', error);
     });
   }

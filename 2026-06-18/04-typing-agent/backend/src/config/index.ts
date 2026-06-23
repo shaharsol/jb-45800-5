@@ -25,4 +25,14 @@ export const appConfig = {
     model: config.get<string>('openai.model'),
     defaultInstructions: config.get<string>('openai.defaultInstructions'),
   },
+  sqs: {
+    region: config.get<string>('sqs.region'),
+    endpoint: config.has('sqs.endpoint') ? config.get<string>('sqs.endpoint') : '',
+    queueName: config.get<string>('sqs.queueName'),
+    visibilityTimeoutSeconds: config.get<number>('sqs.visibilityTimeoutSeconds'),
+    waitTimeSeconds: config.get<number>('sqs.waitTimeSeconds'),
+    pollIntervalMs: config.get<number>('sqs.pollIntervalMs'),
+    accessKeyId: config.get<string>('sqs.accessKeyId'),
+    secretAccessKey: config.get<string>('sqs.secretAccessKey'),
+  },
 };

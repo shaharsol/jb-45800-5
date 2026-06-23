@@ -1,4 +1,5 @@
 import { appConfig } from '../config';
+import { upsertRepoRegistration } from './repoRegistration.service';
 
 const GITHUB_API = 'https://api.github.com';
 
@@ -116,13 +117,16 @@ export async function createIssue(
   });
 }
 
-export async function registerIssueWebhooksForUser(accessToken: string): Promise<void> {
-
+export async function registerIssueWebhooksForUser(
+  accessToken: string,
+  userId: string
+): Promise<void> {
   const repos = await listAdminRepos(accessToken);
 
   for (const repo of repos) {
     try {
       await ensureIssueWebhook(accessToken, repo.owner.login, repo.name);
+      await upsertRepoRegistration(userId, repo.owner.login, repo.name);
     } catch (error) {
       console.error(
         `Failed to register webhook for ${repo.owner.login}/${repo.name}:`,

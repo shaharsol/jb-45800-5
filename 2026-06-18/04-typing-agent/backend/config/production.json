@@ -4,5 +4,10 @@
   },
   "openai": {
     "apiKey": ""
+  },
+  "sqs": {
+    "endpoint": "",
+    "accessKeyId": "",
+    "secretAccessKey": ""
   }
 }

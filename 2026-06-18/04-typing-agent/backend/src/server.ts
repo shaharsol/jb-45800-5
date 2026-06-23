@@ -5,6 +5,7 @@ import './passport/github.strategy';
 
 async function start(): Promise<void> {
   await connectDB();
+
   app.listen(appConfig.port, () => {
     console.log(`Server running on port ${appConfig.port}`);
   });

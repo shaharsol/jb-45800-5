@@ -6,6 +6,16 @@ services:
     volumes:
       - mongo_data:/data/db
 
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"
+    environment:
+      SERVICES: sqs
+      DEFAULT_REGION: us-east-1
+    volumes:
+      - localstack_data:/var/lib/localstack
+
   backend:
     build: ./backend
     ports:
@@ -21,10 +31,17 @@ services:
       GITHUB_WEBHOOK_SECRET: ${GITHUB_WEBHOOK_SECRET:-dev-webhook-secret}
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o}
+      SQS_ENDPOINT: http://localstack:4566
+      SQS_REGION: us-east-1
+      SQS_QUEUE_NAME: tech-lead-queue
+      SQS_VISIBILITY_TIMEOUT_SECONDS: 3600
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
       FRONTEND_URL: http://localhost:5173
       CORS_ORIGIN: http://localhost:5173
     depends_on:
       - mongodb
+      - localstack
 
   frontend:
     build:
@@ -38,3 +55,4 @@ services:
 
 volumes:
   mongo_data:
+  localstack_data:
