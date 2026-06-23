@@ -1,5 +1,8 @@
 {
   "jwt": {
     "secret": ""
+  },
+  "openai": {
+    "apiKey": ""
   }
 }

@@ -17,5 +17,10 @@
   },
   "cors": {
     "origin": "CORS_ORIGIN"
+  },
+  "openai": {
+    "apiKey": "OPENAI_API_KEY",
+    "model": "OPENAI_MODEL",
+    "defaultInstructions": "OPENAI_DEFAULT_INSTRUCTIONS"
   }
 }

@@ -14,6 +14,12 @@ interface GitHubHook {
   events: string[];
 }
 
+interface GitHubIssue {
+  number: number;
+  html_url: string;
+  title: string;
+}
+
 async function githubFetch<T>(
   path: string,
   accessToken: string,
@@ -94,6 +100,20 @@ async function ensureIssueWebhook(
   });
 
   console.log(`Registered issues webhook on ${owner}/${repo}`);
+}
+
+export async function createIssue(
+  accessToken: string,
+  owner: string,
+  repo: string,
+  title: string,
+  body: string
+): Promise<GitHubIssue> {
+  return githubFetch<GitHubIssue>(`/repos/${owner}/${repo}/issues`, accessToken, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title, body }),
+  });
 }
 
 export async function registerIssueWebhooksForUser(accessToken: string): Promise<void> {

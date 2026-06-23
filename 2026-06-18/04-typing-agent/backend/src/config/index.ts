@@ -20,4 +20,9 @@ export const appConfig = {
   cors: {
     origin: config.get<string>('cors.origin'),
   },
+  openai: {
+    apiKey: config.get<string>('openai.apiKey'),
+    model: config.get<string>('openai.model'),
+    defaultInstructions: config.get<string>('openai.defaultInstructions'),
+  },
 };
