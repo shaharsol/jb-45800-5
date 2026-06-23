@@ -1,7 +1,7 @@
 export const TECH_LEAD_AGENT_MARKERS = {
-  BackendDev: '[TypingAgent]-BackendDev',
-  FrontendDev: '[TypingAgent]-FrontendDev',
-  DevOps: '[TypingAgent]-DevOps',
+  BackendDev: '[TypingAgent-BackendDev]',
+  FrontendDev: '[TypingAgent-FrontendDev]',
+  DevOps: '[TypingAgent-DevOps]',
 } as const;
 
 export type TechLeadSubAgent = keyof typeof TECH_LEAD_AGENT_MARKERS;

@@ -3,7 +3,7 @@ import { enqueueTechLeadJob } from '../queues/techLead.queue';
 import { findUserIdByRepo } from '../services/repoRegistration.service';
 
 const TYPING_AGENT_MARKER = '[TypingAgent]';
-const TYPING_AGENT_SUB_MARKER = '[TypingAgent]-';
+const TYPING_AGENT_SUB_ISSUE_PATTERN = /\[TypingAgent-(?:BackendDev|FrontendDev|DevOps)\]/;
 
 interface IssueWebhookPayload {
   action: string;
@@ -19,7 +19,7 @@ interface IssueWebhookPayload {
 }
 
 function isTechLeadParentIssue(title: string): boolean {
-  return title.includes(TYPING_AGENT_MARKER) && !title.includes(TYPING_AGENT_SUB_MARKER);
+  return title.includes(TYPING_AGENT_MARKER) && !TYPING_AGENT_SUB_ISSUE_PATTERN.test(title);
 }
 
 export async function handleGithubWebhook(req: Request, res: Response): Promise<void> {
