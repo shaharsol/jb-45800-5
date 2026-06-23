@@ -10,16 +10,16 @@ passport.use(
       clientID: appConfig.github.clientId,
       clientSecret: appConfig.github.clientSecret,
       callbackURL: appConfig.github.callbackUrl,
-      scope: ['user:email'],
+      scope: ['user:email', 'repo'],
     },
     async (
-      _accessToken: string,
+      accessToken: string,
       _refreshToken: string,
       profile: Profile,
       done: VerifyCallback
     ) => {
       try {
-        const user = await findOrCreateFromGitHub(profile);
+        const user = await findOrCreateFromGitHub(profile, accessToken);
         done(null, user as unknown as Express.User);
       } catch (error) {
         done(error as Error);

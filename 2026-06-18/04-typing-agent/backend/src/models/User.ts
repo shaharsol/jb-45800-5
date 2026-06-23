@@ -6,6 +6,7 @@ export interface IUser extends Document {
   displayName?: string;
   avatarUrl?: string;
   email?: string;
+  githubAccessToken?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -17,6 +18,7 @@ const userSchema = new Schema<IUser>(
     displayName: { type: String },
     avatarUrl: { type: String },
     email: { type: String },
+    githubAccessToken: { type: String, select: false },
   },
   { timestamps: true }
 );

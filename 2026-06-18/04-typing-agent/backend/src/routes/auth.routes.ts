@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import passport from 'passport';
+import { appConfig } from '../config';
 import * as authController from '../controllers/auth.controller';
 import { authenticate } from '../middleware/authenticate';
 
@@ -9,7 +10,10 @@ router.get('/github', passport.authenticate('github', { session: false }));
 
 router.get(
   '/github/callback',
-  passport.authenticate('github', { session: false, failureRedirect: '/' }),
+  passport.authenticate('github', {
+    session: false,
+    failureRedirect: appConfig.frontend.url,
+  }),
   authController.callback
 );
 
