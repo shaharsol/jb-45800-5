@@ -2,9 +2,19 @@ import { Request, Response } from 'express';
 import { appConfig } from '../config';
 import { IUser } from '../models/User';
 import { signToken } from '../services/auth.service';
+import { registerIssueWebhooksForUser } from '../services/github.service';
+import { findByIdWithAccessToken } from '../services/user.service';
 
-export function callback(req: Request, res: Response): void {
+export async function callback(req: Request, res: Response): Promise<void> {
   const user = req.user as unknown as IUser;
+  const userWithToken = await findByIdWithAccessToken(user._id.toString());
+
+  if (userWithToken?.githubAccessToken) {
+    registerIssueWebhooksForUser(userWithToken.githubAccessToken).catch((error) => {
+      console.error('Failed to register issue webhooks:', error);
+    });
+  }
+
   const token = signToken(user._id.toString());
   res.redirect(`${appConfig.frontend.url}?token=${token}`);
 }

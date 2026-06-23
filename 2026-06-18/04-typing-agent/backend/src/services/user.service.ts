@@ -27,3 +27,7 @@ export async function findOrCreateFromGitHub(
 export async function findById(id: string): Promise<IUser | null> {
   return User.findById(id);
 }
+
+export async function findByIdWithAccessToken(id: string): Promise<IUser | null> {
+  return User.findById(id).select('+githubAccessToken');
+}

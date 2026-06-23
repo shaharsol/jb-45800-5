@@ -11,6 +11,8 @@ export const appConfig = {
     clientId: config.get<string>('github.clientId'),
     clientSecret: config.get<string>('github.clientSecret'),
     callbackUrl: config.get<string>('github.callbackUrl'),
+    webhookUrl: config.get<string>('github.webhookUrl'),
+    webhookSecret: config.get<string>('github.webhookSecret'),
   },
   frontend: {
     url: config.get<string>('frontend.url'),

@@ -8,7 +8,9 @@
   "github": {
     "clientId": "GITHUB_CLIENT_ID",
     "clientSecret": "GITHUB_CLIENT_SECRET",
-    "callbackUrl": "GITHUB_CALLBACK_URL"
+    "callbackUrl": "GITHUB_CALLBACK_URL",
+    "webhookUrl": "GITHUB_WEBHOOK_URL",
+    "webhookSecret": "GITHUB_WEBHOOK_SECRET"
   },
   "frontend": {
     "url": "FRONTEND_URL"
