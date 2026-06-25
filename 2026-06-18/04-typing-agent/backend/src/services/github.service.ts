@@ -1,7 +1,6 @@
 import { appConfig } from '../config';
 import { upsertRepoRegistration } from './repoRegistration.service';
-
-const GITHUB_API = 'https://api.github.com';
+import { githubApiFetch } from './githubApi';
 
 interface GitHubRepo {
   name: string;
@@ -34,26 +33,7 @@ async function githubFetch<T>(
   accessToken: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const response = await fetch(`${GITHUB_API}${path}`, {
-    ...options,
-    headers: {
-      Accept: 'application/vnd.github+json',
-      Authorization: `Bearer ${accessToken}`,
-      'X-GitHub-Api-Version': '2022-11-28',
-      ...(options.headers ?? {}),
-    },
-  });
-
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`GitHub API ${path} failed (${response.status}): ${text}`);
-  }
-
-  if (response.status === 204) {
-    return undefined as T;
-  }
-
-  return response.json() as Promise<T>;
+  return githubApiFetch<T>(path, accessToken, options);
 }
 
 async function listAdminRepos(accessToken: string): Promise<GitHubRepo[]> {

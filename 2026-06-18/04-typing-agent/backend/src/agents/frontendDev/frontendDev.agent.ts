@@ -14,6 +14,7 @@ export async function runFrontendDevAgent(
     'FrontendDev',
     FRONTEND_DEV_SYSTEM_PROMPT,
     'frontend_dev_code_generation',
+    githubAccessToken,
     prepared
   );
 }

@@ -14,6 +14,7 @@ export async function runBackendDevAgent(
     'BackendDev',
     BACKEND_DEV_SYSTEM_PROMPT,
     'backend_dev_code_generation',
+    githubAccessToken,
     prepared
   );
 }
