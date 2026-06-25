@@ -2,19 +2,19 @@ import { runBackendDevAgent } from '../agents/backendDev';
 import { appConfig } from '../config';
 import { AgentJobMessage } from '../queues/agentJob.types';
 import { createAgentWorker } from './createAgentWorker';
+import { requireFeatureBranch, resolveGithubAccessToken } from './developerWorker.utils';
 
 async function processBackendDevJob(message: AgentJobMessage): Promise<void> {
-  if (!message.branchName) {
-    throw new Error('BackendDev job missing branchName');
-  }
+  const githubAccessToken = await resolveGithubAccessToken(message.userId);
+  const branchName = requireFeatureBranch(message);
 
-  const result = await runBackendDevAgent({
+  const result = await runBackendDevAgent(githubAccessToken, {
     repoOwner: message.repoOwner,
     repoName: message.repoName,
     issueNumber: message.issueNumber,
     issueTitle: message.issueTitle,
     issueBody: message.issueBody,
-    branchName: message.branchName,
+    branchName,
   });
 
   console.log(

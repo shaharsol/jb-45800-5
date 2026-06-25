@@ -12,6 +12,7 @@ function buildUserMessage(input: DeveloperAgentInput): string {
     `Repository: ${input.repoOwner}/${input.repoName}`,
     `Issue number: #${input.issueNumber}`,
     `Issue title: ${input.issueTitle}`,
+    `Work branch: ${input.workBranchName}`,
     `Target branch for PRs: ${input.branchName}`,
     'Issue body:',
     input.issueBody || '(empty)',

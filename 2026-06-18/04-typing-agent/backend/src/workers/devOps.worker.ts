@@ -2,19 +2,19 @@ import { runDevOpsAgent } from '../agents/devOps';
 import { appConfig } from '../config';
 import { AgentJobMessage } from '../queues/agentJob.types';
 import { createAgentWorker } from './createAgentWorker';
+import { requireFeatureBranch, resolveGithubAccessToken } from './developerWorker.utils';
 
 async function processDevOpsJob(message: AgentJobMessage): Promise<void> {
-  if (!message.branchName) {
-    throw new Error('DevOps job missing branchName');
-  }
+  const githubAccessToken = await resolveGithubAccessToken(message.userId);
+  const branchName = requireFeatureBranch(message);
 
-  const result = await runDevOpsAgent({
+  const result = await runDevOpsAgent(githubAccessToken, {
     repoOwner: message.repoOwner,
     repoName: message.repoName,
     issueNumber: message.issueNumber,
     issueTitle: message.issueTitle,
     issueBody: message.issueBody,
-    branchName: message.branchName,
+    branchName,
   });
 
   console.log(

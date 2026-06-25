@@ -125,20 +125,15 @@ export async function createIssue(
   });
 }
 
-export async function createFeatureBranch(
+export async function createBranchFromBase(
   accessToken: string,
   owner: string,
   repo: string,
-  branchName: string
+  branchName: string,
+  baseBranchName: string
 ): Promise<void> {
-  const repoDetails = await githubFetch<GitHubRepoDetails>(
-    `/repos/${owner}/${repo}`,
-    accessToken
-  );
-  const defaultBranch = repoDetails.default_branch;
-
   const baseRef = await githubFetch<GitHubGitRef>(
-    `/repos/${owner}/${repo}/git/ref/heads/${encodeURIComponent(defaultBranch)}`,
+    `/repos/${owner}/${repo}/git/ref/heads/${encodeURIComponent(baseBranchName)}`,
     accessToken
   );
 
@@ -161,6 +156,20 @@ export async function createFeatureBranch(
     }
     throw error;
   }
+}
+
+export async function createFeatureBranch(
+  accessToken: string,
+  owner: string,
+  repo: string,
+  branchName: string
+): Promise<void> {
+  const repoDetails = await githubFetch<GitHubRepoDetails>(
+    `/repos/${owner}/${repo}`,
+    accessToken
+  );
+
+  await createBranchFromBase(accessToken, owner, repo, branchName, repoDetails.default_branch);
 }
 
 export async function registerIssueWebhooksForUser(
