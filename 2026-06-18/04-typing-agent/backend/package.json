@@ -10,13 +10,15 @@
     "worker:backend:dev": "node scripts/worker-dev.js backendDev",
     "worker:frontend:dev": "node scripts/worker-dev.js frontendDev",
     "worker:devops:dev": "node scripts/worker-dev.js devOps",
+    "worker:code-reviewer:dev": "node scripts/worker-dev.js codeReviewer",
     "build": "tsc",
     "start": "node dist/server.js",
     "worker": "node scripts/run-worker-prod.js techLead",
     "worker:tech-lead": "node scripts/run-worker-prod.js techLead",
     "worker:backend": "node scripts/run-worker-prod.js backendDev",
     "worker:frontend": "node scripts/run-worker-prod.js frontendDev",
-    "worker:devops": "node scripts/run-worker-prod.js devOps"
+    "worker:devops": "node scripts/run-worker-prod.js devOps",
+    "worker:code-reviewer": "node scripts/run-worker-prod.js codeReviewer"
   },
   "keywords": [],
   "author": "",

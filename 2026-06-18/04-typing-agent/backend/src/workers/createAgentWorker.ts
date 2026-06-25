@@ -4,28 +4,41 @@ import {
 } from '../connectors/sqs.connector';
 import { appConfig } from '../config';
 import { logError, logger } from '../logger';
-import { AgentJobMessage } from '../queues/agentJob.types';
+type JobProcessor<T> = (message: T) => Promise<void>;
 
-type JobProcessor = (message: AgentJobMessage) => Promise<void>;
-
-interface AgentWorkerOptions {
+interface AgentWorkerOptions<T> {
   workerName: string;
   queueName: string;
-  processJob: JobProcessor;
+  processJob: JobProcessor<T>;
+  describeJob?: (message: T) => string;
 }
 
-function jobLabel(message: AgentJobMessage): string {
-  return `${message.repoOwner}/${message.repoName} issue #${message.issueNumber}`;
-}
-
-export function createAgentWorker(options: AgentWorkerOptions): {
+export function createAgentWorker<T>(options: AgentWorkerOptions<T>): {
   start: () => void;
   stop: () => void;
 } {
   let running = false;
 
-  function parseMessage(body: string): AgentJobMessage {
-    return JSON.parse(body) as AgentJobMessage;
+  function parseMessage(body: string): T {
+    return JSON.parse(body) as T;
+  }
+
+  function jobLabel(message: T): string {
+    if (options.describeJob) {
+      return options.describeJob(message);
+    }
+
+    const record = message as Record<string, unknown>;
+    if (typeof record.repoOwner === 'string' && typeof record.repoName === 'string') {
+      if (typeof record.pullRequestNumber === 'number') {
+        return `${record.repoOwner}/${record.repoName} PR #${record.pullRequestNumber}`;
+      }
+      if (typeof record.issueNumber === 'number') {
+        return `${record.repoOwner}/${record.repoName} issue #${record.issueNumber}`;
+      }
+    }
+
+    return JSON.stringify(message);
   }
 
   async function pollOnce(): Promise<void> {

@@ -1,11 +1,12 @@
 import { appConfig } from '../config';
 
-export type AgentConfigKey = 'backendDev' | 'frontendDev' | 'devOps';
+export type AgentConfigKey = 'backendDev' | 'frontendDev' | 'devOps' | 'codeReviewer';
 
 const AGENT_NAME_TO_CONFIG_KEY: Record<string, AgentConfigKey> = {
   BackendDev: 'backendDev',
   FrontendDev: 'frontendDev',
   DevOps: 'devOps',
+  CodeReviewer: 'codeReviewer',
 };
 
 export interface AgentGitIdentity {

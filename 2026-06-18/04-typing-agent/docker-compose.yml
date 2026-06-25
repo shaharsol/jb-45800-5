@@ -16,6 +16,7 @@ x-worker-environment: &worker-environment
   SQS_QUEUE_BACKEND_DEV: backend-dev-queue
   SQS_QUEUE_FRONTEND_DEV: frontend-dev-queue
   SQS_QUEUE_DEVOPS: devops-queue
+  SQS_QUEUE_CODE_REVIEWER: code-reviewer-queue
   SQS_VISIBILITY_TIMEOUT_SECONDS: 3600
   AWS_ACCESS_KEY_ID: test
   AWS_SECRET_ACCESS_KEY: test
@@ -63,6 +64,7 @@ services:
       SQS_QUEUE_BACKEND_DEV: backend-dev-queue
       SQS_QUEUE_FRONTEND_DEV: frontend-dev-queue
       SQS_QUEUE_DEVOPS: devops-queue
+      SQS_QUEUE_CODE_REVIEWER: code-reviewer-queue
       SQS_VISIBILITY_TIMEOUT_SECONDS: 3600
       AWS_ACCESS_KEY_ID: test
       AWS_SECRET_ACCESS_KEY: test
@@ -108,6 +110,16 @@ services:
     environment:
       <<: *worker-environment
       WORKER_TYPE: devOps
+    depends_on:
+      - mongodb
+      - localstack
+
+  worker-code-reviewer:
+    build: ./backend
+    command: ["node", "dist/worker.js"]
+    environment:
+      <<: *worker-environment
+      WORKER_TYPE: codeReviewer
     depends_on:
       - mongodb
       - localstack

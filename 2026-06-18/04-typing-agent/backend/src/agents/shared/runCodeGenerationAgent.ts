@@ -16,6 +16,7 @@ import {
   hasAgentGithubAccessToken,
   resolveAgentGithubAccessToken,
 } from '../../utils/agentIdentity';
+import { formatCodeReviewerPullRequestTitle } from '../../utils/typingAgentMarkers';
 
 const REPOSITORY_FILE_EXCERPT_CHARS = 400;
 
@@ -169,7 +170,7 @@ export async function runCodeGenerationAgent(
     input.repoName,
     input.workBranchName,
     input.branchName,
-    parsed.prTitle,
+    formatCodeReviewerPullRequestTitle(parsed.prTitle),
     parsed.prBody
   );
 

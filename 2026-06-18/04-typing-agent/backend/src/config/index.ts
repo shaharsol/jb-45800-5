@@ -37,6 +37,11 @@ export const appConfig = {
         email: getConfigString('github.agents.devOps.email'),
         accessToken: getConfigString('github.agents.devOps.accessToken'),
       },
+      codeReviewer: {
+        name: getConfigString('github.agents.codeReviewer.name'),
+        email: getConfigString('github.agents.codeReviewer.email'),
+        accessToken: getConfigString('github.agents.codeReviewer.accessToken'),
+      },
     },
   },
   frontend: {
@@ -70,6 +75,7 @@ export const appConfig = {
       backendDev: config.get<string>('sqs.queues.backendDev'),
       frontendDev: config.get<string>('sqs.queues.frontendDev'),
       devOps: config.get<string>('sqs.queues.devOps'),
+      codeReviewer: config.get<string>('sqs.queues.codeReviewer'),
     },
     visibilityTimeoutSeconds: config.get<number>('sqs.visibilityTimeoutSeconds'),
     waitTimeSeconds: config.get<number>('sqs.waitTimeSeconds'),

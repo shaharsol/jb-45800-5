@@ -26,6 +26,11 @@
         "name": "TypingAgent-DevOps",
         "email": "devops@typing-agent.local",
         "accessToken": ""
+      },
+      "codeReviewer": {
+        "name": "TypingAgent-CodeReviewer",
+        "email": "code-reviewer@typing-agent.local",
+        "accessToken": ""
       }
     }
   },
@@ -60,7 +65,8 @@
       "techLead": "tech-lead-queue",
       "backendDev": "backend-dev-queue",
       "frontendDev": "frontend-dev-queue",
-      "devOps": "devops-queue"
+      "devOps": "devops-queue",
+      "codeReviewer": "code-reviewer-queue"
     },
     "visibilityTimeoutSeconds": 3600,
     "waitTimeSeconds": 20,

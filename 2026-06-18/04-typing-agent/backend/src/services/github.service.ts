@@ -58,7 +58,9 @@ async function listAdminRepos(accessToken: string): Promise<GitHubRepo[]> {
   return repos;
 }
 
-async function ensureIssueWebhook(
+const TYPING_AGENT_WEBHOOK_EVENTS = ['issues', 'pull_request'] as const;
+
+async function ensureTypingAgentWebhook(
   accessToken: string,
   owner: string,
   repo: string
@@ -66,10 +68,24 @@ async function ensureIssueWebhook(
   const hooks = await githubFetch<GitHubHook[]>(`/repos/${owner}/${repo}/hooks`, accessToken);
   const webhookUrl = appConfig.github.webhookUrl;
 
-  const existing = hooks.find(
-    (hook) => hook.config.url === webhookUrl && hook.events.includes('issues')
-  );
+  const existing = hooks.find((hook) => hook.config.url === webhookUrl);
   if (existing) {
+    const missingEvents = TYPING_AGENT_WEBHOOK_EVENTS.filter(
+      (event) => !existing.events.includes(event)
+    );
+    if (missingEvents.length === 0) {
+      return;
+    }
+
+    await githubFetch(`/repos/${owner}/${repo}/hooks/${existing.id}`, accessToken, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        events: [...new Set([...existing.events, ...TYPING_AGENT_WEBHOOK_EVENTS])],
+      }),
+    });
+
+    logger.info(`Updated webhook events on ${owner}/${repo}: ${missingEvents.join(', ')}`);
     return;
   }
 
@@ -79,7 +95,7 @@ async function ensureIssueWebhook(
     body: JSON.stringify({
       name: 'web',
       active: true,
-      events: ['issues'],
+      events: [...TYPING_AGENT_WEBHOOK_EVENTS],
       config: {
         url: webhookUrl,
         content_type: 'json',
@@ -89,7 +105,7 @@ async function ensureIssueWebhook(
     }),
   });
 
-  logger.info(`Registered issues webhook on ${owner}/${repo}`);
+  logger.info(`Registered TypingAgent webhook on ${owner}/${repo}`);
 }
 
 export async function createIssue(
@@ -161,7 +177,7 @@ export async function registerIssueWebhooksForUser(
 
   for (const repo of repos) {
     try {
-      await ensureIssueWebhook(accessToken, repo.owner.login, repo.name);
+      await ensureTypingAgentWebhook(accessToken, repo.owner.login, repo.name);
       await upsertRepoRegistration(userId, repo.owner.login, repo.name);
     } catch (error) {
       logError(`Failed to register webhook for ${repo.owner.login}/${repo.name}`, error);

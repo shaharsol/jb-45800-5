@@ -26,6 +26,11 @@
         "name": "GITHUB_AGENT_DEVOPS_NAME",
         "email": "GITHUB_AGENT_DEVOPS_EMAIL",
         "accessToken": "GITHUB_AGENT_DEVOPS_TOKEN"
+      },
+      "codeReviewer": {
+        "name": "GITHUB_AGENT_CODE_REVIEWER_NAME",
+        "email": "GITHUB_AGENT_CODE_REVIEWER_EMAIL",
+        "accessToken": "GITHUB_AGENT_CODE_REVIEWER_TOKEN"
       }
     }
   },
@@ -60,7 +65,8 @@
       "techLead": "SQS_QUEUE_TECH_LEAD",
       "backendDev": "SQS_QUEUE_BACKEND_DEV",
       "frontendDev": "SQS_QUEUE_FRONTEND_DEV",
-      "devOps": "SQS_QUEUE_DEVOPS"
+      "devOps": "SQS_QUEUE_DEVOPS",
+      "codeReviewer": "SQS_QUEUE_CODE_REVIEWER"
     },
     "visibilityTimeoutSeconds": "SQS_VISIBILITY_TIMEOUT_SECONDS",
     "waitTimeSeconds": "SQS_WAIT_TIME_SECONDS",
