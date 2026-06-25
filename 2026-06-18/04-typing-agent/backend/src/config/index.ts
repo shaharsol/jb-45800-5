@@ -21,6 +21,23 @@ export const appConfig = {
     callbackUrl: config.get<string>('github.callbackUrl'),
     webhookUrl: config.get<string>('github.webhookUrl'),
     webhookSecret: config.get<string>('github.webhookSecret'),
+    agents: {
+      backendDev: {
+        name: getConfigString('github.agents.backendDev.name'),
+        email: getConfigString('github.agents.backendDev.email'),
+        accessToken: getConfigString('github.agents.backendDev.accessToken'),
+      },
+      frontendDev: {
+        name: getConfigString('github.agents.frontendDev.name'),
+        email: getConfigString('github.agents.frontendDev.email'),
+        accessToken: getConfigString('github.agents.frontendDev.accessToken'),
+      },
+      devOps: {
+        name: getConfigString('github.agents.devOps.name'),
+        email: getConfigString('github.agents.devOps.email'),
+        accessToken: getConfigString('github.agents.devOps.accessToken'),
+      },
+    },
   },
   frontend: {
     url: config.get<string>('frontend.url'),

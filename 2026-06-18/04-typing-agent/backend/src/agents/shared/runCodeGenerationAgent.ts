@@ -11,6 +11,11 @@ import {
   GeneratedCodeFile,
 } from './codeGeneration.schema';
 import { DeveloperAgentInput } from './developerAgent.types';
+import {
+  getAgentGitIdentity,
+  hasAgentGithubAccessToken,
+  resolveAgentGithubAccessToken,
+} from '../../utils/agentIdentity';
 
 const REPOSITORY_FILE_EXCERPT_CHARS = 400;
 
@@ -133,13 +138,24 @@ export async function runCodeGenerationAgent(
     };
   }
 
+  const agentIdentity = getAgentGitIdentity(agentName);
+  const agentGithubToken = resolveAgentGithubAccessToken(agentName, githubAccessToken);
+
+  if (!hasAgentGithubAccessToken(agentName)) {
+    logger.warn(
+      `[${agentName}] No agent GitHub token configured; commits use agent author metadata ` +
+        `but the PR will open as the authenticated user. Set GITHUB_AGENT_*_TOKEN to attribute PRs to the agent.`
+    );
+  }
+
   const { commitSha } = await commitFilesToBranch(
-    githubAccessToken,
+    agentGithubToken,
     input.repoOwner,
     input.repoName,
     input.workBranchName,
     parsed.commitMessage,
-    parsed.files
+    parsed.files,
+    agentIdentity
   );
 
   logger.info(
@@ -148,7 +164,7 @@ export async function runCodeGenerationAgent(
   );
 
   const pullRequest = await createPullRequest(
-    githubAccessToken,
+    agentGithubToken,
     input.repoOwner,
     input.repoName,
     input.workBranchName,

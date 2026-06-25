@@ -10,7 +10,24 @@
     "clientSecret": "GITHUB_CLIENT_SECRET",
     "callbackUrl": "GITHUB_CALLBACK_URL",
     "webhookUrl": "GITHUB_WEBHOOK_URL",
-    "webhookSecret": "GITHUB_WEBHOOK_SECRET"
+    "webhookSecret": "GITHUB_WEBHOOK_SECRET",
+    "agents": {
+      "backendDev": {
+        "name": "GITHUB_AGENT_BACKEND_DEV_NAME",
+        "email": "GITHUB_AGENT_BACKEND_DEV_EMAIL",
+        "accessToken": "GITHUB_AGENT_BACKEND_DEV_TOKEN"
+      },
+      "frontendDev": {
+        "name": "GITHUB_AGENT_FRONTEND_DEV_NAME",
+        "email": "GITHUB_AGENT_FRONTEND_DEV_EMAIL",
+        "accessToken": "GITHUB_AGENT_FRONTEND_DEV_TOKEN"
+      },
+      "devOps": {
+        "name": "GITHUB_AGENT_DEVOPS_NAME",
+        "email": "GITHUB_AGENT_DEVOPS_EMAIL",
+        "accessToken": "GITHUB_AGENT_DEVOPS_TOKEN"
+      }
+    }
   },
   "frontend": {
     "url": "FRONTEND_URL"

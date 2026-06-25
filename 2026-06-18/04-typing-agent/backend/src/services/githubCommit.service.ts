@@ -1,4 +1,5 @@
 import { GeneratedCodeFile } from '../agents/shared/codeGeneration.schema';
+import { AgentGitIdentity } from '../utils/agentIdentity';
 import { githubApiFetch } from './githubApi';
 
 interface GitHubGitRef {
@@ -31,7 +32,8 @@ export async function commitFilesToBranch(
   repo: string,
   branchName: string,
   commitMessage: string,
-  files: GeneratedCodeFile[]
+  files: GeneratedCodeFile[],
+  agentIdentity: AgentGitIdentity
 ): Promise<CommitFilesResult> {
   if (files.length === 0) {
     throw new Error('Cannot commit without file changes');
@@ -81,6 +83,7 @@ export async function commitFilesToBranch(
     }),
   });
 
+  const committedAt = new Date().toISOString();
   const commit = await githubApiFetch<GitHubCreatedCommit>(
     `/repos/${owner}/${repo}/git/commits`,
     accessToken,
@@ -91,6 +94,16 @@ export async function commitFilesToBranch(
         message: commitMessage,
         tree: tree.sha,
         parents: [branchRef.object.sha],
+        author: {
+          name: agentIdentity.name,
+          email: agentIdentity.email,
+          date: committedAt,
+        },
+        committer: {
+          name: agentIdentity.name,
+          email: agentIdentity.email,
+          date: committedAt,
+        },
       }),
     }
   );

@@ -10,7 +10,24 @@
     "clientSecret": "",
     "callbackUrl": "http://localhost:3000/api/auth/github/callback",
     "webhookUrl": "https://62c8-31-154-18-65.ngrok-free.app/api/webhooks/github",
-    "webhookSecret": ""
+    "webhookSecret": "",
+    "agents": {
+      "backendDev": {
+        "name": "TypingAgent-BackendDev",
+        "email": "backend-dev@typing-agent.local",
+        "accessToken": ""
+      },
+      "frontendDev": {
+        "name": "TypingAgent-FrontendDev",
+        "email": "frontend-dev@typing-agent.local",
+        "accessToken": ""
+      },
+      "devOps": {
+        "name": "TypingAgent-DevOps",
+        "email": "devops@typing-agent.local",
+        "accessToken": ""
+      }
+    }
   },
   "frontend": {
     "url": "http://localhost:5173"
