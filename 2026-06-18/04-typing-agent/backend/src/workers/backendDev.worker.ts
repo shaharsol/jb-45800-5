@@ -18,8 +18,9 @@ async function processBackendDevJob(message: AgentJobMessage): Promise<void> {
   });
 
   console.log(
-    `[BackendDev] Generated ${result.files.length} file(s) for ` +
-      `${message.repoOwner}/${message.repoName} issue #${message.issueNumber}`
+    `[BackendDev] Committed ${result.files.length} file(s) for ` +
+      `${message.repoOwner}/${message.repoName} issue #${message.issueNumber}` +
+      (result.pullRequestUrl ? ` — PR: ${result.pullRequestUrl}` : '')
   );
 }
 

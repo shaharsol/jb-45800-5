@@ -18,8 +18,9 @@ async function processDevOpsJob(message: AgentJobMessage): Promise<void> {
   });
 
   console.log(
-    `[DevOps] Generated ${result.files.length} file(s) for ` +
-      `${message.repoOwner}/${message.repoName} issue #${message.issueNumber}`
+    `[DevOps] Committed ${result.files.length} file(s) for ` +
+      `${message.repoOwner}/${message.repoName} issue #${message.issueNumber}` +
+      (result.pullRequestUrl ? ` — PR: ${result.pullRequestUrl}` : '')
   );
 }
 

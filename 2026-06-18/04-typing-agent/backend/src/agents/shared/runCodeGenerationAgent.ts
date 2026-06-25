@@ -1,5 +1,7 @@
 import { getOpenAIClient } from '../../connectors/openai.connector';
 import { appConfig } from '../../config';
+import { commitFilesToBranch } from '../../services/githubCommit.service';
+import { createPullRequest } from '../../services/githubPullRequest.service';
 import { fetchRepositorySnapshot } from '../../services/repositoryContent.service';
 import { RepositorySnapshot } from '../../types/repository.types';
 import {
@@ -57,12 +59,16 @@ function buildUserMessage(input: DeveloperAgentInput, repository: RepositorySnap
   ].join('\n');
 }
 
-function logGeneratedFiles(
+function logLlmResponse(
   agentName: string,
   commitMessage: string,
+  prTitle: string,
+  prBody: string,
   files: GeneratedCodeFile[]
 ): void {
   console.log(`[${agentName}] Commit message: ${commitMessage}`);
+  console.log(`[${agentName}] PR title: ${prTitle}`);
+  console.log(`[${agentName}] PR body: ${prBody}`);
   console.log(`[${agentName}] Generated ${files.length} file(s):`);
   for (const file of files) {
     console.log(`[${agentName}] --- ${file.path} ---`);
@@ -109,13 +115,59 @@ export async function runCodeGenerationAgent(
 
   const parsed = JSON.parse(responseText) as {
     commitMessage: string;
+    prTitle: string;
+    prBody: string;
     files: GeneratedCodeFile[];
   };
-  logGeneratedFiles(agentName, parsed.commitMessage, parsed.files);
+  logLlmResponse(agentName, parsed.commitMessage, parsed.prTitle, parsed.prBody, parsed.files);
+
+  if (parsed.files.length === 0) {
+    console.log(`[${agentName}] No file changes returned; skipping commit and PR`);
+    return {
+      commitMessage: parsed.commitMessage,
+      prTitle: parsed.prTitle,
+      prBody: parsed.prBody,
+      files: parsed.files,
+      openaiResponseId: response.id,
+    };
+  }
+
+  const { commitSha } = await commitFilesToBranch(
+    githubAccessToken,
+    input.repoOwner,
+    input.repoName,
+    input.workBranchName,
+    parsed.commitMessage,
+    parsed.files
+  );
+
+  console.log(
+    `[${agentName}] Committed ${commitSha} to ${input.workBranchName} ` +
+      `(${parsed.files.length} file(s))`
+  );
+
+  const pullRequest = await createPullRequest(
+    githubAccessToken,
+    input.repoOwner,
+    input.repoName,
+    input.workBranchName,
+    input.branchName,
+    parsed.prTitle,
+    parsed.prBody
+  );
+
+  console.log(
+    `[${agentName}] Opened PR #${pullRequest.number} ` +
+      `(${input.workBranchName} -> ${input.branchName}): ${pullRequest.html_url}`
+  );
 
   return {
     commitMessage: parsed.commitMessage,
+    prTitle: parsed.prTitle,
+    prBody: parsed.prBody,
     files: parsed.files,
     openaiResponseId: response.id,
+    commitSha,
+    pullRequestUrl: pullRequest.html_url,
   };
 }
