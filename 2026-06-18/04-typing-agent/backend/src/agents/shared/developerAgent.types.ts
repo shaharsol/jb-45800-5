@@ -4,4 +4,5 @@ export interface DeveloperAgentInput {
   issueNumber: number;
   issueTitle: string;
   issueBody: string;
+  branchName: string;
 }

@@ -5,4 +5,6 @@ export interface AgentJobMessage {
   issueNumber: number;
   issueTitle: string;
   issueBody: string;
+  /** Feature branch created by TechLead; required for developer agent jobs. */
+  branchName?: string;
 }

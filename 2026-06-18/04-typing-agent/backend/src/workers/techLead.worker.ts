@@ -20,7 +20,7 @@ async function processTechLeadJob(message: AgentJobMessage): Promise<void> {
   });
 
   console.log(
-    `[TechLead] Created ${result.createdIssues.length} sub-issue(s) for ` +
+    `[TechLead] Created branch ${result.branchName} and ${result.createdIssues.length} sub-issue(s) for ` +
       `${message.repoOwner}/${message.repoName} issue #${message.issueNumber}`
   );
 

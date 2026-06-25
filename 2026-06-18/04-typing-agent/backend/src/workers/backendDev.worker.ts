@@ -4,12 +4,17 @@ import { AgentJobMessage } from '../queues/agentJob.types';
 import { createAgentWorker } from './createAgentWorker';
 
 async function processBackendDevJob(message: AgentJobMessage): Promise<void> {
+  if (!message.branchName) {
+    throw new Error('BackendDev job missing branchName');
+  }
+
   const result = await runBackendDevAgent({
     repoOwner: message.repoOwner,
     repoName: message.repoName,
     issueNumber: message.issueNumber,
     issueTitle: message.issueTitle,
     issueBody: message.issueBody,
+    branchName: message.branchName,
   });
 
   console.log(

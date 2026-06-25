@@ -21,6 +21,14 @@ interface GitHubIssue {
   title: string;
 }
 
+interface GitHubRepoDetails {
+  default_branch: string;
+}
+
+interface GitHubGitRef {
+  object: { sha: string };
+}
+
 async function githubFetch<T>(
   path: string,
   accessToken: string,
@@ -115,6 +123,44 @@ export async function createIssue(
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ title, body }),
   });
+}
+
+export async function createFeatureBranch(
+  accessToken: string,
+  owner: string,
+  repo: string,
+  branchName: string
+): Promise<void> {
+  const repoDetails = await githubFetch<GitHubRepoDetails>(
+    `/repos/${owner}/${repo}`,
+    accessToken
+  );
+  const defaultBranch = repoDetails.default_branch;
+
+  const baseRef = await githubFetch<GitHubGitRef>(
+    `/repos/${owner}/${repo}/git/ref/heads/${encodeURIComponent(defaultBranch)}`,
+    accessToken
+  );
+
+  try {
+    await githubFetch(`/repos/${owner}/${repo}/git/refs`, accessToken, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ref: `refs/heads/${branchName}`,
+        sha: baseRef.object.sha,
+      }),
+    });
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message.includes('422') &&
+      error.message.includes('Reference already exists')
+    ) {
+      return;
+    }
+    throw error;
+  }
 }
 
 export async function registerIssueWebhooksForUser(

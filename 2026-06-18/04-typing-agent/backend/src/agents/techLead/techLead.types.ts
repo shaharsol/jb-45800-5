@@ -37,4 +37,5 @@ export interface TechLeadAgentResult {
   plan: TechLeadTaskPlan;
   createdIssues: CreatedSubIssue[];
   openaiResponseId: string;
+  branchName: string;
 }

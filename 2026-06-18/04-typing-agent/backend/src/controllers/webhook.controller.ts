@@ -1,7 +1,35 @@
 import { Request, Response } from 'express';
 import { enqueueAgentJob } from '../queues/enqueueAgentJob';
 import { resolveTypingAgentRoute } from '../queues/typingAgent.routing';
+import { findBranchName } from '../services/issueBranch.service';
 import { findUserIdByRepo } from '../services/repoRegistration.service';
+import {
+  parseParentIssueNumberFromBody,
+  parseTargetBranchFromIssueBody,
+} from '../utils/issueBody';
+
+async function resolveTargetBranch(
+  route: ReturnType<typeof resolveTypingAgentRoute>,
+  repoOwner: string,
+  repoName: string,
+  issueBody: string
+): Promise<string | null> {
+  if (route === 'techLead' || !route) {
+    return null;
+  }
+
+  const fromBody = parseTargetBranchFromIssueBody(issueBody);
+  if (fromBody) {
+    return fromBody;
+  }
+
+  const parentNum = parseParentIssueNumberFromBody(issueBody);
+  if (!parentNum) {
+    return null;
+  }
+
+  return findBranchName(repoOwner, repoName, parentNum);
+}
 
 interface IssueWebhookPayload {
   action: string;
@@ -48,6 +76,23 @@ export async function handleGithubWebhook(req: Request, res: Response): Promise<
     }
 
     try {
+      const branchName =
+        (await resolveTargetBranch(
+          route,
+          repository.owner.login,
+          repository.name,
+          issue.body ?? ''
+        )) ?? undefined;
+
+      if (route !== 'techLead' && !branchName) {
+        console.error(
+          `[webhook] No target branch for ${route} issue #${issue.number} ` +
+            `in ${repository.owner.login}/${repository.name}`
+        );
+        res.status(200).send('OK');
+        return;
+      }
+
       await enqueueAgentJob(route, {
         userId,
         repoOwner: repository.owner.login,
@@ -55,6 +100,7 @@ export async function handleGithubWebhook(req: Request, res: Response): Promise<
         issueNumber: issue.number,
         issueTitle: issue.title,
         issueBody: issue.body ?? '',
+        branchName,
       });
     } catch (error) {
       console.error(`Failed to enqueue ${route} job:`, error);

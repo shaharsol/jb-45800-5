@@ -1,6 +1,8 @@
 import { getOpenAIClient } from '../../connectors/openai.connector';
 import { appConfig } from '../../config';
-import { createIssue } from '../../services/github.service';
+import { createFeatureBranch, createIssue } from '../../services/github.service';
+import { saveIssueBranch } from '../../services/issueBranch.service';
+import { buildFeatureBranchName } from '../../utils/branchName';
 import {
   TECH_LEAD_SYSTEM_PROMPT,
   TECH_LEAD_TASK_PLAN_SCHEMA,
@@ -30,13 +32,13 @@ function buildIssueTitle(agent: TechLeadSubAgent, taskTitle: string): string {
 
 function buildIssueBody(
   task: TechLeadTaskDraft,
-  input: TechLeadAgentInput
+  input: TechLeadAgentInput & { branchName: string }
 ): string {
   const parentRef = input.parentIssueNumber
-    ? `Derived from parent issue #${input.parentIssueNumber}.\n\n`
-    : `Derived from parent issue: ${input.issueTitle}\n\n`;
+    ? `Derived from parent issue #${input.parentIssueNumber}.\n`
+    : `Derived from parent issue: ${input.issueTitle}\n`;
 
-  return `${parentRef}${task.body}`;
+  return `${parentRef}Target branch: ${input.branchName}\n\n${task.body}`;
 }
 
 function buildUserMessage(input: TechLeadAgentInput): string {
@@ -86,7 +88,7 @@ async function planTasks(input: TechLeadAgentInput): Promise<{
 }
 
 async function createSubIssues(
-  input: TechLeadAgentInput,
+  input: TechLeadAgentInput & { branchName: string },
   plan: TechLeadTaskPlan
 ): Promise<CreatedSubIssue[]> {
   const createdIssues: CreatedSubIssue[] = [];
@@ -122,12 +124,32 @@ async function createSubIssues(
 export async function runTechLeadAgent(
   input: TechLeadAgentInput
 ): Promise<TechLeadAgentResult> {
-  const { plan, openaiResponseId } = await planTasks(input);
-  const createdIssues = await createSubIssues(input, plan);
+  if (!input.parentIssueNumber) {
+    throw new Error('TechLead agent requires parentIssueNumber');
+  }
+
+  const branchName = buildFeatureBranchName(input.parentIssueNumber, input.issueTitle);
+  await createFeatureBranch(
+    input.githubAccessToken,
+    input.repoOwner,
+    input.repoName,
+    branchName
+  );
+  await saveIssueBranch(
+    input.repoOwner,
+    input.repoName,
+    input.parentIssueNumber,
+    branchName
+  );
+
+  const inputWithBranch = { ...input, branchName };
+  const { plan, openaiResponseId } = await planTasks(inputWithBranch);
+  const createdIssues = await createSubIssues(inputWithBranch, plan);
 
   return {
     plan,
     createdIssues,
     openaiResponseId,
+    branchName,
   };
 }
