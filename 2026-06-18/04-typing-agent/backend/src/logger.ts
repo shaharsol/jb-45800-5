@@ -1,8 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import winston from 'winston';
-import { Logtail } from '@logtail/node';
-import { LogtailTransport } from '@logtail/winston';
+import DatadogWinston from 'datadog-winston';
 import { appConfig } from './config';
 
 const LOG_FILE = appConfig.logging.file;
@@ -28,45 +27,23 @@ const transports: winston.transport[] = [
   }),
 ];
 
-let logtail: Logtail | undefined;
-let betterStackFailureLogged = false;
+if (appConfig.datadog.apiKey) {
+  const ddtags = [
+    appConfig.datadog.tokenId ? `token_id:${appConfig.datadog.tokenId}` : null,
+    `site:${appConfig.datadog.site}`,
+  ]
+    .filter(Boolean)
+    .join(',');
 
-function warnBetterStackMisconfiguration(): void {
-  if (betterStackFailureLogged) {
-    return;
-  }
-  betterStackFailureLogged = true;
-  process.stderr.write(
-    '[logger] Better Stack log shipping failed (Unauthorized). ' +
-      'Use a collector secret / source token from Better Stack → Telemetry → Sources, ' +
-      'not a global API token. Set BETTERSTACK_COLLECTOR_SECRET (or BETTERSTACK_SOURCE_TOKEN) and, if shown in the source settings, ' +
-      'BETTERSTACK_ENDPOINT to your source ingesting host (e.g. https://in.logs.betterstack.com).\n'
+  transports.push(
+    new DatadogWinston({
+      apiKey: appConfig.datadog.apiKey,
+      service: appConfig.logging.serviceName,
+      ddsource: appConfig.datadog.source,
+      ddtags,
+      intakeRegion: appConfig.datadog.intakeRegion || undefined,
+    })
   );
-}
-
-async function probeBetterStack(sourceToken: string): Promise<void> {
-  const probe = new Logtail(sourceToken, {
-    endpoint: appConfig.betterStack.endpoint,
-    throwExceptions: true,
-  });
-
-  try {
-    await probe.log('Better Stack transport probe', 'info');
-    await probe.flush();
-  } catch {
-    warnBetterStackMisconfiguration();
-  }
-}
-
-if (appConfig.betterStack.sourceToken) {
-  void probeBetterStack(appConfig.betterStack.sourceToken);
-
-  logtail = new Logtail(appConfig.betterStack.sourceToken, {
-    endpoint: appConfig.betterStack.endpoint,
-    ignoreExceptions: true,
-  });
-
-  transports.push(new LogtailTransport(logtail));
 }
 
 export const logger = winston.createLogger({
@@ -89,16 +66,4 @@ function serializeError(error: unknown): Record<string, unknown> | undefined {
 
 export function logError(message: string, error?: unknown): void {
   logger.error(message, { error: serializeError(error) ?? error });
-}
-
-async function shutdown(): Promise<void> {
-  if (logtail) {
-    await logtail.flush();
-  }
-}
-
-for (const signal of ['SIGINT', 'SIGTERM'] as const) {
-  process.once(signal, () => {
-    void shutdown().finally(() => process.exit(0));
-  });
 }

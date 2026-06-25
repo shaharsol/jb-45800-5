@@ -23,11 +23,13 @@
     "model": "gpt-4o",
     "defaultInstructions": "You are TypingAgent, an AI coding assistant that helps complete GitHub issues."
   },
-  "betterStack": {
-    "sourceToken": "",
-    "collectorSecret": "",
+  "datadog": {
     "apiKey": "",
-    "endpoint": "https://in.logs.betterstack.com"
+    "tokenId": "",
+    "tokenSecret": "",
+    "site": "datadoghq.com",
+    "source": "nodejs",
+    "intakeRegion": ""
   },
   "logging": {
     "level": "info",

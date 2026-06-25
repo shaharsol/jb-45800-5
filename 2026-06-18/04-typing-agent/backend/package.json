@@ -24,11 +24,10 @@
   "type": "commonjs",
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.1075.0",
-    "@logtail/node": "^0.5.8",
-    "@logtail/winston": "^0.5.8",
     "config": "^4.4.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
+    "datadog-winston": "^1.6.0",
     "express": "^5.2.1",
     "joi": "^18.2.3",
     "jsonwebtoken": "^9.0.3",

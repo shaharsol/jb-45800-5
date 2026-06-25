@@ -4,12 +4,8 @@ function getConfigString(key: string): string {
   return config.has(key) ? config.get<string>(key) : '';
 }
 
-function getBetterStackSourceToken(): string {
-  return (
-    getConfigString('betterStack.collectorSecret') ||
-    getConfigString('betterStack.sourceToken') ||
-    getConfigString('betterStack.apiKey')
-  );
+function getDatadogApiKey(): string {
+  return getConfigString('datadog.apiKey') || getConfigString('datadog.tokenSecret');
 }
 
 export const appConfig = {
@@ -37,9 +33,12 @@ export const appConfig = {
     model: config.get<string>('openai.model'),
     defaultInstructions: config.get<string>('openai.defaultInstructions'),
   },
-  betterStack: {
-    sourceToken: getBetterStackSourceToken(),
-    endpoint: config.get<string>('betterStack.endpoint'),
+  datadog: {
+    apiKey: getDatadogApiKey(),
+    tokenId: getConfigString('datadog.tokenId'),
+    site: getConfigString('datadog.site') || 'datadoghq.com',
+    source: getConfigString('datadog.source') || 'nodejs',
+    intakeRegion: getConfigString('datadog.intakeRegion'),
   },
   logging: {
     level: config.get<string>('logging.level'),

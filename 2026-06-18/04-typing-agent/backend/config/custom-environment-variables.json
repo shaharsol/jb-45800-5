@@ -23,11 +23,13 @@
     "model": "OPENAI_MODEL",
     "defaultInstructions": "OPENAI_DEFAULT_INSTRUCTIONS"
   },
-  "betterStack": {
-    "sourceToken": "BETTERSTACK_SOURCE_TOKEN",
-    "collectorSecret": "BETTERSTACK_COLLECTOR_SECRET",
-    "apiKey": "BETTERSTACK_API_KEY",
-    "endpoint": "BETTERSTACK_ENDPOINT"
+  "datadog": {
+    "apiKey": "DATADOG_API_KEY",
+    "tokenId": "DATADOG_TOKEN_ID",
+    "tokenSecret": "DATADOG_TOKEN_SECRET",
+    "site": "DATADOG_SITE",
+    "source": "DATADOG_SOURCE",
+    "intakeRegion": "DATADOG_INTAKE_REGION"
   },
   "logging": {
     "level": "LOG_LEVEL",
