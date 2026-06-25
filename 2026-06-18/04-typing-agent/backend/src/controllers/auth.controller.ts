@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { appConfig } from '../config';
+import { logError } from '../logger';
 import { IUser } from '../models/User';
 import { signToken } from '../services/auth.service';
 import { registerIssueWebhooksForUser } from '../services/github.service';
@@ -14,7 +15,7 @@ export async function callback(req: Request, res: Response): Promise<void> {
       userWithToken.githubAccessToken,
       user._id.toString()
     ).catch((error) => {
-      console.error('Failed to register issue webhooks:', error);
+      logError('Failed to register issue webhooks', error);
     });
   }
 

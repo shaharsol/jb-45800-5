@@ -8,6 +8,7 @@ import {
   type Message,
 } from '@aws-sdk/client-sqs';
 import { appConfig } from '../config';
+import { logger } from '../logger';
 
 let client: SQSClient | null = null;
 const queueUrls = new Map<string, string>();
@@ -68,7 +69,7 @@ export async function ensureQueueExists(queueName: string): Promise<string> {
     }
 
     queueUrls.set(queueName, createResponse.QueueUrl);
-    console.log(`Created SQS queue: ${queueName}`);
+    logger.info(`Created SQS queue: ${queueName}`);
     return createResponse.QueueUrl;
   } catch (error) {
     const err = error as { name?: string };

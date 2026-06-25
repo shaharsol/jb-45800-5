@@ -24,6 +24,8 @@
   "type": "commonjs",
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.1075.0",
+    "@logtail/node": "^0.5.8",
+    "@logtail/winston": "^0.5.8",
     "config": "^4.4.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
@@ -33,7 +35,8 @@
     "mongoose": "^9.7.1",
     "openai": "^6.44.0",
     "passport": "^0.7.0",
-    "passport-github2": "^0.1.12"
+    "passport-github2": "^0.1.12",
+    "winston": "^3.19.0"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",

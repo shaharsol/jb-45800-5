@@ -23,6 +23,17 @@
     "model": "OPENAI_MODEL",
     "defaultInstructions": "OPENAI_DEFAULT_INSTRUCTIONS"
   },
+  "betterStack": {
+    "sourceToken": "BETTERSTACK_SOURCE_TOKEN",
+    "collectorSecret": "BETTERSTACK_COLLECTOR_SECRET",
+    "apiKey": "BETTERSTACK_API_KEY",
+    "endpoint": "BETTERSTACK_ENDPOINT"
+  },
+  "logging": {
+    "level": "LOG_LEVEL",
+    "file": "LOG_FILE",
+    "serviceName": "LOG_SERVICE_NAME"
+  },
   "sqs": {
     "region": "SQS_REGION",
     "endpoint": "SQS_ENDPOINT",

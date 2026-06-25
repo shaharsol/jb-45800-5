@@ -1,6 +1,7 @@
 import { connectDB } from './db/connection';
 import { ensureQueueExists } from './connectors/sqs.connector';
 import { appConfig } from './config';
+import { logError } from './logger';
 import { createBackendDevWorker } from './workers/backendDev.worker';
 import { createDevOpsWorker } from './workers/devOps.worker';
 import { createFrontendDevWorker } from './workers/frontendDev.worker';
@@ -29,6 +30,6 @@ async function start(): Promise<void> {
 }
 
 start().catch((error) => {
-  console.error('Failed to start worker:', error);
+  logError('Failed to start worker', error);
   process.exit(1);
 });

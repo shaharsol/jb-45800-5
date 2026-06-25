@@ -1,3 +1,4 @@
+import { logger } from '../../logger';
 import { createBranchFromBase } from '../../services/github.service';
 import { buildDeveloperBranchName, DeveloperAgentRole } from '../../utils/branchName';
 import { DeveloperAgentInput, DeveloperAgentInputBase } from './developerAgent.types';
@@ -21,9 +22,7 @@ export async function prepareDeveloperAgent(
     input.branchName
   );
 
-  console.log(
-    `[${agentRole}] Created work branch ${workBranchName} from ${input.branchName}`
-  );
+  logger.info(`[${agentRole}] Created work branch ${workBranchName} from ${input.branchName}`);
 
   return { ...input, workBranchName };
 }

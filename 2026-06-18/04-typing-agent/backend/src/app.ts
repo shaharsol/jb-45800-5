@@ -6,8 +6,11 @@ import { appConfig } from './config';
 import routes from './routes';
 import webhookRoutes from './routes/webhook.routes';
 import { errorHandler } from './middleware/errorHandler';
+import { requestLogger } from './middleware/requestLogger';
 
 const app = express();
+
+app.use(requestLogger);
 
 app.use(cookieParser());
 app.use(

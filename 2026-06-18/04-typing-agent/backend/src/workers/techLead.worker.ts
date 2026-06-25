@@ -1,5 +1,6 @@
 import { runTechLeadAgent } from '../agents/techLead';
 import { appConfig } from '../config';
+import { logger } from '../logger';
 import { AgentJobMessage } from '../queues/agentJob.types';
 import { findByIdWithAccessToken } from '../services/user.service';
 import { createAgentWorker } from './createAgentWorker';
@@ -19,13 +20,13 @@ async function processTechLeadJob(message: AgentJobMessage): Promise<void> {
     parentIssueNumber: message.issueNumber,
   });
 
-  console.log(
+  logger.info(
     `[TechLead] Created branch ${result.branchName} and ${result.createdIssues.length} sub-issue(s) for ` +
       `${message.repoOwner}/${message.repoName} issue #${message.issueNumber}`
   );
 
   for (const issue of result.createdIssues) {
-    console.log(`[TechLead]   - ${issue.agent}: ${issue.title} (${issue.url})`);
+    logger.info(`[TechLead]   - ${issue.agent}: ${issue.title} (${issue.url})`);
   }
 }
 

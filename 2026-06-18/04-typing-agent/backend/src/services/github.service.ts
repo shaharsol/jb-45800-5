@@ -1,4 +1,5 @@
 import { appConfig } from '../config';
+import { logError, logger } from '../logger';
 import { upsertRepoRegistration } from './repoRegistration.service';
 import { githubApiFetch } from './githubApi';
 
@@ -88,7 +89,7 @@ async function ensureIssueWebhook(
     }),
   });
 
-  console.log(`Registered issues webhook on ${owner}/${repo}`);
+  logger.info(`Registered issues webhook on ${owner}/${repo}`);
 }
 
 export async function createIssue(
@@ -163,10 +164,7 @@ export async function registerIssueWebhooksForUser(
       await ensureIssueWebhook(accessToken, repo.owner.login, repo.name);
       await upsertRepoRegistration(userId, repo.owner.login, repo.name);
     } catch (error) {
-      console.error(
-        `Failed to register webhook for ${repo.owner.login}/${repo.name}:`,
-        error
-      );
+      logError(`Failed to register webhook for ${repo.owner.login}/${repo.name}`, error);
     }
   }
 }

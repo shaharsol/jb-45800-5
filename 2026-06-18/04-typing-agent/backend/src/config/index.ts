@@ -1,5 +1,17 @@
 import config from 'config';
 
+function getConfigString(key: string): string {
+  return config.has(key) ? config.get<string>(key) : '';
+}
+
+function getBetterStackSourceToken(): string {
+  return (
+    getConfigString('betterStack.collectorSecret') ||
+    getConfigString('betterStack.sourceToken') ||
+    getConfigString('betterStack.apiKey')
+  );
+}
+
 export const appConfig = {
   port: config.get<number>('port'),
   mongoUri: config.get<string>('mongoUri'),
@@ -24,6 +36,15 @@ export const appConfig = {
     apiKey: config.get<string>('openai.apiKey'),
     model: config.get<string>('openai.model'),
     defaultInstructions: config.get<string>('openai.defaultInstructions'),
+  },
+  betterStack: {
+    sourceToken: getBetterStackSourceToken(),
+    endpoint: config.get<string>('betterStack.endpoint'),
+  },
+  logging: {
+    level: config.get<string>('logging.level'),
+    file: config.get<string>('logging.file'),
+    serviceName: config.get<string>('logging.serviceName'),
   },
   sqs: {
     region: config.get<string>('sqs.region'),

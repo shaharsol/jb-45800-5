@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { logError, logger } from '../logger';
 import { enqueueAgentJob } from '../queues/enqueueAgentJob';
 import { resolveTypingAgentRoute } from '../queues/typingAgent.routing';
 import { findBranchName } from '../services/issueBranch.service';
@@ -58,19 +59,20 @@ export async function handleGithubWebhook(req: Request, res: Response): Promise<
     const route = resolveTypingAgentRoute(issue.title);
 
     if (!route) {
-      console.log('Ignoring irrelevant issue:', issue.title);
+      logger.info('Ignoring irrelevant issue', { title: issue.title });
       res.status(200).send('OK');
       return;
     }
 
-    console.log(`[webhook] TypingAgent issue (${route}):`, issue.title);
-    console.log('[webhook] Issue body:', issue.body ?? '');
+    logger.info(`[webhook] TypingAgent issue (${route})`, { title: issue.title });
+    logger.info('[webhook] Issue body', { body: issue.body ?? '' });
 
     const userId = await findUserIdByRepo(repository.owner.login, repository.name);
     if (!userId) {
-      console.error(
-        `No registered user found for repository ${repository.owner.login}/${repository.name}`
-      );
+      logger.error('No registered user found for repository', {
+        repoOwner: repository.owner.login,
+        repoName: repository.name,
+      });
       res.status(200).send('OK');
       return;
     }
@@ -85,10 +87,12 @@ export async function handleGithubWebhook(req: Request, res: Response): Promise<
         )) ?? undefined;
 
       if (route !== 'techLead' && !branchName) {
-        console.error(
-          `[webhook] No target branch for ${route} issue #${issue.number} ` +
-            `in ${repository.owner.login}/${repository.name}`
-        );
+        logger.error('[webhook] No target branch for sub-agent issue', {
+          route,
+          issueNumber: issue.number,
+          repoOwner: repository.owner.login,
+          repoName: repository.name,
+        });
         res.status(200).send('OK');
         return;
       }
@@ -103,7 +107,7 @@ export async function handleGithubWebhook(req: Request, res: Response): Promise<
         branchName,
       });
     } catch (error) {
-      console.error(`Failed to enqueue ${route} job:`, error);
+      logError(`Failed to enqueue ${route} job`, error);
       res.status(500).json({ message: 'Failed to enqueue job' });
       return;
     }

@@ -23,6 +23,17 @@
     "model": "gpt-4o",
     "defaultInstructions": "You are TypingAgent, an AI coding assistant that helps complete GitHub issues."
   },
+  "betterStack": {
+    "sourceToken": "",
+    "collectorSecret": "",
+    "apiKey": "",
+    "endpoint": "https://in.logs.betterstack.com"
+  },
+  "logging": {
+    "level": "info",
+    "file": "/tmp/typeing-agent.log",
+    "serviceName": "typing-agent"
+  },
   "sqs": {
     "region": "us-east-1",
     "endpoint": "http://localhost:4566",

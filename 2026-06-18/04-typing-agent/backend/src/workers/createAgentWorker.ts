@@ -3,6 +3,7 @@ import {
   receiveQueueMessages,
 } from '../connectors/sqs.connector';
 import { appConfig } from '../config';
+import { logError, logger } from '../logger';
 import { AgentJobMessage } from '../queues/agentJob.types';
 
 type JobProcessor = (message: AgentJobMessage) => Promise<void>;
@@ -28,7 +29,7 @@ export function createAgentWorker(options: AgentWorkerOptions): {
   }
 
   async function pollOnce(): Promise<void> {
-    console.log(`[${options.workerName}] Fetching message from queue ${options.queueName}...`);
+    logger.info(`[${options.workerName}] Fetching message from queue ${options.queueName}...`);
 
     const messages = await receiveQueueMessages(options.queueName, 1);
     if (messages.length === 0) {
@@ -41,20 +42,20 @@ export function createAgentWorker(options: AgentWorkerOptions): {
       }
 
       const payload = parseMessage(message.Body);
-      console.log(
+      logger.info(
         `[${options.workerName}] Received message for ${jobLabel(payload)} ` +
           `(sqsMessageId=${message.MessageId ?? 'unknown'})`
       );
 
       try {
-        console.log(`[${options.workerName}] Sending job to agent for ${jobLabel(payload)}`);
+        logger.info(`[${options.workerName}] Sending job to agent for ${jobLabel(payload)}`);
         await options.processJob(payload);
         await deleteQueueMessage(options.queueName, message.ReceiptHandle);
-        console.log(
+        logger.info(
           `[${options.workerName}] Agent succeeded for ${jobLabel(payload)}. Deleted message from queue.`
         );
       } catch (error) {
-        console.error(`[${options.workerName}] Agent failed for ${jobLabel(payload)}:`, error);
+        logError(`[${options.workerName}] Agent failed for ${jobLabel(payload)}`, error);
       }
     }
   }
@@ -64,7 +65,7 @@ export function createAgentWorker(options: AgentWorkerOptions): {
       try {
         await pollOnce();
       } catch (error) {
-        console.error(`[${options.workerName}] Failed to fetch message from queue:`, error);
+        logError(`[${options.workerName}] Failed to fetch message from queue`, error);
       }
 
       await new Promise((resolve) => setTimeout(resolve, appConfig.sqs.pollIntervalMs));
@@ -77,7 +78,7 @@ export function createAgentWorker(options: AgentWorkerOptions): {
         return;
       }
       running = true;
-      console.log(`[${options.workerName}] Worker started (queue: ${options.queueName})`);
+      logger.info(`[${options.workerName}] Worker started (queue: ${options.queueName})`);
       void pollLoop();
     },
     stop(): void {

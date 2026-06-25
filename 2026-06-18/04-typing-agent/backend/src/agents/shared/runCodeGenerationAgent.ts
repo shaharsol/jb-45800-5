@@ -1,5 +1,6 @@
 import { getOpenAIClient } from '../../connectors/openai.connector';
 import { appConfig } from '../../config';
+import { logger } from '../../logger';
 import { commitFilesToBranch } from '../../services/githubCommit.service';
 import { createPullRequest } from '../../services/githubPullRequest.service';
 import { fetchRepositorySnapshot } from '../../services/repositoryContent.service';
@@ -29,14 +30,14 @@ function logLoadedRepositoryFiles(
     ? `; ${repository.skippedCount} additional file(s) omitted due to size or limits`
     : '';
 
-  console.log(
+  logger.info(
     `[${agentName}] Loaded ${repository.files.length} repository file(s) from ${branchName}${truncationNote}:`
   );
 
   for (const file of repository.files) {
-    console.log(`[${agentName}]   - ${file.path}`);
-    console.log(excerptContent(file.content));
-    console.log(`[${agentName}]   --- end excerpt ${file.path} ---`);
+    logger.info(`[${agentName}]   - ${file.path}`);
+    logger.info(excerptContent(file.content));
+    logger.info(`[${agentName}]   --- end excerpt ${file.path} ---`);
   }
 }
 
@@ -66,14 +67,14 @@ function logLlmResponse(
   prBody: string,
   files: GeneratedCodeFile[]
 ): void {
-  console.log(`[${agentName}] Commit message: ${commitMessage}`);
-  console.log(`[${agentName}] PR title: ${prTitle}`);
-  console.log(`[${agentName}] PR body: ${prBody}`);
-  console.log(`[${agentName}] Generated ${files.length} file(s):`);
+  logger.info(`[${agentName}] Commit message: ${commitMessage}`);
+  logger.info(`[${agentName}] PR title: ${prTitle}`);
+  logger.info(`[${agentName}] PR body: ${prBody}`);
+  logger.info(`[${agentName}] Generated ${files.length} file(s):`);
   for (const file of files) {
-    console.log(`[${agentName}] --- ${file.path} ---`);
-    console.log(file.content);
-    console.log(`[${agentName}] --- end ${file.path} ---`);
+    logger.info(`[${agentName}] --- ${file.path} ---`);
+    logger.info(file.content);
+    logger.info(`[${agentName}] --- end ${file.path} ---`);
   }
 }
 
@@ -122,7 +123,7 @@ export async function runCodeGenerationAgent(
   logLlmResponse(agentName, parsed.commitMessage, parsed.prTitle, parsed.prBody, parsed.files);
 
   if (parsed.files.length === 0) {
-    console.log(`[${agentName}] No file changes returned; skipping commit and PR`);
+    logger.info(`[${agentName}] No file changes returned; skipping commit and PR`);
     return {
       commitMessage: parsed.commitMessage,
       prTitle: parsed.prTitle,
@@ -141,7 +142,7 @@ export async function runCodeGenerationAgent(
     parsed.files
   );
 
-  console.log(
+  logger.info(
     `[${agentName}] Committed ${commitSha} to ${input.workBranchName} ` +
       `(${parsed.files.length} file(s))`
   );
@@ -156,7 +157,7 @@ export async function runCodeGenerationAgent(
     parsed.prBody
   );
 
-  console.log(
+  logger.info(
     `[${agentName}] Opened PR #${pullRequest.number} ` +
       `(${input.workBranchName} -> ${input.branchName}): ${pullRequest.html_url}`
   );

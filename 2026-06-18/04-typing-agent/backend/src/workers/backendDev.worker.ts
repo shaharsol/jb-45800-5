@@ -1,5 +1,6 @@
 import { runBackendDevAgent } from '../agents/backendDev';
 import { appConfig } from '../config';
+import { logger } from '../logger';
 import { AgentJobMessage } from '../queues/agentJob.types';
 import { createAgentWorker } from './createAgentWorker';
 import { requireFeatureBranch, resolveGithubAccessToken } from './developerWorker.utils';
@@ -17,7 +18,7 @@ async function processBackendDevJob(message: AgentJobMessage): Promise<void> {
     branchName,
   });
 
-  console.log(
+  logger.info(
     `[BackendDev] Committed ${result.files.length} file(s) for ` +
       `${message.repoOwner}/${message.repoName} issue #${message.issueNumber}` +
       (result.pullRequestUrl ? ` — PR: ${result.pullRequestUrl}` : '')
