@@ -24,7 +24,6 @@
     "@aws-sdk/client-sqs": "^3.1075.0",
     "config": "^4.4.1",
     "datadog-winston": "^1.6.0",
-    "mongoose": "^9.7.1",
     "openai": "^6.44.0",
     "winston": "^3.19.0"
   },

@@ -1,7 +1,6 @@
 import { getOpenAIClient } from '../../connectors/openai.connector';
 import { appConfig } from '../../config';
 import { createFeatureBranch, createIssue } from '../../services/github.service';
-import { saveIssueBranch } from '../../services/issueBranch.service';
 import { buildFeatureBranchName } from '../../utils/branchName';
 import {
   TECH_LEAD_SYSTEM_PROMPT,
@@ -133,12 +132,6 @@ export async function runTechLeadAgent(
     input.githubAccessToken,
     input.repoOwner,
     input.repoName,
-    branchName
-  );
-  await saveIssueBranch(
-    input.repoOwner,
-    input.repoName,
-    input.parentIssueNumber,
     branchName
   );
 

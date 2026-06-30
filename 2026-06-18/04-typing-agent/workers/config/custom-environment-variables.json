@@ -1,6 +1,8 @@
 {
   "port": "PORT",
-  "mongoUri": "MONGO_URI",
+  "backend": {
+    "url": "BACKEND_URL"
+  },
   "jwt": {
     "secret": "JWT_SECRET",
     "expiresIn": "JWT_EXPIRES_IN"

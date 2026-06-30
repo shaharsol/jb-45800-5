@@ -1,6 +1,6 @@
 x-worker-environment: &worker-environment
   NODE_ENV: development
-  MONGO_URI: mongodb://mongodb:27017/oauth-app
+  BACKEND_URL: http://backend:3000
   JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me}
   GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
   GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
@@ -79,8 +79,8 @@ services:
       <<: *worker-environment
       WORKER_TYPE: techLead
     depends_on:
-      - mongodb
       - localstack
+      - backend
 
   worker-backend-dev:
     build: ./workers
@@ -89,8 +89,8 @@ services:
       <<: *worker-environment
       WORKER_TYPE: backendDev
     depends_on:
-      - mongodb
       - localstack
+      - backend
 
   worker-frontend-dev:
     build: ./workers
@@ -99,8 +99,8 @@ services:
       <<: *worker-environment
       WORKER_TYPE: frontendDev
     depends_on:
-      - mongodb
       - localstack
+      - backend
 
   worker-devops:
     build: ./workers
@@ -109,8 +109,8 @@ services:
       <<: *worker-environment
       WORKER_TYPE: devOps
     depends_on:
-      - mongodb
       - localstack
+      - backend
 
   worker-code-reviewer:
     build: ./workers
@@ -119,8 +119,8 @@ services:
       <<: *worker-environment
       WORKER_TYPE: codeReviewer
     depends_on:
-      - mongodb
       - localstack
+      - backend
 
   frontend:
     build:

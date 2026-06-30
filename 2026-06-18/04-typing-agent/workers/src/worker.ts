@@ -1,4 +1,3 @@
-import { connectDB } from './db/connection';
 import { ensureQueueExists } from './connectors/sqs.connector';
 import { appConfig } from './config';
 import { logError } from './logger';
@@ -26,7 +25,6 @@ async function start(): Promise<void> {
     throw new Error(`Unknown WORKER_TYPE: ${workerType}`);
   }
 
-  await connectDB();
   await ensureQueueExists(appConfig.sqs.queues[workerType]);
   createWorker().start();
 }

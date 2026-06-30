@@ -1,6 +1,8 @@
 {
   "port": 3000,
-  "mongoUri": "mongodb://localhost:27017/oauth-app",
+  "backend": {
+    "url": "http://localhost:3000"
+  },
   "jwt": {
     "secret": "change-me-in-production",
     "expiresIn": "7d"

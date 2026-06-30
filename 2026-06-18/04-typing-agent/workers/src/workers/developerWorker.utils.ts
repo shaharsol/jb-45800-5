@@ -1,8 +1,8 @@
 import { AgentJobMessage } from '../queues/agentJob.types';
-import { findByIdWithAccessToken } from '../services/user.service';
+import { fetchUserById } from '../services/backendUser.service';
 
 export async function resolveGithubAccessToken(userId: string): Promise<string> {
-  const user = await findByIdWithAccessToken(userId);
+  const user = await fetchUserById(userId);
   if (!user?.githubAccessToken) {
     throw new Error(`GitHub access token not found for user ${userId}`);
   }

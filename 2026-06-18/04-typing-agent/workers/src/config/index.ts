@@ -10,7 +10,9 @@ function getDatadogApiKey(): string {
 
 export const appConfig = {
   port: config.get<number>('port'),
-  mongoUri: config.get<string>('mongoUri'),
+  backend: {
+    url: getConfigString('backend.url') || 'http://localhost:3000',
+  },
   jwt: {
     secret: config.get<string>('jwt.secret'),
     expiresIn: config.get<string>('jwt.expiresIn'),

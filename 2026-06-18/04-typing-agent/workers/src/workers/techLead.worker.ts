@@ -2,17 +2,14 @@ import { runTechLeadAgent } from '../agents/techLead';
 import { appConfig } from '../config';
 import { logger } from '../logger';
 import { AgentJobMessage } from '../queues/agentJob.types';
-import { findByIdWithAccessToken } from '../services/user.service';
 import { createAgentWorker } from './createAgentWorker';
+import { resolveGithubAccessToken } from './developerWorker.utils';
 
 async function processTechLeadJob(message: AgentJobMessage): Promise<void> {
-  const user = await findByIdWithAccessToken(message.userId);
-  if (!user?.githubAccessToken) {
-    throw new Error(`GitHub access token not found for user ${message.userId}`);
-  }
+  const githubAccessToken = await resolveGithubAccessToken(message.userId);
 
   const result = await runTechLeadAgent({
-    githubAccessToken: user.githubAccessToken,
+    githubAccessToken,
     repoOwner: message.repoOwner,
     repoName: message.repoName,
     issueTitle: message.issueTitle,

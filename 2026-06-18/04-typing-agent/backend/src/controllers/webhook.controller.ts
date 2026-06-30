@@ -4,34 +4,18 @@ import { enqueueAgentJob } from '../queues/enqueueAgentJob';
 import { enqueueCodeReviewJob } from '../queues/enqueueCodeReviewJob';
 import { resolveTypingAgentRoute } from '../queues/typingAgent.routing';
 import { isCodeReviewerPullRequestTitle } from '../utils/typingAgentMarkers';
-import { findBranchName } from '../services/issueBranch.service';
 import { findUserIdByRepo } from '../services/repoRegistration.service';
-import {
-  parseParentIssueNumberFromBody,
-  parseTargetBranchFromIssueBody,
-} from '../utils/issueBody';
+import { parseTargetBranchFromIssueBody } from '../utils/issueBody';
 
-async function resolveTargetBranch(
+function resolveTargetBranch(
   route: ReturnType<typeof resolveTypingAgentRoute>,
-  repoOwner: string,
-  repoName: string,
   issueBody: string
-): Promise<string | null> {
+): string | null {
   if (route === 'techLead' || !route) {
     return null;
   }
 
-  const fromBody = parseTargetBranchFromIssueBody(issueBody);
-  if (fromBody) {
-    return fromBody;
-  }
-
-  const parentNum = parseParentIssueNumberFromBody(issueBody);
-  if (!parentNum) {
-    return null;
-  }
-
-  return findBranchName(repoOwner, repoName, parentNum);
+  return parseTargetBranchFromIssueBody(issueBody);
 }
 
 interface IssueWebhookPayload {
@@ -156,12 +140,7 @@ export async function handleGithubWebhook(req: Request, res: Response): Promise<
 
     try {
       const branchName =
-        (await resolveTargetBranch(
-          route,
-          repository.owner.login,
-          repository.name,
-          issue.body ?? ''
-        )) ?? undefined;
+        resolveTargetBranch(route, issue.body ?? '') ?? undefined;
 
       if (route !== 'techLead' && !branchName) {
         logger.error('[webhook] No target branch for sub-agent issue', {
