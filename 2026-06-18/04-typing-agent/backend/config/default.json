@@ -9,7 +9,7 @@
     "clientId": "Ov23lisfQ4tBF7UDeobx",
     "clientSecret": "",
     "callbackUrl": "http://localhost:3000/api/auth/github/callback",
-    "webhookUrl": "https://62c8-31-154-18-65.ngrok-free.app/api/webhooks/github",
+    "webhookUrl": "https://94eb-31-154-18-65.ngrok-free.app/api/webhooks/github",
     "webhookSecret": "",
     "agents": {
       "backendDev": {
