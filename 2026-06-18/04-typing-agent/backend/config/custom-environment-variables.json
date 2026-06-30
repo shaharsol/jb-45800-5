@@ -18,6 +18,9 @@
   "cors": {
     "origin": "CORS_ORIGIN"
   },
+  "serviceAuth": {
+    "secret": "SERVICE_AUTH_SECRET"
+  },
   "datadog": {
     "apiKey": "DATADOG_API_KEY",
     "tokenId": "DATADOG_TOKEN_ID",

@@ -3,6 +3,9 @@
   "backend": {
     "url": "http://localhost:3000"
   },
+  "serviceAuth": {
+    "secret": "change-me-service-auth-secret"
+  },
   "jwt": {
     "secret": "change-me-in-production",
     "expiresIn": "7d"

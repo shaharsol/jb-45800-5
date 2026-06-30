@@ -13,6 +13,9 @@ export const appConfig = {
   backend: {
     url: getConfigString('backend.url') || 'http://localhost:3000',
   },
+  serviceAuth: {
+    secret: getConfigString('serviceAuth.secret'),
+  },
   jwt: {
     secret: config.get<string>('jwt.secret'),
     expiresIn: config.get<string>('jwt.expiresIn'),

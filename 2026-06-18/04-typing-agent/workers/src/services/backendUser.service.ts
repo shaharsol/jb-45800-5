@@ -1,9 +1,18 @@
 import { appConfig } from '../config';
 import { BackendUser } from '../types/backendUser.types';
+import { createServiceAuthHeaders } from '../utils/serviceAuth';
 
 export async function fetchUserById(userId: string): Promise<BackendUser | null> {
+  const secret = appConfig.serviceAuth.secret;
+  if (!secret) {
+    throw new Error('SERVICE_AUTH_SECRET is not configured');
+  }
+
   const response = await fetch(
-    `${appConfig.backend.url}/api/user/${encodeURIComponent(userId)}`
+    `${appConfig.backend.url}/api/user/${encodeURIComponent(userId)}`,
+    {
+      headers: createServiceAuthHeaders(secret),
+    }
   );
 
   if (response.status === 404) {

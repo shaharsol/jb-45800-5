@@ -3,6 +3,9 @@
   "backend": {
     "url": "BACKEND_URL"
   },
+  "serviceAuth": {
+    "secret": "SERVICE_AUTH_SECRET"
+  },
   "jwt": {
     "secret": "JWT_SECRET",
     "expiresIn": "JWT_EXPIRES_IN"

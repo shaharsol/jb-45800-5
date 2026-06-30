@@ -18,6 +18,9 @@
   "cors": {
     "origin": "http://localhost:5173"
   },
+  "serviceAuth": {
+    "secret": "change-me-service-auth-secret"
+  },
   "datadog": {
     "apiKey": "",
     "tokenId": "",

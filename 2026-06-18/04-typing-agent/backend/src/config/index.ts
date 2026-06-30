@@ -28,6 +28,9 @@ export const appConfig = {
   cors: {
     origin: config.get<string>('cors.origin'),
   },
+  serviceAuth: {
+    secret: getConfigString('serviceAuth.secret'),
+  },
   datadog: {
     apiKey: getDatadogApiKey(),
     tokenId: getConfigString('datadog.tokenId'),
