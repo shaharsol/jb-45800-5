@@ -10,13 +10,40 @@
     "clientSecret": "",
     "callbackUrl": "http://localhost:3000/api/auth/github/callback",
     "webhookUrl": "https://94eb-31-154-18-65.ngrok-free.app/api/webhooks/github",
-    "webhookSecret": ""
+    "webhookSecret": "",
+    "agents": {
+      "backendDev": {
+        "name": "TypingAgent-BackendDev",
+        "email": "backend-dev@typing-agent.local",
+        "accessToken": ""
+      },
+      "frontendDev": {
+        "name": "TypingAgent-FrontendDev",
+        "email": "frontend-dev@typing-agent.local",
+        "accessToken": ""
+      },
+      "devOps": {
+        "name": "TypingAgent-DevOps",
+        "email": "devops@typing-agent.local",
+        "accessToken": ""
+      },
+      "codeReviewer": {
+        "name": "TypingAgent-CodeReviewer",
+        "email": "code-reviewer@typing-agent.local",
+        "accessToken": ""
+      }
+    }
   },
   "frontend": {
     "url": "http://localhost:5173"
   },
   "cors": {
     "origin": "http://localhost:5173"
+  },
+  "openai": {
+    "apiKey": "",
+    "model": "gpt-4o",
+    "defaultInstructions": "You are TypingAgent, an AI coding assistant that helps complete GitHub issues."
   },
   "datadog": {
     "apiKey": "",
@@ -42,6 +69,8 @@
       "codeReviewer": "code-reviewer-queue"
     },
     "visibilityTimeoutSeconds": 3600,
+    "waitTimeSeconds": 20,
+    "pollIntervalMs": 5000,
     "accessKeyId": "test",
     "secretAccessKey": "test"
   }

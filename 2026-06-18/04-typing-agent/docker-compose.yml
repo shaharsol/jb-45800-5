@@ -52,8 +52,6 @@ services:
       GITHUB_CALLBACK_URL: http://localhost:3000/api/auth/github/callback
       GITHUB_WEBHOOK_URL: http://localhost:3000/api/webhooks/github
       GITHUB_WEBHOOK_SECRET: ${GITHUB_WEBHOOK_SECRET:-dev-webhook-secret}
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
-      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o}
       DATADOG_TOKEN_ID: ${DATADOG_TOKEN_ID}
       DATADOG_TOKEN_SECRET: ${DATADOG_TOKEN_SECRET}
       DATADOG_API_KEY: ${DATADOG_API_KEY}
@@ -75,7 +73,7 @@ services:
       - localstack
 
   worker-tech-lead:
-    build: ./backend
+    build: ./workers
     command: ["node", "dist/worker.js"]
     environment:
       <<: *worker-environment
@@ -85,7 +83,7 @@ services:
       - localstack
 
   worker-backend-dev:
-    build: ./backend
+    build: ./workers
     command: ["node", "dist/worker.js"]
     environment:
       <<: *worker-environment
@@ -95,7 +93,7 @@ services:
       - localstack
 
   worker-frontend-dev:
-    build: ./backend
+    build: ./workers
     command: ["node", "dist/worker.js"]
     environment:
       <<: *worker-environment
@@ -105,7 +103,7 @@ services:
       - localstack
 
   worker-devops:
-    build: ./backend
+    build: ./workers
     command: ["node", "dist/worker.js"]
     environment:
       <<: *worker-environment
@@ -115,7 +113,7 @@ services:
       - localstack
 
   worker-code-reviewer:
-    build: ./backend
+    build: ./workers
     command: ["node", "dist/worker.js"]
     environment:
       <<: *worker-environment

@@ -1,0 +1,36 @@
+{
+  "name": "workers",
+  "version": "1.0.0",
+  "description": "TypingAgent SQS worker processes",
+  "main": "dist/worker.js",
+  "scripts": {
+    "dev": "node scripts/worker-dev.js techLead",
+    "worker:tech-lead:dev": "node scripts/worker-dev.js techLead",
+    "worker:backend:dev": "node scripts/worker-dev.js backendDev",
+    "worker:frontend:dev": "node scripts/worker-dev.js frontendDev",
+    "worker:devops:dev": "node scripts/worker-dev.js devOps",
+    "worker:code-reviewer:dev": "node scripts/worker-dev.js codeReviewer",
+    "build": "tsc",
+    "start": "node dist/worker.js",
+    "worker:tech-lead": "node scripts/run-worker-prod.js techLead",
+    "worker:backend": "node scripts/run-worker-prod.js backendDev",
+    "worker:frontend": "node scripts/run-worker-prod.js frontendDev",
+    "worker:devops": "node scripts/run-worker-prod.js devOps",
+    "worker:code-reviewer": "node scripts/run-worker-prod.js codeReviewer"
+  },
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@aws-sdk/client-sqs": "^3.1075.0",
+    "config": "^4.4.1",
+    "datadog-winston": "^1.6.0",
+    "mongoose": "^9.7.1",
+    "openai": "^6.44.0",
+    "winston": "^3.19.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.3",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^6.0.3"
+  }
+}

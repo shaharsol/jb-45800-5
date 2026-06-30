@@ -15,19 +15,7 @@ interface GitHubHook {
   events: string[];
 }
 
-interface GitHubIssue {
-  number: number;
-  html_url: string;
-  title: string;
-}
-
-interface GitHubRepoDetails {
-  default_branch: string;
-}
-
-interface GitHubGitRef {
-  object: { sha: string };
-}
+const TYPING_AGENT_WEBHOOK_EVENTS = ['issues', 'pull_request'] as const;
 
 async function githubFetch<T>(
   path: string,
@@ -57,8 +45,6 @@ async function listAdminRepos(accessToken: string): Promise<GitHubRepo[]> {
 
   return repos;
 }
-
-const TYPING_AGENT_WEBHOOK_EVENTS = ['issues', 'pull_request'] as const;
 
 async function ensureTypingAgentWebhook(
   accessToken: string,
@@ -106,67 +92,6 @@ async function ensureTypingAgentWebhook(
   });
 
   logger.info(`Registered TypingAgent webhook on ${owner}/${repo}`);
-}
-
-export async function createIssue(
-  accessToken: string,
-  owner: string,
-  repo: string,
-  title: string,
-  body: string
-): Promise<GitHubIssue> {
-  return githubFetch<GitHubIssue>(`/repos/${owner}/${repo}/issues`, accessToken, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title, body }),
-  });
-}
-
-export async function createBranchFromBase(
-  accessToken: string,
-  owner: string,
-  repo: string,
-  branchName: string,
-  baseBranchName: string
-): Promise<void> {
-  const baseRef = await githubFetch<GitHubGitRef>(
-    `/repos/${owner}/${repo}/git/ref/heads/${encodeURIComponent(baseBranchName)}`,
-    accessToken
-  );
-
-  try {
-    await githubFetch(`/repos/${owner}/${repo}/git/refs`, accessToken, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ref: `refs/heads/${branchName}`,
-        sha: baseRef.object.sha,
-      }),
-    });
-  } catch (error) {
-    if (
-      error instanceof Error &&
-      error.message.includes('422') &&
-      error.message.includes('Reference already exists')
-    ) {
-      return;
-    }
-    throw error;
-  }
-}
-
-export async function createFeatureBranch(
-  accessToken: string,
-  owner: string,
-  repo: string,
-  branchName: string
-): Promise<void> {
-  const repoDetails = await githubFetch<GitHubRepoDetails>(
-    `/repos/${owner}/${repo}`,
-    accessToken
-  );
-
-  await createBranchFromBase(accessToken, owner, repo, branchName, repoDetails.default_branch);
 }
 
 export async function registerIssueWebhooksForUser(

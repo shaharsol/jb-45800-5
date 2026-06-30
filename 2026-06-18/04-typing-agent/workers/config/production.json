@@ -2,6 +2,9 @@
   "jwt": {
     "secret": ""
   },
+  "openai": {
+    "apiKey": ""
+  },
   "sqs": {
     "endpoint": "",
     "accessKeyId": "",

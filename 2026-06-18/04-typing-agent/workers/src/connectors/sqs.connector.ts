@@ -1,8 +1,11 @@
 import {
   CreateQueueCommand,
+  DeleteMessageCommand,
   GetQueueUrlCommand,
+  ReceiveMessageCommand,
   SendMessageCommand,
   SQSClient,
+  type Message,
 } from '@aws-sdk/client-sqs';
 import { appConfig } from '../config';
 import { logger } from '../logger';
@@ -102,4 +105,38 @@ export async function sendQueueMessage(
   );
 
   return response.MessageId;
+}
+
+export async function receiveQueueMessages(
+  queueName: string,
+  maxMessages = 1
+): Promise<Message[]> {
+  const url = await ensureQueueExists(queueName);
+  const sqs = getSqsClient();
+
+  const response = await sqs.send(
+    new ReceiveMessageCommand({
+      QueueUrl: url,
+      MaxNumberOfMessages: maxMessages,
+      WaitTimeSeconds: appConfig.sqs.waitTimeSeconds,
+      VisibilityTimeout: appConfig.sqs.visibilityTimeoutSeconds,
+    })
+  );
+
+  return response.Messages ?? [];
+}
+
+export async function deleteQueueMessage(
+  queueName: string,
+  receiptHandle: string
+): Promise<void> {
+  const url = await ensureQueueExists(queueName);
+  const sqs = getSqsClient();
+
+  await sqs.send(
+    new DeleteMessageCommand({
+      QueueUrl: url,
+      ReceiptHandle: receiptHandle,
+    })
+  );
 }
