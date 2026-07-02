@@ -36,6 +36,19 @@ export async function createIssue(
   });
 }
 
+export async function closeIssue(
+  accessToken: string,
+  owner: string,
+  repo: string,
+  issueNumber: number
+): Promise<void> {
+  await githubFetch(`/repos/${owner}/${repo}/issues/${issueNumber}`, accessToken, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ state: 'closed', state_reason: 'completed' }),
+  });
+}
+
 export async function createBranchFromBase(
   accessToken: string,
   owner: string,

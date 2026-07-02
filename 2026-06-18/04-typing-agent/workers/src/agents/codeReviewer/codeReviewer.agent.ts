@@ -2,10 +2,12 @@ import { getOpenAIClient } from '../../connectors/openai.connector';
 import { appConfig } from '../../config';
 import { logger } from '../../logger';
 import { CodeReviewJobMessage } from '../../queues/codeReviewJob.types';
+import { closeIssue } from '../../services/github.service';
 import {
   addPullRequestComment,
   mergePullRequest,
 } from '../../services/githubPullRequestReview.service';
+import { parseClosingIssueNumber } from '../../utils/issueClosing';
 import { fetchPullRequestSnapshot } from '../../services/pullRequestContent.service';
 import { PullRequestSnapshot } from '../../types/pullRequest.types';
 import { resolveAgentGithubAccessToken } from '../../utils/agentIdentity';
@@ -131,6 +133,16 @@ export async function runCodeReviewerAgent(
       `[${agentName}] Merged PR #${input.pullRequestNumber} ` +
         `(${snapshot.headRef} -> ${snapshot.baseRef})`
     );
+
+    const issueToClose = parseClosingIssueNumber(snapshot.body);
+    if (issueToClose) {
+      await closeIssue(agentGithubToken, input.repoOwner, input.repoName, issueToClose);
+      logger.info(`[${agentName}] Closed issue #${issueToClose}`);
+    } else {
+      logger.warn(
+        `[${agentName}] No fixes/closes/resolves #N reference in PR body; issue left open`
+      );
+    }
 
     return {
       decision: 'approve',

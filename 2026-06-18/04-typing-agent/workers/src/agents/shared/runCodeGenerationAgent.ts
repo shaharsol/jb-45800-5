@@ -16,6 +16,7 @@ import {
   hasAgentGithubAccessToken,
   resolveAgentGithubAccessToken,
 } from '../../utils/agentIdentity';
+import { appendIssueClosingReference } from '../../utils/issueClosing';
 import { formatCodeReviewerPullRequestTitle } from '../../utils/typingAgentMarkers';
 
 const REPOSITORY_FILE_EXCERPT_CHARS = 400;
@@ -164,6 +165,8 @@ export async function runCodeGenerationAgent(
       `(${parsed.files.length} file(s))`
   );
 
+  const pullRequestBody = appendIssueClosingReference(parsed.prBody, input.issueNumber);
+
   const pullRequest = await createPullRequest(
     agentGithubToken,
     input.repoOwner,
@@ -171,7 +174,7 @@ export async function runCodeGenerationAgent(
     input.workBranchName,
     input.branchName,
     formatCodeReviewerPullRequestTitle(parsed.prTitle),
-    parsed.prBody
+    pullRequestBody
   );
 
   logger.info(
