@@ -43,18 +43,4 @@ export const appConfig = {
     file: config.get<string>('logging.file'),
     serviceName: config.get<string>('logging.serviceName'),
   },
-  sqs: {
-    region: config.get<string>('sqs.region'),
-    endpoint: config.has('sqs.endpoint') ? config.get<string>('sqs.endpoint') : '',
-    queues: {
-      techLead: config.get<string>('sqs.queues.techLead'),
-      backendDev: config.get<string>('sqs.queues.backendDev'),
-      frontendDev: config.get<string>('sqs.queues.frontendDev'),
-      devOps: config.get<string>('sqs.queues.devOps'),
-      codeReviewer: config.get<string>('sqs.queues.codeReviewer'),
-    },
-    visibilityTimeoutSeconds: config.get<number>('sqs.visibilityTimeoutSeconds'),
-    accessKeyId: config.get<string>('sqs.accessKeyId'),
-    secretAccessKey: config.get<string>('sqs.secretAccessKey'),
-  },
 };

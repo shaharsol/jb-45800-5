@@ -1,0 +1,37 @@
+{
+  "port": "PORT",
+  "mongoUri": "MONGO_URI",
+  "jwt": {
+    "secret": "JWT_SECRET",
+    "expiresIn": "JWT_EXPIRES_IN"
+  },
+  "github": {
+    "clientId": "GITHUB_CLIENT_ID",
+    "clientSecret": "GITHUB_CLIENT_SECRET",
+    "callbackUrl": "GITHUB_CALLBACK_URL",
+    "webhookUrl": "GITHUB_WEBHOOK_URL",
+    "webhookSecret": "GITHUB_WEBHOOK_SECRET"
+  },
+  "frontend": {
+    "url": "FRONTEND_URL"
+  },
+  "cors": {
+    "origin": "CORS_ORIGIN"
+  },
+  "serviceAuth": {
+    "secret": "SERVICE_AUTH_SECRET"
+  },
+  "datadog": {
+    "apiKey": "DATADOG_API_KEY",
+    "tokenId": "DATADOG_TOKEN_ID",
+    "tokenSecret": "DATADOG_TOKEN_SECRET",
+    "site": "DATADOG_SITE",
+    "source": "DATADOG_SOURCE",
+    "intakeRegion": "DATADOG_INTAKE_REGION"
+  },
+  "logging": {
+    "level": "LOG_LEVEL",
+    "file": "LOG_FILE",
+    "serviceName": "LOG_SERVICE_NAME"
+  }
+}

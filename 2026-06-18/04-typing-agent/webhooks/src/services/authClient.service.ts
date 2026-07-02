@@ -1,15 +1,17 @@
 import { appConfig } from '../config';
-import { BackendUser } from '../types/backendUser.types';
 import { createServiceAuthHeaders } from '../utils/serviceAuth';
 
-export async function fetchUserById(userId: string): Promise<BackendUser | null> {
+export async function fetchUserIdByRepo(
+  repoOwner: string,
+  repoName: string
+): Promise<string | null> {
   const secret = appConfig.serviceAuth.secret;
   if (!secret) {
     throw new Error('SERVICE_AUTH_SECRET is not configured');
   }
 
   const response = await fetch(
-    `${appConfig.authService.url}/api/user/${encodeURIComponent(userId)}`,
+    `${appConfig.authService.url}/api/repos/${encodeURIComponent(repoOwner)}/${encodeURIComponent(repoName)}/user-id`,
     {
       headers: createServiceAuthHeaders(secret),
     }
@@ -21,8 +23,9 @@ export async function fetchUserById(userId: string): Promise<BackendUser | null>
 
   if (!response.ok) {
     const text = await response.text();
-    throw new Error(`Backend user API failed (${response.status}): ${text}`);
+    throw new Error(`Auth repo lookup failed (${response.status}): ${text}`);
   }
 
-  return response.json() as Promise<BackendUser>;
+  const data = (await response.json()) as { userId: string };
+  return data.userId;
 }

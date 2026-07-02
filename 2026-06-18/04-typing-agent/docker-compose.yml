@@ -1,6 +1,6 @@
 x-worker-environment: &worker-environment
   NODE_ENV: development
-  BACKEND_URL: http://backend:3000
+  AUTH_SERVICE_URL: http://auth:3000
   SERVICE_AUTH_SECRET: ${SERVICE_AUTH_SECRET:-change-me-service-auth-secret}
   JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me}
   GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
@@ -40,8 +40,8 @@ services:
     volumes:
       - localstack_data:/var/lib/localstack
 
-  backend:
-    build: ./backend
+  auth:
+    build: ./auth
     ports:
       - "3000:3000"
     environment:
@@ -51,7 +51,26 @@ services:
       GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
       GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
       GITHUB_CALLBACK_URL: http://localhost:3000/api/auth/github/callback
-      GITHUB_WEBHOOK_URL: http://localhost:3000/api/webhooks/github
+      GITHUB_WEBHOOK_URL: http://localhost:3001/api/webhooks/github
+      GITHUB_WEBHOOK_SECRET: ${GITHUB_WEBHOOK_SECRET:-dev-webhook-secret}
+      SERVICE_AUTH_SECRET: ${SERVICE_AUTH_SECRET:-change-me-service-auth-secret}
+      DATADOG_TOKEN_ID: ${DATADOG_TOKEN_ID}
+      DATADOG_TOKEN_SECRET: ${DATADOG_TOKEN_SECRET}
+      DATADOG_API_KEY: ${DATADOG_API_KEY}
+      DATADOG_SITE: ${DATADOG_SITE:-datadoghq.com}
+      FRONTEND_URL: http://localhost:5173
+      CORS_ORIGIN: http://localhost:5173
+    depends_on:
+      - mongodb
+
+  webhooks:
+    build: ./webhooks
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      AUTH_SERVICE_URL: http://auth:3000
       GITHUB_WEBHOOK_SECRET: ${GITHUB_WEBHOOK_SECRET:-dev-webhook-secret}
       SERVICE_AUTH_SECRET: ${SERVICE_AUTH_SECRET:-change-me-service-auth-secret}
       DATADOG_TOKEN_ID: ${DATADOG_TOKEN_ID}
@@ -68,11 +87,9 @@ services:
       SQS_VISIBILITY_TIMEOUT_SECONDS: 3600
       AWS_ACCESS_KEY_ID: test
       AWS_SECRET_ACCESS_KEY: test
-      FRONTEND_URL: http://localhost:5173
-      CORS_ORIGIN: http://localhost:5173
     depends_on:
-      - mongodb
       - localstack
+      - auth
 
   worker-tech-lead:
     build: ./workers
@@ -82,7 +99,7 @@ services:
       WORKER_TYPE: techLead
     depends_on:
       - localstack
-      - backend
+      - auth
 
   worker-backend-dev:
     build: ./workers
@@ -92,7 +109,7 @@ services:
       WORKER_TYPE: backendDev
     depends_on:
       - localstack
-      - backend
+      - auth
 
   worker-frontend-dev:
     build: ./workers
@@ -102,7 +119,7 @@ services:
       WORKER_TYPE: frontendDev
     depends_on:
       - localstack
-      - backend
+      - auth
 
   worker-devops:
     build: ./workers
@@ -112,7 +129,7 @@ services:
       WORKER_TYPE: devOps
     depends_on:
       - localstack
-      - backend
+      - auth
 
   worker-code-reviewer:
     build: ./workers
@@ -122,7 +139,7 @@ services:
       WORKER_TYPE: codeReviewer
     depends_on:
       - localstack
-      - backend
+      - auth
 
   frontend:
     build:
@@ -132,7 +149,7 @@ services:
     ports:
       - "5173:80"
     depends_on:
-      - backend
+      - auth
 
 volumes:
   mongo_data:

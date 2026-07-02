@@ -1,5 +1,8 @@
 {
   "port": "PORT",
+  "authService": {
+    "url": "AUTH_SERVICE_URL"
+  },
   "backend": {
     "url": "BACKEND_URL"
   },

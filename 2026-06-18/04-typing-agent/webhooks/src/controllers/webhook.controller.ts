@@ -4,7 +4,7 @@ import { enqueueAgentJob } from '../queues/enqueueAgentJob';
 import { enqueueCodeReviewJob } from '../queues/enqueueCodeReviewJob';
 import { resolveTypingAgentRoute } from '../queues/typingAgent.routing';
 import { isCodeReviewerPullRequestTitle } from '../utils/typingAgentMarkers';
-import { findUserIdByRepo } from '../services/repoRegistration.service';
+import { fetchUserIdByRepo } from '../services/authClient.service';
 import { parseTargetBranchFromIssueBody } from '../utils/issueBody';
 
 function resolveTargetBranch(
@@ -66,7 +66,7 @@ async function handlePullRequestOpened(
 
   logger.info('[webhook] TypingAgent code review PR', { title: pullRequest.title });
 
-  const userId = await findUserIdByRepo(repository.owner.login, repository.name);
+  const userId = await fetchUserIdByRepo(repository.owner.login, repository.name);
   if (!userId) {
     logger.error('No registered user found for repository', {
       repoOwner: repository.owner.login,
@@ -128,7 +128,7 @@ export async function handleGithubWebhook(req: Request, res: Response): Promise<
     logger.info(`[webhook] TypingAgent issue (${route})`, { title: issue.title });
     logger.info('[webhook] Issue body', { body: issue.body ?? '' });
 
-    const userId = await findUserIdByRepo(repository.owner.login, repository.name);
+    const userId = await fetchUserIdByRepo(repository.owner.login, repository.name);
     if (!userId) {
       logger.error('No registered user found for repository', {
         repoOwner: repository.owner.login,

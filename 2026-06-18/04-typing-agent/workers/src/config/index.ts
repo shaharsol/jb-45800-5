@@ -10,8 +10,11 @@ function getDatadogApiKey(): string {
 
 export const appConfig = {
   port: config.get<number>('port'),
-  backend: {
-    url: getConfigString('backend.url') || 'http://localhost:3000',
+  authService: {
+    url:
+      getConfigString('authService.url') ||
+      getConfigString('backend.url') ||
+      'http://localhost:3000',
   },
   serviceAuth: {
     secret: getConfigString('serviceAuth.secret'),
