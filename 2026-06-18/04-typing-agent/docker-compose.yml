@@ -22,6 +22,12 @@ x-worker-environment: &worker-environment
   AWS_ACCESS_KEY_ID: test
   AWS_SECRET_ACCESS_KEY: test
 
+x-depends-on-ready: &depends-on-ready
+  localstack:
+    condition: service_healthy
+  auth:
+    condition: service_started
+
 services:
   mongodb:
     image: mongo:7
@@ -31,7 +37,7 @@ services:
       - mongo_data:/data/db
 
   localstack:
-    image: localstack/localstack:latest
+    image: localstack/localstack:4.4.0
     ports:
       - "4566:4566"
     environment:
@@ -39,6 +45,12 @@ services:
       DEFAULT_REGION: us-east-1
     volumes:
       - localstack_data:/var/lib/localstack
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
 
   auth:
     build: ./auth
@@ -51,7 +63,7 @@ services:
       GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
       GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
       GITHUB_CALLBACK_URL: http://localhost:3000/api/auth/github/callback
-      GITHUB_WEBHOOK_URL: http://localhost:3001/api/webhooks/github
+      GITHUB_WEBHOOK_URL: https://cdeb-31-154-18-65.ngrok-free.app/api/webhooks/github
       GITHUB_WEBHOOK_SECRET: ${GITHUB_WEBHOOK_SECRET:-dev-webhook-secret}
       SERVICE_AUTH_SECRET: ${SERVICE_AUTH_SECRET:-change-me-service-auth-secret}
       DATADOG_TOKEN_ID: ${DATADOG_TOKEN_ID}
@@ -87,9 +99,7 @@ services:
       SQS_VISIBILITY_TIMEOUT_SECONDS: 3600
       AWS_ACCESS_KEY_ID: test
       AWS_SECRET_ACCESS_KEY: test
-    depends_on:
-      - localstack
-      - auth
+    depends_on: *depends-on-ready
 
   worker-tech-lead:
     build: ./workers
@@ -97,9 +107,7 @@ services:
     environment:
       <<: *worker-environment
       WORKER_TYPE: techLead
-    depends_on:
-      - localstack
-      - auth
+    depends_on: *depends-on-ready
 
   worker-backend-dev:
     build: ./workers
@@ -107,9 +115,7 @@ services:
     environment:
       <<: *worker-environment
       WORKER_TYPE: backendDev
-    depends_on:
-      - localstack
-      - auth
+    depends_on: *depends-on-ready
 
   worker-frontend-dev:
     build: ./workers
@@ -117,9 +123,7 @@ services:
     environment:
       <<: *worker-environment
       WORKER_TYPE: frontendDev
-    depends_on:
-      - localstack
-      - auth
+    depends_on: *depends-on-ready
 
   worker-devops:
     build: ./workers
@@ -127,9 +131,7 @@ services:
     environment:
       <<: *worker-environment
       WORKER_TYPE: devOps
-    depends_on:
-      - localstack
-      - auth
+    depends_on: *depends-on-ready
 
   worker-code-reviewer:
     build: ./workers
@@ -137,9 +139,7 @@ services:
     environment:
       <<: *worker-environment
       WORKER_TYPE: codeReviewer
-    depends_on:
-      - localstack
-      - auth
+    depends_on: *depends-on-ready
 
   frontend:
     build:
