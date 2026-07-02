@@ -14,6 +14,20 @@ export function buildFeatureBranchName(issueNumber: number, issueTitle: string):
   return `feature-${issueNumber}-${slugifyIssueTitle(issueTitle)}`;
 }
 
+export function isFeatureBranchName(branchName: string): boolean {
+  return /^feature-\d+-/.test(branchName);
+}
+
+export function parseFeatureBranchIssueNumber(branchName: string): number | null {
+  const match = branchName.match(/^feature-(\d+)-/);
+  if (!match) {
+    return null;
+  }
+
+  const issueNumber = Number(match[1]);
+  return Number.isFinite(issueNumber) ? issueNumber : null;
+}
+
 export type DeveloperAgentRole = 'backend-dev' | 'frontend-dev' | 'devops';
 
 export function buildDeveloperBranchName(

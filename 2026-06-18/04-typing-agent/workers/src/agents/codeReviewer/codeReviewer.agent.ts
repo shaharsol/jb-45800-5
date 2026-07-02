@@ -2,15 +2,22 @@ import { getOpenAIClient } from '../../connectors/openai.connector';
 import { appConfig } from '../../config';
 import { logger } from '../../logger';
 import { CodeReviewJobMessage } from '../../queues/codeReviewJob.types';
-import { closeIssue } from '../../services/github.service';
+import { createPullRequest } from '../../services/githubPullRequest.service';
+import {
+  closeIssue,
+  getDefaultBranch,
+  listOpenDevSubIssuesForParent,
+} from '../../services/github.service';
 import {
   addPullRequestComment,
   mergePullRequest,
 } from '../../services/githubPullRequestReview.service';
+import { parseFeatureBranchIssueNumber, isFeatureBranchName } from '../../utils/branchName';
 import { parseClosingIssueNumber } from '../../utils/issueClosing';
 import { fetchPullRequestSnapshot } from '../../services/pullRequestContent.service';
 import { PullRequestSnapshot } from '../../types/pullRequest.types';
 import { resolveAgentGithubAccessToken } from '../../utils/agentIdentity';
+import { formatHumanReviewPullRequestTitle } from '../../utils/typingAgentMarkers';
 import {
   CODE_REVIEW_RESPONSE_SCHEMA,
   CODE_REVIEWER_SYSTEM_PROMPT,
@@ -70,6 +77,72 @@ function buildUserMessage(snapshot: PullRequestSnapshot): string {
   ]
     .filter(Boolean)
     .join('\n');
+}
+
+async function maybeOpenHumanReviewPullRequest(
+  accessToken: string,
+  input: CodeReviewJobMessage,
+  snapshot: PullRequestSnapshot,
+  justClosedIssueNumber?: number
+): Promise<void> {
+  const featureBranch = snapshot.baseRef;
+  if (!isFeatureBranchName(featureBranch)) {
+    return;
+  }
+
+  const parentIssueNumber = parseFeatureBranchIssueNumber(featureBranch);
+  if (!parentIssueNumber) {
+    logger.warn(
+      `[CodeReviewer] Could not parse parent issue number from feature branch ${featureBranch}; skipping human review PR`
+    );
+    return;
+  }
+
+  const openDevSubIssues = await listOpenDevSubIssuesForParent(
+    accessToken,
+    input.repoOwner,
+    input.repoName,
+    parentIssueNumber,
+    justClosedIssueNumber ? [justClosedIssueNumber] : []
+  );
+
+  if (openDevSubIssues.length > 0) {
+    const issueRefs = openDevSubIssues.map((issue) => `#${issue.number}`).join(', ');
+    logger.info(
+      `[CodeReviewer] ${openDevSubIssues.length} open dev sub-issue(s) remain for parent #${parentIssueNumber} (${issueRefs}); skipping human review PR`
+    );
+    return;
+  }
+
+  const defaultBranch = await getDefaultBranch(accessToken, input.repoOwner, input.repoName);
+  if (defaultBranch === featureBranch) {
+    return;
+  }
+  const pullRequestBody = [
+    `Human-in-the-loop aggregation PR for \`${featureBranch}\`.`,
+    '',
+    'All TechLead developer sub-issues for the parent task are now closed.',
+    `fixes #${parentIssueNumber}`,
+  ].join('\n');
+
+  const pullRequestTitle = formatHumanReviewPullRequestTitle(
+    `Human review: merge ${featureBranch} into ${defaultBranch}`
+  );
+
+  const pullRequest = await createPullRequest(
+    accessToken,
+    input.repoOwner,
+    input.repoName,
+    featureBranch,
+    defaultBranch,
+    pullRequestTitle,
+    pullRequestBody
+  );
+
+  logger.info(
+    `[CodeReviewer] Opened human review PR #${pullRequest.number} ` +
+      `(${featureBranch} -> ${defaultBranch}): ${pullRequest.html_url}`
+  );
 }
 
 export async function runCodeReviewerAgent(
@@ -143,6 +216,13 @@ export async function runCodeReviewerAgent(
         `[${agentName}] No fixes/closes/resolves #N reference in PR body; issue left open`
       );
     }
+
+    await maybeOpenHumanReviewPullRequest(
+      agentGithubToken,
+      input,
+      snapshot,
+      issueToClose ?? undefined
+    );
 
     return {
       decision: 'approve',

@@ -1,9 +1,17 @@
+import { isDevAgentSubIssueForParent } from '../utils/devSubIssue';
 import { githubApiFetch } from './githubApi';
 
 interface GitHubIssue {
   number: number;
   html_url: string;
   title: string;
+}
+
+interface GitHubIssueListItem {
+  number: number;
+  title: string;
+  body: string | null;
+  pull_request?: { url: string };
 }
 
 interface GitHubRepoDetails {
@@ -88,10 +96,37 @@ export async function createFeatureBranch(
   repo: string,
   branchName: string
 ): Promise<void> {
-  const repoDetails = await githubFetch<GitHubRepoDetails>(
-    `/repos/${owner}/${repo}`,
+  const repoDetails = await githubFetch<GitHubRepoDetails>(`/repos/${owner}/${repo}`, accessToken);
+
+  await createBranchFromBase(accessToken, owner, repo, branchName, repoDetails.default_branch);
+}
+
+export async function getDefaultBranch(
+  accessToken: string,
+  owner: string,
+  repo: string
+): Promise<string> {
+  const repoDetails = await githubFetch<GitHubRepoDetails>(`/repos/${owner}/${repo}`, accessToken);
+  return repoDetails.default_branch;
+}
+
+export async function listOpenDevSubIssuesForParent(
+  accessToken: string,
+  owner: string,
+  repo: string,
+  parentIssueNumber: number,
+  excludeIssueNumbers: number[] = []
+): Promise<GitHubIssueListItem[]> {
+  const excluded = new Set(excludeIssueNumbers);
+  const issues = await githubFetch<GitHubIssueListItem[]>(
+    `/repos/${owner}/${repo}/issues?state=open&per_page=100`,
     accessToken
   );
 
-  await createBranchFromBase(accessToken, owner, repo, branchName, repoDetails.default_branch);
+  return issues.filter(
+    (issue) =>
+      !excluded.has(issue.number) &&
+      !issue.pull_request &&
+      isDevAgentSubIssueForParent(issue.title, issue.body, parentIssueNumber)
+  );
 }
