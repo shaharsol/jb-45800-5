@@ -16,12 +16,13 @@ const getData = url => {
 
 
     const result = users.reduce((cumulative, { bank: { cardType }}) => {
-        const cumulativeClone = [...cumulative]
-        const cardTypeItem = cumulativeClone.find(item => item.cardType === cardType)
-        if(cardTypeItem) cardTypeItem.count++
-        else cumulativeClone.push({ cardType, count: 1})
+        const cumulativeClone = {...cumulative}
+        // const cardTypeItem = cumulativeClone.find(item => item.cardType === cardType)
+        // if(cardTypeItem) cardTypeItem.count++
+        // else cumulativeClone.push({ cardType, count: 1})
+        cumulativeClone[cardType] = cumulativeClone[cardType] ? cumulativeClone[cardType] + 1 : 1
         return cumulativeClone
-    }, [])
+    }, {})
 
     // this is a loop with n*m iterations
     // lets assume 10 users, 3 card types, 30 iterations
@@ -32,11 +33,29 @@ const getData = url => {
     console.log(result)
 
     /*
+    {
+        amex: 5,
+        visa: 3,
+        mastercard: 17
+    }
+    */
+
+
+    /*
     [
         {
-            state: ...,
-            count: ...
+            cardType: 'Amex',
+            count: 5
+        },
+        {
+            cardType: 'Visa',
+            count: 3
+        },
+        {
+            cardType: 'Mastercard',
+            count: 17
         }
+
     ]
     */
 
