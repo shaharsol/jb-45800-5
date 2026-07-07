@@ -24,6 +24,11 @@ const getData = url => {
         return cumulativeClone
     }, {})
 
+    let array = []
+    for (const item in result) {
+        array.push...
+    }
+
     // this is a loop with n*m iterations
     // lets assume 10 users, 3 card types, 30 iterations
     // lets assume 100 users, 30 card types, 3000 iterations
