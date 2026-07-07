@@ -68,3 +68,26 @@ const user =  {
       },
       "role": "admin"
     }
+
+// print a list of all key value pairs, regardless of their hierarchy    
+
+const printObject = (obj) => {
+    for(const prop in obj) {
+        if(typeof obj[prop] === 'object') {
+            for(const prop2 in obj[prop]) {
+                if(typeof obj[prop][prop2] === 'object') {
+                    for(const prop3 in obj[prop][prop2]) {
+                        console.log(`prop ${prop3} value is ${obj[prop][prop2][prop3]}`)      
+                    }
+                } else {
+                    console.log(`prop ${prop2} value is ${obj[prop][prop2]}`)  
+                }
+                  
+            }
+        } else {
+            console.log(`prop ${prop} value is ${obj[prop]}`)
+        }
+    }
+}
+
+printObject(user)
