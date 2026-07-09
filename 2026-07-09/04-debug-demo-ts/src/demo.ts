@@ -29,8 +29,8 @@ const users = [yossi, niko, miguel]
 let admins = 0;
 let nonAdmins = 0;
 const fullname = myFunc()
-for(let i=0; i < users.length; i++) {
-    if(users[i].isAdmin) admins++
+for(let i=0; i <= users.length; i++) {
+    if(users[i]!.isAdmin) admins++
     else nonAdmins++
 }
 

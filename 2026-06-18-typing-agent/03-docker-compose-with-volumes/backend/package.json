@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "debug": "ts-node-dev --respawn --transpile-only --inspect=4321 src/server.ts",
     "start": "node dist/server.js",
     "build": "tsc -p tsconfig.build.json",
     "docker": "NODE_ENV=docker node dist/server.js",
