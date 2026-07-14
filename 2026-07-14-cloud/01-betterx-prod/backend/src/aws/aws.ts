@@ -12,7 +12,8 @@ export async function createAppBucketIfNotExist() {
     try {
         // create the bucket....
         const response = await s3Client.send(new CreateBucketCommand({
-            Bucket: config.get('aws.bucket')
+            Bucket: config.get('aws.bucket'),
+            ACL: 'public-read'
         }))
         console.log('created bucket', response)
     } catch (e) {

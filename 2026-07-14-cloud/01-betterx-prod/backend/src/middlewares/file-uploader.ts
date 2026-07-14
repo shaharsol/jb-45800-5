@@ -31,14 +31,20 @@ export default async function fileUploader(request: Request, response: Response,
             Bucket: config.get('aws.bucket'),
             Key: `${randomUUID()}${path.extname(image.name)}`,
             Body: image.data,
-            ContentType: image.mimetype
+            ContentType: image.mimetype,
+            ACL: 'public-read'
         }
     })
 
     const awsResponse = await upload.done()  
     console.log(awsResponse)  
 
-    request.imageUrl = awsResponse.Location
+    // in compose, the Location will arrive something like:
+    // http://localstack:4566/com.betterx.compose/7380de07-c87f-427e-8cb6-87cf55ebac8e.jpg
+    // however in the database, we need to save:
+    // http://localhost:4566/com.betterx.compose/7380de07-c87f-427e-8cb6-87cf55ebac8e.jpg
+
+    request.imageUrl = awsResponse.Location.replace(config.get('aws.connection.endpoint'), config.get('aws.connection.publicEndpoint'))
 
     next()
     

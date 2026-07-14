@@ -36,7 +36,8 @@
                 "accessKeyId": "test",
                 "secretAccessKey": "test"
             },
-            "endpoint": "http://localhost:4566"
+            "endpoint": "http://localhost:4566",
+            "publicEndpoint": "http://localhost:4566"
         }
     },
     "openai": {
