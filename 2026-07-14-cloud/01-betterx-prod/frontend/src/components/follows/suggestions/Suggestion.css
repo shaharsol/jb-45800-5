@@ -1,0 +1,44 @@
+.Suggestion {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid #e1e8ed;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.Suggestion-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.Suggestion-user img {
+    height: 48px;
+    width: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e1e8ed;
+}
+
+.Suggestion-name {
+    font-weight: 600;
+    color: #0f1419;
+}
+
+.Suggestion-username {
+    font-size: 14px;
+    color: #536471;
+}
+
+.Suggestion-reason {
+    margin: 0;
+    color: #0f1419;
+    line-height: 1.5;
+}
+
+.Suggestion-following {
+    font-size: 14px;
+    color: #536471;
+}

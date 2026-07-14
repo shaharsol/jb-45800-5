@@ -1,0 +1,9 @@
+{
+    "app": {
+        "name": "Betterx MCP Compose",
+        "host": "0.0.0.0"
+    },
+    "backend": {
+        "url": "http://backend:3000"
+    }
+}

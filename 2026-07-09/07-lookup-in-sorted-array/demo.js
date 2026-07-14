@@ -52,3 +52,8 @@ do {
 } while (finishIndex >= startIndex)
 
 if (!found) console.log('the item is not in the array')
+
+
+
+
+docker run -d --name mongodb-northwind -p 27018:27017 -v /c/Users/jbt/git/mongodb-northwind:/northwind-data mongo:latest
