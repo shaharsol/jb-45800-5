@@ -12,6 +12,7 @@ const s3Config = JSON.parse(JSON.stringify(config.get('aws.connection')))
 
 if(process.env.NODE_ENV === 'production') {
     delete s3Config.endpoint
+    s3Config.credentials.sessionToken = process.env.AWS_SESSION_TOKEN
 }
 
 const s3Client = new S3Client(s3Config)

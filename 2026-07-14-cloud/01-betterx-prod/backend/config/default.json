@@ -30,7 +30,7 @@
     "aws": {
         "bucket": "com.betterx.dev",
         "connection": {
-            "region": "us-east-1",
+            "region": "eu-west-1",
             "forcePathStyle": true,
             "credentials": {
                 "accessKeyId": "test",
