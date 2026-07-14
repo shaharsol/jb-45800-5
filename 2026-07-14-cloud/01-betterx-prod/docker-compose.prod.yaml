@@ -74,7 +74,8 @@ services:
       - BETTERX_MCP_SERVER=${BETTERX_MCP_SERVER}
       - BETTERX_AWS_KEY=${BETTERX_AWS_KEY}
       - BETTERX_AWS_SECRET=${BETTERX_AWS_SECRET}
-    image: shaharsol/betterx-backend:20.0
+      - AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
+    image: shaharsol/betterx-backend:21.4
     depends_on:
       database:
         condition: service_healthy
