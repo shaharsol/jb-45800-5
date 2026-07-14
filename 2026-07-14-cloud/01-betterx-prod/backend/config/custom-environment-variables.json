@@ -14,5 +14,13 @@
     },
     "mcp": {
         "server": "BETTERX_MCP_SERVER"
+    },
+    "aws": {
+        "connection": {
+            "credentials": {
+                "accessKeyId": "BETTERX_AWS_KEY",
+                "secretAccessKey": "BETTERX_AWS_SECRET"
+            }
+        }
     }
 }

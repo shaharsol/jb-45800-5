@@ -6,6 +6,14 @@ import config from 'config'
 
 // this is a way to clone deeply
 const s3Config = JSON.parse(JSON.stringify(config.get('aws.connection')))
+
+// get rid of "endpoint" json property in production
+// so it connects to AWS instead of localstack
+
+if(process.env.NODE_ENV === 'production') {
+    delete s3Config.endpoint
+}
+
 const s3Client = new S3Client(s3Config)
 
 export async function createAppBucketIfNotExist() {

@@ -72,6 +72,8 @@ services:
     environment:
       - BETTERX_OPENAI_API_KEY=${BETTERX_OPENAI_API_KEY}
       - BETTERX_MCP_SERVER=${BETTERX_MCP_SERVER}
+      - BETTERX_AWS_KEY=${BETTERX_AWS_KEY}
+      - BETTERX_AWS_SECRET=${BETTERX_AWS_SECRET}
     image: shaharsol/betterx-backend:20.0
     depends_on:
       database:

@@ -15,6 +15,6 @@
         "server": "http://mcp:3005/mcp"
     },
     "aws": {
-        "bucket": "com.betterx.production"
+        "bucket": "com.betterx.shaharsol.production"
     }
 }
