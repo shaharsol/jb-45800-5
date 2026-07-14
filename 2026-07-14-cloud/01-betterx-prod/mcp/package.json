@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/app.ts",
-    "start": "node dist/app.js",
+    "start": "NODE_ENV=production node dist/app.js",
     "build": "tsc",
     "compose": "NODE_ENV=compose node dist/app.js"
   },

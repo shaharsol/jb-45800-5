@@ -1,0 +1,8 @@
+{
+    "app": {
+        "name": "Betterx MCP Production"
+    },
+    "backend": {
+        "url": "http://backend:3000"
+    }
+}

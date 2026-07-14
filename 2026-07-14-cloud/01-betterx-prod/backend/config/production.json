@@ -1,9 +1,20 @@
 {
     "app": {
-        "port": 4000,
         "name": "Betterx Prod"
     },
     "db": {
-        "host": "production.db.betterx.com"
+        "host": "database"
+    },
+    "pgvector": {
+        "host": "pgvector"
+    },
+    "io": {
+        "url": "http://io:3004"
+    },
+    "mcp": {
+        "server": "http://mcp:3005/mcp"
+    },
+    "aws": {
+        "bucket": "com.betterx.production"
     }
 }
