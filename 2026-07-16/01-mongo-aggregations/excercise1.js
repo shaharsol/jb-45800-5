@@ -1,1 +1,2 @@
-// calculate the total shipping fee per city
+// calculate the top 5 cities, per total shipping fee per city
+// 
