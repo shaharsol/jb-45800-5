@@ -1,8 +1,10 @@
 db.orders.aggregate([
     {
         $match: {
-            ship_state_province: {$in: ['FL', 'OR']},
-            shipping_fee: {$gt: 20}
+            $or: [
+                {ship_state_province: {$in: ['FL', 'OR']}},
+                {shipping_fee: {$gt: 20}}
+            ]
         },
     },
     {
