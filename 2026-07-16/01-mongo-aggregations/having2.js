@@ -1,0 +1,30 @@
+// calculate the top 5 cities, per total shipping fee per city
+// 
+db.orders.aggregate([
+    {
+        $match: {
+            ship_state_province: {$in: ['FL', 'OR']}
+        }
+    },
+    {
+        $group: {
+            _id: "$ship_city",
+            totalShippingCost: {$sum: "$shipping_fee"},
+            numberOfOrders: {$sum: 1},
+            averageShippingCost: {$avg: "$shipping_fee"}
+        }
+    },
+    {
+        $match: {
+            totalShippingCost: {$gte: 200}
+        }
+    },
+    {
+        $sort: {
+            totalShippingCost: -1
+        }
+    },
+    {
+        $limit: 5
+    }
+])
