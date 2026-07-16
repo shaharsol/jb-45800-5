@@ -1,5 +1,10 @@
 db.orders.aggregate([
     {
+        $match: {
+            ship_state_province: {$in: ['FL', 'OR']}
+        },
+    },
+    {
         $project: {
             _id: 1,
             customer_id: 1,
@@ -7,8 +12,12 @@ db.orders.aggregate([
             ship_city: 1,
             shipping_fee: 1
         }        
+    },
+    {
+        $sort: {
+            shipping_fee: -1
+        }
     }
 ])
 
-// $project is very similar to HOF map function. for each record in the input
-// it creates a a record in the output
+// $sort is very similar to HOF sort
