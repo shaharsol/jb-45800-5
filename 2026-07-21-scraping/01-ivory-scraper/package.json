@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "scheduler": "npx tsx src/scheduler.ts",
+    "worker": "npx tsx src/worker.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -18,11 +20,13 @@
     "typescript": "^7.0.2"
   },
   "dependencies": {
+    "@aws-sdk/client-sqs": "^3.1091.0",
     "axios": "^1.18.1",
     "cheerio": "^1.2.0",
     "config": "^4.4.2",
     "numeric-quantity": "^3.2.2",
     "pg": "^8.22.0",
-    "sequelize-typescript": "^2.1.6"
+    "sequelize-typescript": "^2.1.6",
+    "winston": "^3.19.0"
   }
 }

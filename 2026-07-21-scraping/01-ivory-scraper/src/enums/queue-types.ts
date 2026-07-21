@@ -1,0 +1,5 @@
+export enum QueueTypes {
+    SCRAPE_ALL = 'SCRAPE_ALL',
+    SCRAPE_CATEGORY = 'SCRAPE_CATEGORY',
+    SCRAPE_PRODUCT = 'SCRAPE_PRODUCT'
+}

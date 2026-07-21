@@ -5,5 +5,18 @@
         "username": "postgres",
         "password": "",
         "database": "postgres"
+    },
+    "aws": {
+        "queue": "ivory-scraper-queue",
+        "visibilityTimeoutSeconds": 3600,
+        "connection": {
+            "region": "us-east-1",
+            "forcePathStyle": true,
+            "credentials": {
+                "accessKeyId": "test",
+                "secretAccessKey": "test"
+            },
+            "endpoint": "http://localhost:4566"
+        }
     }
 }
