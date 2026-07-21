@@ -1,18 +1,33 @@
-import axios = require("axios")
+import axios from "axios"
 import * as cheerio from 'cheerio';
+import { numericQuantity } from 'numeric-quantity';
 
-async function scrapeProduct() {
+interface IvoryProduct {
+    title: string,
+    barcode: string,
+    price: number
+}
+
+async function scrapeProduct(id: number): Promise<IvoryProduct> {
     try {
-        const { data } = await axios.get('https://www.ivory.co.il/catalog.php?id=113259')
-        // const barcodeSpecificAreaIndex = data.lastIndexOf('barcode-specific-area');
-        // const nextTagCloserIndex = data.indexOf('>', barcodeSpecificAreaIndex)
-        // const nextTagOpenerIndex = data.indexOf('<', nextTagCloserIndex)
-        // const result = data.substring(nextTagCloserIndex + 1, nextTagOpenerIndex)
+        const { data } = await axios.get(`https://www.ivory.co.il/catalog.php?id=${id}`)
         const $ = cheerio.load(data);
-        const result = $('.barcode-specific-area').html()
+        const title = $('h1').html()
+        const barcode = $('.barcode-specific-area').html()
+        
+        const prices = [
+            numericQuantity($('.print-no-eilat-price').html()),
+            numericQuantity($('.print-actual-price').html()),
+            numericQuantity($('.price_product_page').html()),
+        ]
 
+        const price = prices.find(p => !isNaN(p))
 
-        console.log(result)
+        return {
+            title,
+            barcode,
+            price
+        }
 
 
         // we don't want to scrape using string functions because
@@ -28,6 +43,12 @@ async function scrapeProduct() {
     }
 }
 
-scrapeProduct()
+(async() => {
+    const data = await scrapeProduct(129333)
+    console.log(data)
+})()
+
+
+
 
 
