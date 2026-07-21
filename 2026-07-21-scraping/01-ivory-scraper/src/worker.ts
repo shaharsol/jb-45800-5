@@ -1,8 +1,46 @@
-import { DeleteMessageCommand, GetQueueUrlCommand, ReceiveMessageCommand } from "@aws-sdk/client-sqs";
+import { DeleteMessageCommand, GetQueueUrlCommand, ReceiveMessageCommand, SendMessageCommand } from "@aws-sdk/client-sqs";
 import sqsClient from "./aws/aws";
 import config from 'config'
 import { QueueTypes } from "./enums/queue-types";
 import { logger } from "./logger/logger";
+import { scrapeCategories } from "./scrape-categories";
+import { scrapeCategoryProducts } from "./scrape-category-products";
+import { scrapeProduct } from './scrape-product'
+
+async function scrapeAll(queueUrl: string) {
+    const categoryUrls = await scrapeCategories()
+    await Promise.all(categoryUrls.map(url => sqsClient.send(
+        new SendMessageCommand({
+            QueueUrl: queueUrl,
+            MessageBody: JSON.stringify({
+                type: QueueTypes.SCRAPE_CATEGORY,
+                categoryUrl: url
+            }),
+        })
+    )))
+    logger.info(`queued ${categoryUrls.length} SCRAPE_CATEGORY messages...`)
+}
+
+async function scrapeCategory(queueUrl: string, categoryUrl: string) {
+    const productIds = await scrapeCategoryProducts(categoryUrl)
+    await Promise.all(productIds.map(productId => sqsClient.send(
+        new SendMessageCommand({
+            QueueUrl: queueUrl,
+            MessageBody: JSON.stringify({
+                type: QueueTypes.SCRAPE_PRODUCT,
+                productId
+            }),
+        })
+    )))
+    logger.info(`queued ${productIds.length} SCRAPE_PRODUCT messages...`)
+
+}
+
+async function handleProduct(productId: string) {
+    const product = await scrapeProduct(productId)  
+    logger.info(`scraped product ${productId} and saved to the db with key ${product.barcode}`)
+
+}
 
 async function work() {
 
@@ -28,16 +66,16 @@ async function work() {
             logger.info(`received ${message.Messages.length} messages`)
 
             if (message.Messages[0]) {
-                const { type } = JSON.parse(message.Messages[0].Body)
+                const { type, categoryUrl, productId } = JSON.parse(message.Messages[0].Body)
                 switch (type) {
                     case QueueTypes.SCRAPE_ALL:
-                        console.log('scraping all')
+                        await scrapeAll(queueUrl)
                         break;
                     case QueueTypes.SCRAPE_CATEGORY:
-                        console.log('scraping category')
+                        await scrapeCategory(queueUrl, categoryUrl)
                         break;
                     case QueueTypes.SCRAPE_PRODUCT:
-                        console.log('scraping product')
+                        await handleProduct(productId)
                         break;
                     default:
                         break;
@@ -66,3 +104,4 @@ async function work() {
 (async () => {
     work()
 })()
+

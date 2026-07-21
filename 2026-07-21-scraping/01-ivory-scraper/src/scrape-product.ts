@@ -5,7 +5,7 @@ import sequelize from "./db/sequelize";
 import IvoryProduct from "./models/ivory-product";
 
 
-async function scrapeProduct(id: number): Promise<IvoryProduct> {
+export async function scrapeProduct(id: string): Promise<IvoryProduct> {
     try {
         const { data } = await axios.get(`https://www.ivory.co.il/catalog.php?id=${id}`)
         const $ = cheerio.load(data);
@@ -20,14 +20,16 @@ async function scrapeProduct(id: number): Promise<IvoryProduct> {
 
         const price = prices.find(p => !isNaN(p))
 
-        const [ ivoryProduct ] = await IvoryProduct.upsert({
-            barcode,
-            title,
-            price
-        })
+        if(barcode && title && price) {
+            const [ ivoryProduct ] = await IvoryProduct.upsert({
+                barcode,
+                title,
+                price
+            })
 
-        return ivoryProduct
-
+            return ivoryProduct
+            
+        }
 
         // we don't want to scrape using string functions because
         // 1. it is bad performance to search strings, better traverse a DOM object
@@ -46,7 +48,7 @@ async function scrapeProduct(id: number): Promise<IvoryProduct> {
 
     await sequelize.sync()
 
-    const ivoryProduct = await scrapeProduct(129333)
+    const ivoryProduct = await scrapeProduct('129333')
 
     console.log(ivoryProduct.get({plain: true}))
 
