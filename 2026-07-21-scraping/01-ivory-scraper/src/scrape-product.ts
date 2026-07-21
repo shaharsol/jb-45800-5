@@ -1,12 +1,9 @@
 import axios from "axios"
 import * as cheerio from 'cheerio';
 import { numericQuantity } from 'numeric-quantity';
+import sequelize from "./db/sequelize";
+import IvoryProduct from "./models/ivory-product";
 
-interface IvoryProduct {
-    title: string,
-    barcode: string,
-    price: number
-}
 
 async function scrapeProduct(id: number): Promise<IvoryProduct> {
     try {
@@ -23,11 +20,13 @@ async function scrapeProduct(id: number): Promise<IvoryProduct> {
 
         const price = prices.find(p => !isNaN(p))
 
-        return {
-            title,
+        const [ ivoryProduct ] = await IvoryProduct.upsert({
             barcode,
+            title,
             price
-        }
+        })
+
+        return ivoryProduct
 
 
         // we don't want to scrape using string functions because
@@ -44,8 +43,15 @@ async function scrapeProduct(id: number): Promise<IvoryProduct> {
 }
 
 (async() => {
-    const data = await scrapeProduct(129333)
-    console.log(data)
+
+    await sequelize.sync()
+
+    const ivoryProduct = await scrapeProduct(129333)
+
+    console.log(ivoryProduct.get({plain: true}))
+
+
+
 })()
 
 
