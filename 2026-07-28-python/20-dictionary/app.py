@@ -19,3 +19,7 @@ if "is_male" in student:
 student["university"] = "tel aviv uni"
 print(student)
 
+del student["university"]
+print(student)
+
+
