@@ -1,0 +1,18 @@
+numbers = [7, 563, -649, -474, 730, -804, -188, -860, 799, -60, -86, -556, -887, -641, 962, -99, -582, -281, 837, -643, 975, 543, 62, -287, 342, 927, -581, -966, -430, -507, -712, -940, -253, -472, 332, 790, 589, 201, -616, 734, -739, 136, -963, -578, -89, -749, -586, 948, -741, 384, -314, -182, -968, -192, 772, -808, 81, -772, -826, -503, -132, 839, -351, -782, 315, -766, -961, -339, 953, 111, -364, -543, 907, -676, -601, 965, 826, 26, 126, -709, -782, -971, 908, 21, -136, 521, -443, -941, -695, -560, -974, -733, 970, -229, 310, 839, 94, 990, 301, 918]
+
+# for even_number in filter(lambda n: n % 2 == 0, numbers):
+#     print(even_number, end=", ")
+# print()
+
+print(list(filter(lambda n: n % 2 == 0, numbers)))
+
+# list(filter(lambda n: n % 2 == 0, numbers))
+# rules for comprehension
+# 1. wrap in the type you want the final result, e.g. [] for list, {} for set... (tuple seems to be a special case using tuple([]))
+# 2. in the left hand, format a single iteration return
+# 3. describe the iteration
+# 4. you may add a filter
+print([n for n in numbers if n % 2 == 0])
+
+# print( (n for n in numbers if n % 2 == 0) )
+print( {n for n in numbers if n % 2 == 0} )
