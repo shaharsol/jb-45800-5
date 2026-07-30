@@ -6,4 +6,4 @@ def print_max(max_function: function):
 
     print(f"max number is {max}")
 
-    
+print_max(lambda a, b: a if a > b else b)    
