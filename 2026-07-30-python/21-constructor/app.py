@@ -4,3 +4,5 @@ some_person = Person("Eliahu", "Baruch")
 some_person.say_hi()
 
 print(f"person name is {some_person.first_name} {some_person.last_name}")
+
+print(f"person first name is {some_person.get_first_name()}")

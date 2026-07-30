@@ -6,3 +6,6 @@ class Person:
 
     def say_hi(self):
         print(f"hi from {self.first_name} {self.last_name}")
+
+    def get_first_name(self) -> str:
+        return self.first_name
