@@ -7,3 +7,9 @@ class Employee(Person):
 
     def __str__(self):
         return f"my name is {self.first_name} and i earn {self.salary}"
+
+    def display(self):
+        super().display()
+        print("------------------")
+        print(f"salary: {self.salary}")
+        
