@@ -1,6 +1,4 @@
 import { useContext } from 'react'
-import Followers from '../../follows/followers/Followers'
-import Following from '../../follows/following/Following'
 import Footer from '../footer/Footer'
 import Header from '../header/Header'
 import Main from '../main/Main'
@@ -21,14 +19,6 @@ export default function Layout() {
                 <header>
                     <Header />
                 </header>
-
-                <aside id="following">
-                    <Following />
-                </aside>
-
-                <aside id="followers">
-                    <Followers />
-                </aside>
 
                 <main>
                     <Main />

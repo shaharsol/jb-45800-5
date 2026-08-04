@@ -29,6 +29,7 @@ export default function Header() {
         <span className='Header-welcome'>Welcome, <strong>{name}</strong></span>
         <button type="button" className="btn-secondary" onClick={logMeOut}>Logout</button>
       </div>
+
     </div>
   )
 }

@@ -35,28 +35,29 @@ export default function NewComment(props: NewCommentProps) {
     return (
         <div className='NewComment'>
             <form onSubmit={handleSubmit(createComment)}>
-                <textarea placeholder='new comment...' {...register('body', {
-                    required: {
-                        value: true,
-                        message: 'you cant submit an empty comment'
-                    },
-                    minLength: {
-                        value: 20,
-                        message: 'comment must be at least 20 characters'
-                    },
-                    maxLength: {
-                        value: 100,
-                        message: 'comment must be no longer than 100 characters'
-                    }
-                })}></textarea>
-                <div className='error'>{formState.errors.body?.message}</div>
-                {/* <button>Add Comment</button> */}
+                <div className='NewComment-row'>
+                    <textarea placeholder='new comment...' {...register('body', {
+                        required: {
+                            value: true,
+                            message: 'you cant submit an empty comment'
+                        },
+                        minLength: {
+                            value: 20,
+                            message: 'comment must be at least 20 characters'
+                        },
+                        maxLength: {
+                            value: 100,
+                            message: 'comment must be no longer than 100 characters'
+                        }
+                    })}></textarea>
 
-                <SpinnerButton 
-                    buttonText='Add Comment'
-                    spinningText='adding new comment...'
-                    isSpinning={formState.isSubmitting}
-                />
+                    <SpinnerButton 
+                        buttonText='Add Comment'
+                        spinningText='adding new comment...'
+                        isSpinning={formState.isSubmitting}
+                    />
+                </div>
+                <div className='error'>{formState.errors.body?.message}</div>
             </form>
         </div>
     )

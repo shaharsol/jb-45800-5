@@ -1,6 +1,7 @@
 import type User from '../../../models/User'
 import './Follow.css'
-import profilePic from '../../../assets/profile-pic.jpg'
+
+import { getUserAvatar } from '../../../utils/userAvatar'
 import useService from '../../../hooks/use-service'
 import FollowingService from '../../../services/auth-aware/FollowingService'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
@@ -9,6 +10,7 @@ import { follow, unfollow } from '../../../redux/following-slice'
 interface FollowProps {
     user: User
 }
+
 export default function Follow(props: FollowProps) {
 
     const { user, user: { id, name, username } } = props
