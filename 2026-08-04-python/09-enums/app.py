@@ -1,8 +1,8 @@
 from color import Color
 
 
-my_color = Color.Green
-another_color = Color.Red
+my_color: Color = Color.Green
+another_color: Color = Color.Red
 
 print(f"my color is {my_color}")
 print(f"are the colors matching? {my_color == another_color}")
