@@ -1,5 +1,6 @@
 
 from circle import Circle
+from shape import Shape
 from square import Square
 from rectangle import Rectangle
 
@@ -36,3 +37,6 @@ for shape in my_shapes:
         print(f"the side of the square is {shape.side}")    
     elif isinstance(shape, Rectangle):
         print(f"the height of the rectangle is {shape.height}")    
+
+
+print(f"is circle isntance of shape? {isinstance(circle, Shape)}")
