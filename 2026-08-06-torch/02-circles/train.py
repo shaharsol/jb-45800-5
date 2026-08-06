@@ -6,7 +6,7 @@ from torch.utils.data import TensorDataset, DataLoader
 model_file = "./circle_model.pt"
 
 # how many samples i want for training
-num_samples: int = 100
+num_samples: int = 5000
 
 # in an imaginary box sized from -1,-1 to 1,1 what is the radius
 # of the circle
@@ -34,9 +34,9 @@ val_loader = DataLoader(val_ds, batch_size=64)
 # at this point we have all we need to start the training
 # what we need now is a neural network
 model = nn.Sequential(
-    nn.Linear(2, 16),
+    nn.Linear(2, 24),
     nn.ReLU(),
-    nn.Linear(16, 16),
+    nn.Linear(24, 16),
     nn.ReLU(),
     nn.Linear(16, 1)
 )
@@ -48,7 +48,7 @@ loss_fn = nn.BCEWithLogitsLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
 
 # now we can start training
-epochs = 10
+epochs = 50
 
 for epoch in range(epochs):
     model.train()
@@ -82,9 +82,12 @@ for epoch in range(epochs):
     val_accuracy = correct / total
 
     avg_loss = total_loss / len(train_loader)
-    print(f"epoch={epoch:.03d} loss={avg_loss:.4f} val_accuracy={val_accuracy:.4f}")
+    print(f"epoch={epoch:03d} loss={avg_loss:.4f} val_accuracy={val_accuracy:.4f}")
 
-
+torch.save({
+    "model_state_dict": model.state_dict(),
+    "radius": radius
+}, model_file)
 
 
 
