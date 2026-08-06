@@ -1,6 +1,9 @@
 import torch
 import torch.nn as nn
 
+# target model file
+model_file = "./linear_model.pt"
+
 # this is the neural network i would have build
 # for the hand writing alphabet recognition:
 # model = nn.Linear(256, 52, 52, 26)
@@ -55,6 +58,9 @@ for epoch in range(epochs):
 # what's in the model file? weights and biases
 print(f"found weight: {model.weight.item()}")
 print(f"found bias: {model.bias.item()}")
+
+torch.save(model.state_dict(), model_file)
+print(f"saved model to {model_file}")
 
 
 
