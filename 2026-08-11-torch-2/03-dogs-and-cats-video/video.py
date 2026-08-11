@@ -102,7 +102,7 @@ def make_transform(image_size: int):
 
 
 def ensure_ffmpeg_exists():
-    if shutil.which("c/ffmpeg/bin/ffmpeg") is None:
+    if shutil.which("ffmpeg") is None:
         raise RuntimeError(
             "ffmpeg was not found on PATH. Install FFmpeg and make sure "
             "the 'ffmpeg' command is available."
@@ -114,7 +114,7 @@ def extract_frames(video_path: Path, output_dir: Path, sample_every: int):
     output_pattern = output_dir / "frame_%08d.jpg"
 
     command = [
-        "c/ffmpeg/bin/ffmpeg",
+        "ffmpeg",
         "-hide_banner",
         "-loglevel",
         "error",
