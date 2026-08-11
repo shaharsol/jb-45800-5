@@ -1,6 +1,9 @@
 import torch
 import torch.nn as nn
 
+# y = 2x + 1
+# n1 -> wn + b => n2
+
 # target model file
 model_file = "./linear_model.pt"
 
