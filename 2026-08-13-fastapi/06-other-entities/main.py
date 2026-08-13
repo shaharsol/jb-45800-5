@@ -30,32 +30,32 @@ def name():
     return {"name": settings.app_name}
 
 
-@app.get("/users")
-def list_users(db: Session = Depends(get_db)):
-    users = db.scalars(select(User)).all()
-    return [
-        {
-            "id": user.id,
-            "name": user.name,
-            "username": user.username,
-            "profile_pic": user.profile_pic,
-            "created_at": user.created_at,
-            "updated_at": user.updated_at,
-        }
-        for user in users
-    ]
+# @app.get("/users")
+# def list_users(db: Session = Depends(get_db)):
+#     users = db.scalars(select(User)).all()
+#     return [
+#         {
+#             "id": user.id,
+#             "name": user.name,
+#             "username": user.username,
+#             "profile_pic": user.profile_pic,
+#             "created_at": user.created_at,
+#             "updated_at": user.updated_at,
+#         }
+#         for user in users
+#     ]
 
-@app.get("/comments")
-def list_comments(db: Session = Depends(get_db)):
-    comments = db.scalars(select(Comment)).all()
-    return [
-        {
-            "id": comment.id,
-            "user_id": comment.user_id,
-            "body": comment.body
-        }
-        for comment in comments
-    ]
+# @app.get("/comments")
+# def list_comments(db: Session = Depends(get_db)):
+#     comments = db.scalars(select(Comment)).all()
+#     return [
+#         {
+#             "id": comment.id,
+#             "user_id": comment.user_id,
+#             "body": comment.body
+#         }
+#         for comment in comments
+#     ]
 
 
 print(f"starting server on port {settings.port}")
