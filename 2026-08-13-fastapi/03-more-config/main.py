@@ -14,6 +14,10 @@ def health():
 def homepage():
     return {"page": "home"}
 
+@app.get("/name")
+def name():
+    return {"name": settings.app_name}
+
 print(f"starting server on port {settings.port}")
 # app.get("/", health)
 

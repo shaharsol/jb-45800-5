@@ -2,6 +2,7 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     port: int = 9000
+    app_name: str = "betterpy"
 
 def get_settings() -> Settings:
     return Settings()
