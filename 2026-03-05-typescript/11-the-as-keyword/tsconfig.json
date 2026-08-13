@@ -8,7 +8,7 @@
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     // "module": "nodenext",
-    "target": "es2017",
+    "target": "es2015",
     // "ignoreDeprecations": "6.0"
     // "types": [],
     // For nodejs:
