@@ -1,9 +1,23 @@
-const express = require('express')
-const mysql = require('mysql2/promise') ;
+import express from 'express'
+import mysql from 'mysql2/promise'
+import morgan from 'morgan'
+import { rateLimit } from 'express-rate-limit'
 
 (async () => {
-
     const app = express()
+    
+    const limiter = rateLimit({
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        limit: 10, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+        standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
+        legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+        ipv6Subnet: 56, // Set to 60 or 64 to be less aggressive, or 52 or 48 to be more aggressive
+        // store: ... , // Redis, Memcached, etc. See below.
+    })
+
+    // Apply the rate limiting middleware to all requests.
+    app.use(morgan('dev'))
+    app.use(limiter)
 
     let db;
 
@@ -60,6 +74,18 @@ const mysql = require('mysql2/promise') ;
     })
 
 
+    app.post('/product', express.json(), async (req, res, next) => {
+        const userId = 2;
+        const {name, price} = req.body
+        const sqlQuery = `
+            insert into products(user_id, name, price)
+            values(?, ?, ?)
+        `
+        const [ results ] = await db.query(sqlQuery, [userId, name, price])
+
+        res.json(results)
+
+    })
 
     db = await mysql.createConnection({
         host: 'localhost',
